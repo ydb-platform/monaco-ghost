@@ -1,5 +1,5 @@
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import type { EventEmitter } from './events';
+import { GhostEventEmitter } from './events';
 
 type IdeInfo = {
   Ide: string;
@@ -61,7 +61,7 @@ export interface InternalSuggestion {
 }
 
 export interface ICodeCompletionService extends monaco.languages.InlineCompletionsProvider {
-  events: EventEmitter;
+  events: GhostEventEmitter;
   handleItemDidShow(
     completions: monaco.languages.InlineCompletions<EnrichedCompletion>,
     item: EnrichedCompletion

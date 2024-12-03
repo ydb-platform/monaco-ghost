@@ -8,17 +8,17 @@ import {
 import { createServiceConfig } from './config';
 import { SuggestionCacheManager } from './cache';
 import { CodeSuggestionProvider } from './suggestionProvider';
-import { EventEmitter } from '../events';
+import { GhostEventEmitter } from '../events';
 import type { DiscardReason } from '../types';
 
 export class CodeCompletionService implements ICodeCompletionService {
   private readonly cacheManager: SuggestionCacheManager;
   private readonly suggestionProvider: CodeSuggestionProvider;
   private readonly config: ReturnType<typeof createServiceConfig>;
-  public events: EventEmitter;
+  public events: GhostEventEmitter;
 
   constructor(api: ICodeCompletionAPI, userConfig?: CodeCompletionConfig) {
-    this.events = new EventEmitter();
+    this.events = new GhostEventEmitter();
     this.config = createServiceConfig(api, userConfig);
     this.cacheManager = new SuggestionCacheManager();
     this.suggestionProvider = new CodeSuggestionProvider(this.config, this.events);

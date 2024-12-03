@@ -18,7 +18,7 @@ export interface CompletionEvents {
   'completion:error': Error;
 }
 
-export class EventEmitter {
+export class GhostEventEmitter {
   private events = new Map<string, Set<EventCallback>>();
 
   on<K extends keyof CompletionEvents>(

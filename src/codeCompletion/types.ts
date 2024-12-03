@@ -1,5 +1,4 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import { EventEmitter } from '../events';
 import {
   CodeCompletionConfig,
   EnrichedCompletion,

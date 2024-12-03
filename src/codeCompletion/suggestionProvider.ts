@@ -1,11 +1,11 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { EnrichedCompletion, ServiceConfig, SuggestionProvider } from './types';
 import { getPromptFileContent } from './prompt';
-import { EventEmitter } from '../events';
+import { GhostEventEmitter } from '../events';
 
 export class CodeSuggestionProvider implements SuggestionProvider {
   private timer: number | null = null;
-  private events: EventEmitter;
+  private events: GhostEventEmitter;
   private pendingPromise: Promise<{ suggestions: EnrichedCompletion[]; requestId: string }> | null =
     null;
   private pendingResolve:
@@ -14,7 +14,7 @@ export class CodeSuggestionProvider implements SuggestionProvider {
 
   private readonly config: ServiceConfig;
 
-  constructor(config: ServiceConfig, events: EventEmitter) {
+  constructor(config: ServiceConfig, events: GhostEventEmitter) {
     this.config = config;
     this.events = events;
   }

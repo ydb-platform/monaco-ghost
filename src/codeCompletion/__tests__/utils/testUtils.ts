@@ -1,6 +1,6 @@
 /// <reference types="jest" />
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import { EventEmitter } from '../../../events';
+import { GhostEventEmitter } from '../../../events';
 import { ICodeCompletionAPI, Suggestions } from '../../../types';
 import { ServiceConfig } from '../../types';
 
@@ -9,7 +9,7 @@ export const createMockApi = (): jest.Mocked<ICodeCompletionAPI> => ({
 });
 
 export const createMockEvents = () => {
-  const mockEvents = new EventEmitter();
+  const mockEvents = new GhostEventEmitter();
   jest.spyOn(mockEvents, 'emit');
   jest.spyOn(mockEvents, 'on');
   jest.spyOn(mockEvents, 'off');
