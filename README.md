@@ -1,6 +1,6 @@
 # monaco-ghost
 
-[![codecov](https://codecov.io/gh/astandrik/monaco-ghost/branch/main/graph/badge.svg)](https://codecov.io/gh/astandrik/monaco-ghost)
+[![codecov](https://codecov.io/gh/ydb-platform/monaco-ghost/branch/main/graph/badge.svg)](https://codecov.io/gh/ydb-platform/monaco-ghost)
 
 A lightweight adapter for integrating completion services with Monaco Editor's inline completion system. Provides ghost text suggestions with event system and caching.
 
