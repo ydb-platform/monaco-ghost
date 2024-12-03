@@ -8,8 +8,8 @@ import {
 import { createServiceConfig } from "./config";
 import { SuggestionCacheManager } from "./cache";
 import { CodeSuggestionProvider } from "./suggestionProvider";
-import { EventEmitter } from "../../events";
-import type { DiscardReason } from "../../types";
+import { EventEmitter } from "../events";
+import type { DiscardReason } from "../types";
 
 export class CodeCompletionService implements ICodeCompletionService {
   private readonly cacheManager: SuggestionCacheManager;

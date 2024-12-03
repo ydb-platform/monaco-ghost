@@ -1,4 +1,4 @@
-import { CodeCompletionService } from "./services/codeCompletion";
+import { CodeCompletionService } from "./codeCompletion";
 import type { CodeCompletionConfig, ICodeCompletionAPI } from "./types";
 
 export function createCodeCompletionService(

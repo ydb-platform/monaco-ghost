@@ -1,6 +1,6 @@
 import type Monaco from "monaco-editor";
 import { v4 } from "uuid";
-import type { PromptFile } from "../../types";
+import type { PromptFile } from "../types";
 
 export interface TextLimits {
   beforeCursor: number;
