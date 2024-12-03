@@ -26,8 +26,8 @@ describe('CodeSuggestionProvider - Error Handling', () => {
   it('should handle API errors gracefully', async () => {
     const mockApi = createMockApi();
     const mockEvents = createMockEvents();
-    const config = createMockConfig(mockEvents, mockApi);
-    const provider = new CodeSuggestionProvider(config);
+    const config = createMockConfig(mockApi);
+    const provider = new CodeSuggestionProvider(config, mockEvents);
     const mockPosition = createMockPosition();
     const mockModel = createMockModel();
 
@@ -54,8 +54,8 @@ describe('CodeSuggestionProvider - Error Handling', () => {
   it('should handle null API response', async () => {
     const mockApi = createMockApi();
     const mockEvents = createMockEvents();
-    const config = createMockConfig(mockEvents, mockApi);
-    const provider = new CodeSuggestionProvider(config);
+    const config = createMockConfig(mockApi);
+    const provider = new CodeSuggestionProvider(config, mockEvents);
     const mockPosition = createMockPosition();
     const mockModel = createMockModel();
 
@@ -79,8 +79,8 @@ describe('CodeSuggestionProvider - Error Handling', () => {
   it('should handle empty API response suggestions', async () => {
     const mockApi = createMockApi();
     const mockEvents = createMockEvents();
-    const config = createMockConfig(mockEvents, mockApi);
-    const provider = new CodeSuggestionProvider(config);
+    const config = createMockConfig(mockApi);
+    const provider = new CodeSuggestionProvider(config, mockEvents);
     const mockPosition = createMockPosition();
     const mockModel = createMockModel();
 

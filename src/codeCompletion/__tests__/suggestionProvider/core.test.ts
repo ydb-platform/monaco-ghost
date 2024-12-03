@@ -2,10 +2,10 @@ import { CodeSuggestionProvider } from '../../suggestionProvider';
 import { getPromptFileContent } from '../../prompt';
 import {
   createMockApi,
-  createMockEvents,
   createMockConfig,
   createMockPosition,
   createMockModel,
+  createMockEvents,
 } from '../utils/testUtils';
 
 // Mock the prompt module
@@ -25,13 +25,25 @@ describe('CodeSuggestionProvider - Core Functionality', () => {
 
   it('should format suggestions correctly', async () => {
     const mockApi = createMockApi();
-    const mockEvents = createMockEvents();
-    const config = createMockConfig(mockEvents, mockApi);
-    const provider = new CodeSuggestionProvider(config);
+    const config = createMockConfig(mockApi);
+    const events = createMockEvents();
+    const provider = new CodeSuggestionProvider(config, events);
     const mockPosition = createMockPosition();
     const mockModel = createMockModel();
 
-    const mockPromptData = [{ Path: 'test.ts', Fragments: [], Cursor: { Ln: 1, Col: 5 } }];
+    const mockPromptData = [
+      {
+        Path: 'test.ts',
+        Fragments: [
+          {
+            Text: 'test',
+            Start: { Ln: 1, Col: 1 },
+            End: { Ln: 1, Col: 4 },
+          },
+        ],
+        Cursor: { Ln: 1, Col: 5 },
+      },
+    ];
 
     (getPromptFileContent as jest.Mock).mockReturnValue(mockPromptData);
     mockApi.getCodeAssistSuggestions.mockResolvedValue({
@@ -80,9 +92,9 @@ describe('CodeSuggestionProvider - Core Functionality', () => {
 
   it('should handle empty prompt data', async () => {
     const mockApi = createMockApi();
-    const mockEvents = createMockEvents();
-    const config = createMockConfig(mockEvents, mockApi);
-    const provider = new CodeSuggestionProvider(config);
+    const events = createMockEvents();
+    const config = createMockConfig(mockApi);
+    const provider = new CodeSuggestionProvider(config, events);
     const mockPosition = createMockPosition();
     const mockModel = createMockModel();
 

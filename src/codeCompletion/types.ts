@@ -36,7 +36,6 @@ export interface SuggestionProvider {
 }
 
 export interface ServiceConfig extends Required<CodeCompletionConfig> {
-  events: EventEmitter;
   api: ICodeCompletionAPI;
 }
 

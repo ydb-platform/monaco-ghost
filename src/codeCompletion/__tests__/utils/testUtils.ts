@@ -16,7 +16,7 @@ export const createMockEvents = () => {
   return mockEvents;
 };
 
-export const createMockConfig = (events: EventEmitter, api: ICodeCompletionAPI): ServiceConfig => ({
+export const createMockConfig = (api: ICodeCompletionAPI): ServiceConfig => ({
   debounceTime: 200,
   textLimits: {
     beforeCursor: 8000,
@@ -25,7 +25,6 @@ export const createMockConfig = (events: EventEmitter, api: ICodeCompletionAPI):
   suggestionCache: {
     enabled: true,
   },
-  events,
   api,
 });
 

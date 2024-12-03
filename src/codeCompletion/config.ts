@@ -1,5 +1,4 @@
 import { CodeCompletionConfig, ServiceConfig } from './types';
-import { EventEmitter } from '../events';
 import { ICodeCompletionAPI } from '../types';
 
 const DEFAULT_CONFIG: Required<CodeCompletionConfig> = {
@@ -15,7 +14,6 @@ const DEFAULT_CONFIG: Required<CodeCompletionConfig> = {
 
 export function createServiceConfig(
   api: ICodeCompletionAPI,
-  events: EventEmitter,
   userConfig?: CodeCompletionConfig
 ): ServiceConfig {
   return {
@@ -30,6 +28,5 @@ export function createServiceConfig(
       ...(userConfig?.suggestionCache || {}),
     },
     api,
-    events,
   };
 }

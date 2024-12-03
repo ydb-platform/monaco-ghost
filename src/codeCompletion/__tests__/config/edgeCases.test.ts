@@ -1,13 +1,10 @@
 import { createServiceConfig } from '../../config';
-import { EventEmitter } from '../../../events';
 import { ICodeCompletionAPI } from '../../../types';
 
 describe('createServiceConfig - Edge Cases', () => {
   const mockApi: ICodeCompletionAPI = {
     getCodeAssistSuggestions: jest.fn(),
   };
-
-  const mockEvents = new EventEmitter();
 
   it('should handle undefined nested configurations', () => {
     const userConfig = {
@@ -16,7 +13,7 @@ describe('createServiceConfig - Edge Cases', () => {
       suggestionCache: undefined,
     };
 
-    const config = createServiceConfig(mockApi, mockEvents, userConfig);
+    const config = createServiceConfig(mockApi, userConfig);
 
     expect(config.textLimits).toEqual({
       beforeCursor: 8000,
@@ -38,7 +35,7 @@ describe('createServiceConfig - Edge Cases', () => {
       },
     };
 
-    const config = createServiceConfig(mockApi, mockEvents, userConfig);
+    const config = createServiceConfig(mockApi, userConfig);
 
     expect(config.textLimits).toEqual({
       beforeCursor: 3000,
@@ -53,7 +50,6 @@ describe('createServiceConfig - Edge Cases', () => {
     const customApi: ICodeCompletionAPI = {
       getCodeAssistSuggestions: jest.fn(),
     };
-    const customEvents = new EventEmitter();
 
     const userConfig = {
       debounceTime: 300,
@@ -62,10 +58,9 @@ describe('createServiceConfig - Edge Cases', () => {
       },
     };
 
-    const config = createServiceConfig(customApi, customEvents, userConfig);
+    const config = createServiceConfig(customApi, userConfig);
 
     expect(config.api).toBe(customApi);
-    expect(config.events).toBe(customEvents);
     expect(config.debounceTime).toBe(300);
   });
 });

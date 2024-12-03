@@ -2,10 +2,10 @@ import { CodeSuggestionProvider } from '../../suggestionProvider';
 import { getPromptFileContent } from '../../prompt';
 import {
   createMockApi,
-  createMockEvents,
   createMockConfig,
   createMockPosition,
   createMockModel,
+  createMockEvents,
 } from '../utils/testUtils';
 
 // Mock the prompt module
@@ -25,9 +25,9 @@ describe('CodeSuggestionProvider - Debouncing', () => {
 
   it('should debounce requests', async () => {
     const mockApi = createMockApi();
-    const mockEvents = createMockEvents();
-    const config = createMockConfig(mockEvents, mockApi);
-    const provider = new CodeSuggestionProvider(config);
+    const events = createMockEvents();
+    const config = createMockConfig(mockApi);
+    const provider = new CodeSuggestionProvider(config, events);
     const mockPosition = createMockPosition();
     const mockModel = createMockModel();
 
@@ -54,9 +54,9 @@ describe('CodeSuggestionProvider - Debouncing', () => {
 
   it('should clear existing timer on new request', async () => {
     const mockApi = createMockApi();
-    const mockEvents = createMockEvents();
-    const config = createMockConfig(mockEvents, mockApi);
-    const provider = new CodeSuggestionProvider(config);
+    const events = createMockEvents();
+    const config = createMockConfig(mockApi);
+    const provider = new CodeSuggestionProvider(config, events);
     const mockPosition = createMockPosition();
     const mockModel = createMockModel();
 

@@ -1,4 +1,4 @@
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import * as monaco from 'monaco-editor';
 import {
   CodeCompletionConfig,
   EnrichedCompletion,
@@ -15,13 +15,13 @@ export class CodeCompletionService implements ICodeCompletionService {
   private readonly cacheManager: SuggestionCacheManager;
   private readonly suggestionProvider: CodeSuggestionProvider;
   private readonly config: ReturnType<typeof createServiceConfig>;
-  public readonly events: EventEmitter;
+  public events: EventEmitter;
 
   constructor(api: ICodeCompletionAPI, userConfig?: CodeCompletionConfig) {
     this.events = new EventEmitter();
-    this.config = createServiceConfig(api, this.events, userConfig);
+    this.config = createServiceConfig(api, userConfig);
     this.cacheManager = new SuggestionCacheManager();
-    this.suggestionProvider = new CodeSuggestionProvider(this.config);
+    this.suggestionProvider = new CodeSuggestionProvider(this.config, this.events);
   }
 
   async provideInlineCompletions(

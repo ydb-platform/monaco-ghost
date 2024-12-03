@@ -1,5 +1,4 @@
 import { createServiceConfig } from '../../config';
-import { EventEmitter } from '../../../events';
 import { ICodeCompletionAPI } from '../../../types';
 
 describe('createServiceConfig - Default Configuration', () => {
@@ -7,10 +6,8 @@ describe('createServiceConfig - Default Configuration', () => {
     getCodeAssistSuggestions: jest.fn(),
   };
 
-  const mockEvents = new EventEmitter();
-
   it('should return default configuration when no user config provided', () => {
-    const config = createServiceConfig(mockApi, mockEvents);
+    const config = createServiceConfig(mockApi);
 
     expect(config).toEqual({
       debounceTime: 200,
@@ -22,14 +19,12 @@ describe('createServiceConfig - Default Configuration', () => {
         enabled: true,
       },
       api: mockApi,
-      events: mockEvents,
     });
   });
 
   it('should include required api and events fields', () => {
-    const config = createServiceConfig(mockApi, mockEvents);
+    const config = createServiceConfig(mockApi);
 
     expect(config.api).toBe(mockApi);
-    expect(config.events).toBe(mockEvents);
   });
 });

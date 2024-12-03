@@ -1,5 +1,4 @@
 import { createServiceConfig } from '../../config';
-import { EventEmitter } from '../../../events';
 import { ICodeCompletionAPI } from '../../../types';
 
 describe('createServiceConfig - User Configuration', () => {
@@ -7,14 +6,12 @@ describe('createServiceConfig - User Configuration', () => {
     getCodeAssistSuggestions: jest.fn(),
   };
 
-  const mockEvents = new EventEmitter();
-
   it('should merge top-level user configuration', () => {
     const userConfig = {
       debounceTime: 500,
     };
 
-    const config = createServiceConfig(mockApi, mockEvents, userConfig);
+    const config = createServiceConfig(mockApi, userConfig);
 
     expect(config.debounceTime).toBe(500);
     expect(config.textLimits).toEqual({
@@ -33,7 +30,7 @@ describe('createServiceConfig - User Configuration', () => {
       },
     };
 
-    const config = createServiceConfig(mockApi, mockEvents, userConfig);
+    const config = createServiceConfig(mockApi, userConfig);
 
     expect(config.textLimits).toEqual({
       beforeCursor: 5000,
@@ -48,7 +45,7 @@ describe('createServiceConfig - User Configuration', () => {
       },
     };
 
-    const config = createServiceConfig(mockApi, mockEvents, userConfig);
+    const config = createServiceConfig(mockApi, userConfig);
 
     expect(config.suggestionCache).toEqual({
       enabled: false,
@@ -67,12 +64,11 @@ describe('createServiceConfig - User Configuration', () => {
       },
     };
 
-    const config = createServiceConfig(mockApi, mockEvents, userConfig);
+    const config = createServiceConfig(mockApi, userConfig);
 
     expect(config).toEqual({
       ...userConfig,
       api: mockApi,
-      events: mockEvents,
     });
   });
 });
