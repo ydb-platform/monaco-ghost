@@ -1,0 +1,59 @@
+{
+  "name": "monaco-ghost",
+  "version": "0.1.0",
+  "description": "Inline completion adapter for Monaco Editor",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "type-check": "tsc --project tsconfig.check.json",
+    "build:types": "tsc --project tsconfig.json",
+    "build:cjs": "esbuild 'src/*.ts' --outdir=dist/cjs --format=cjs --platform=neutral --target=es2019",
+    "build:esm": "esbuild 'src/*.ts' --outdir=dist/esm --format=esm --platform=neutral --target=es2019",
+    "build": "npm run clean && npm run type-check && npm run build:types && npm run build:cjs && npm run build:esm",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "uuid": "^9.0.0"
+  },
+  "peerDependencies": {
+    "monaco-editor": "^0.40.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.4",
+    "@types/uuid": "^9.0.0",
+    "esbuild": "^0.20.0",
+    "typescript": "^4.9.0"
+  },
+  "keywords": [
+    "monaco-editor",
+    "inline-completion",
+    "ghost-text",
+    "code-completion",
+    "intellisense"
+  ],
+  "author": "YDB Platform Team",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ydb-platform/monaco-ghost.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ydb-platform/monaco-ghost/issues"
+  },
+  "homepage": "https://github.com/ydb-platform/monaco-ghost#readme",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "sideEffects": false
+}
