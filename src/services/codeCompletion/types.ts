@@ -7,6 +7,11 @@ import {
   ICodeCompletionService,
 } from "../../types";
 
+export interface TextLimits {
+  beforeCursor: number;
+  afterCursor: number;
+}
+
 export interface InternalSuggestion {
   items: EnrichedCompletion[];
   shownCount: number;

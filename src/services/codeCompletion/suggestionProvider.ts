@@ -1,6 +1,6 @@
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { EnrichedCompletion, ServiceConfig, SuggestionProvider } from "./types";
-import { getPromptFileContent } from "../../promptContent";
+import { getPromptFileContent } from "./prompt";
 
 export class CodeSuggestionProvider implements SuggestionProvider {
   private timer: number | null = null;
