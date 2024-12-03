@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { MonacoEditor } from "./MonacoEditor";
+import type { Meta, StoryObj } from '@storybook/react';
+import { MonacoEditor } from './MonacoEditor';
 
 const meta = {
-  title: "Monaco Ghost/Editor",
+  title: 'Monaco Ghost/Editor',
   component: MonacoEditor,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       description: {
         component: `
@@ -23,21 +23,21 @@ Type 'con' to see completion suggestions for console methods.
       },
     },
   },
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     initialValue: {
-      description: "Initial code content",
-      control: "text",
+      description: 'Initial code content',
+      control: 'text',
     },
     language: {
-      description: "Programming language",
-      control: "select",
-      options: ["typescript", "javascript"],
+      description: 'Programming language',
+      control: 'select',
+      options: ['typescript', 'javascript'],
     },
     theme: {
-      description: "Editor theme",
-      control: "select",
-      options: ["vs-dark", "vs-light"],
+      description: 'Editor theme',
+      control: 'select',
+      options: ['vs-dark', 'vs-light'],
     },
   },
 } satisfies Meta<typeof MonacoEditor>;
@@ -53,8 +53,8 @@ export const TypeScript: Story = {
 function example() {
   con
 }`,
-    language: "typescript",
-    theme: "vs-dark",
+    language: 'typescript',
+    theme: 'vs-dark',
   },
 };
 
@@ -66,8 +66,8 @@ export const JavaScript: Story = {
 function example() {
   con
 }`,
-    language: "javascript",
-    theme: "vs-dark",
+    language: 'javascript',
+    theme: 'vs-dark',
   },
 };
 
@@ -79,7 +79,7 @@ export const LightTheme: Story = {
 function example() {
   con
 }`,
-    language: "typescript",
-    theme: "vs-light",
+    language: 'typescript',
+    theme: 'vs-light',
   },
 };

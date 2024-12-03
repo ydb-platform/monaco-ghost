@@ -17,9 +17,18 @@
     "build:cjs": "esbuild 'src/*.ts' --outdir=dist/cjs --format=cjs --platform=neutral --target=es2019",
     "build:esm": "esbuild 'src/*.ts' --outdir=dist/esm --format=esm --platform=neutral --target=es2019",
     "build": "npm run clean && npm run type-check && npm run build:types && npm run build:cjs && npm run build:esm",
-    "prepare": "npm run build",
+    "prepare": "husky install && npm run build",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "uuid": "^9.0.0"
@@ -42,8 +51,16 @@
     "@storybook/test": "^7.6.20",
     "@types/node": "^20.10.4",
     "@types/uuid": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
     "css-loader": "^7.1.2",
     "esbuild": "^0.20.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.0.3",
     "react": "*",
     "react-dom": "*",
     "storybook": "^7.6.20",

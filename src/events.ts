@@ -1,17 +1,17 @@
 type EventCallback<T = any> = (data: T) => void;
 
 export interface CompletionEvents {
-  "completion:accept": {
+  'completion:accept': {
     requestId: string;
     acceptedText: string;
   };
-  "completion:decline": {
+  'completion:decline': {
     requestId: string;
     suggestionText: string;
     reason: string;
     hitCount: number;
   };
-  "completion:ignore": {
+  'completion:ignore': {
     requestId: string;
     suggestionText: string;
   };
@@ -37,11 +37,8 @@ export class EventEmitter {
     this.events.get(event)?.delete(callback);
   }
 
-  emit<K extends keyof CompletionEvents>(
-    event: K,
-    data: CompletionEvents[K]
-  ): void {
-    this.events.get(event)?.forEach((callback) => {
+  emit<K extends keyof CompletionEvents>(event: K, data: CompletionEvents[K]): void {
+    this.events.get(event)?.forEach(callback => {
       try {
         callback(data);
       } catch (error) {

@@ -1,10 +1,7 @@
-import React, { useEffect, useRef } from "react";
-import * as monaco from "monaco-editor";
-import {
-  createCodeCompletionService,
-  registerCompletionCommands,
-} from "../index";
-import "monaco-editor/min/vs/editor/editor.main.css";
+import React, { useEffect, useRef } from 'react';
+import * as monaco from 'monaco-editor';
+import { createCodeCompletionService, registerCompletionCommands } from '../index';
+import 'monaco-editor/min/vs/editor/editor.main.css';
 
 export interface MonacoEditorProps {
   initialValue?: string;
@@ -13,9 +10,9 @@ export interface MonacoEditorProps {
 }
 
 export const MonacoEditor: React.FC<MonacoEditorProps> = ({
-  initialValue = "// Type your code here\n",
-  language = "typescript",
-  theme = "vs-dark",
+  initialValue = '// Type your code here\n',
+  language = 'typescript',
+  theme = 'vs-dark',
 }) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const editor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
@@ -33,7 +30,7 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
         minimap: { enabled: false },
         automaticLayout: true,
         fontSize: 14,
-        lineNumbers: "on",
+        lineNumbers: 'on',
         scrollBeyondLastLine: false,
         roundedSelection: false,
         padding: { top: 10 },
@@ -43,11 +40,11 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
       const api = {
         getCodeAssistSuggestions: async () => ({
           Suggests: [
-            { Text: "console.log()" },
-            { Text: "console.error()" },
-            { Text: "console.info()" },
+            { Text: 'console.log()' },
+            { Text: 'console.error()' },
+            { Text: 'console.info()' },
           ],
-          RequestId: "demo-request",
+          RequestId: 'demo-request',
         }),
       };
 
@@ -68,7 +65,7 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
 
       // Register with Monaco
       monaco.languages.registerInlineCompletionsProvider(
-        ["typescript", "javascript"],
+        ['typescript', 'javascript'],
         completionProvider
       );
 
@@ -78,21 +75,16 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
       }
 
       // Event listeners for completion events
-      completionProvider.events.on("completion:accept", (data) => {
-        console.log("Completion accepted:", data.acceptedText);
+      completionProvider.events.on('completion:accept', data => {
+        console.log('Completion accepted:', data.acceptedText);
       });
 
-      completionProvider.events.on("completion:decline", (data) => {
-        console.log(
-          "Completion declined:",
-          data.suggestionText,
-          "reason:",
-          data.reason
-        );
+      completionProvider.events.on('completion:decline', data => {
+        console.log('Completion declined:', data.suggestionText, 'reason:', data.reason);
       });
 
-      completionProvider.events.on("completion:ignore", (data) => {
-        console.log("Completion ignored:", data.suggestionText);
+      completionProvider.events.on('completion:ignore', data => {
+        console.log('Completion ignored:', data.suggestionText);
       });
     };
 
@@ -107,10 +99,10 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
     <div
       ref={editorRef}
       style={{
-        width: "800px",
-        height: "400px",
-        border: "1px solid #ccc",
-        overflow: "hidden",
+        width: '800px',
+        height: '400px',
+        border: '1px solid #ccc',
+        overflow: 'hidden',
       }}
     />
   );

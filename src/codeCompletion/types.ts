@@ -1,11 +1,11 @@
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { EventEmitter } from "../events";
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import { EventEmitter } from '../events';
 import {
   CodeCompletionConfig,
   EnrichedCompletion,
   ICodeCompletionAPI,
   ICodeCompletionService,
-} from "../types";
+} from '../types';
 
 export interface TextLimits {
   beforeCursor: number;

@@ -1,15 +1,15 @@
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import {
   CodeCompletionConfig,
   EnrichedCompletion,
   ICodeCompletionAPI,
   ICodeCompletionService,
-} from "./types";
-import { createServiceConfig } from "./config";
-import { SuggestionCacheManager } from "./cache";
-import { CodeSuggestionProvider } from "./suggestionProvider";
-import { EventEmitter } from "../events";
-import type { DiscardReason } from "../types";
+} from './types';
+import { createServiceConfig } from './config';
+import { SuggestionCacheManager } from './cache';
+import { CodeSuggestionProvider } from './suggestionProvider';
+import { EventEmitter } from '../events';
+import type { DiscardReason } from '../types';
 
 export class CodeCompletionService implements ICodeCompletionService {
   private readonly cacheManager: SuggestionCacheManager;
@@ -31,10 +31,7 @@ export class CodeCompletionService implements ICodeCompletionService {
     _token: monaco.CancellationToken
   ) {
     if (this.config.suggestionCache.enabled) {
-      const cachedCompletions = this.cacheManager.getCachedCompletion(
-        model,
-        position
-      );
+      const cachedCompletions = this.cacheManager.getCachedCompletion(model, position);
       if (cachedCompletions.length) {
         return { items: cachedCompletions };
       }
@@ -46,13 +43,13 @@ export class CodeCompletionService implements ICodeCompletionService {
       this.dismissCompletion(prevSuggestions.pop());
     }
 
-    const { suggestions, requestId } =
-      await this.suggestionProvider.getSuggestions(model, position);
+    const { suggestions, requestId } = await this.suggestionProvider.getSuggestions(
+      model,
+      position
+    );
 
     if (suggestions.length) {
-      this.cacheManager.addToCache([
-        { items: suggestions, shownCount: 0, requestId },
-      ]);
+      this.cacheManager.addToCache([{ items: suggestions, shownCount: 0, requestId }]);
     }
 
     return { items: suggestions };
@@ -77,14 +74,11 @@ export class CodeCompletionService implements ICodeCompletionService {
     const commandArguments = command?.arguments?.[0] ?? {};
     const { suggestionText, requestId, prevWordLength = 0 } = commandArguments;
 
-    if (requestId && suggestionText && typeof item.insertText === "string") {
-      const acceptedText = item.insertText.slice(
-        prevWordLength,
-        acceptedLetters
-      );
+    if (requestId && suggestionText && typeof item.insertText === 'string') {
+      const acceptedText = item.insertText.slice(prevWordLength, acceptedLetters);
       if (acceptedText) {
         this.cacheManager.markAsAccepted(suggestionText);
-        this.events.emit("completion:accept", {
+        this.events.emit('completion:accept', {
           requestId,
           acceptedText,
         });
@@ -92,29 +86,23 @@ export class CodeCompletionService implements ICodeCompletionService {
     }
   }
 
-  handleAccept({
-    requestId,
-    suggestionText,
-  }: {
-    requestId: string;
-    suggestionText: string;
-  }) {
+  handleAccept({ requestId, suggestionText }: { requestId: string; suggestionText: string }) {
     this.cacheManager.emptyCache();
-    this.events.emit("completion:accept", {
+    this.events.emit('completion:accept', {
       requestId,
       acceptedText: suggestionText,
     });
   }
 
   commandDiscard(
-    reason: DiscardReason = "OnCancel",
+    reason: DiscardReason = 'OnCancel',
     editor: monaco.editor.IStandaloneCodeEditor
   ): void {
     const suggestions = this.cacheManager.getSuggestions();
     while (suggestions.length > 0) {
       this.discardCompletion(reason, suggestions.pop());
     }
-    editor.trigger(undefined, "editor.action.inlineSuggest.hide", undefined);
+    editor.trigger(undefined, 'editor.action.inlineSuggest.hide', undefined);
   }
 
   emptyCache() {
@@ -142,7 +130,7 @@ export class CodeCompletionService implements ICodeCompletionService {
       return;
     }
     for (const item of items) {
-      this.events.emit("completion:decline", {
+      this.events.emit('completion:decline', {
         requestId,
         suggestionText: item.pristine,
         reason,
@@ -166,7 +154,7 @@ export class CodeCompletionService implements ICodeCompletionService {
       return;
     }
     for (const item of items) {
-      this.events.emit("completion:ignore", {
+      this.events.emit('completion:ignore', {
         requestId,
         suggestionText: item.pristine,
       });

@@ -1,6 +1,6 @@
-import { CodeCompletionConfig, ServiceConfig } from "./types";
-import { EventEmitter } from "../events";
-import { ICodeCompletionAPI } from "../types";
+import { CodeCompletionConfig, ServiceConfig } from './types';
+import { EventEmitter } from '../events';
+import { ICodeCompletionAPI } from '../types';
 
 const DEFAULT_CONFIG: Required<CodeCompletionConfig> = {
   debounceTime: 200,

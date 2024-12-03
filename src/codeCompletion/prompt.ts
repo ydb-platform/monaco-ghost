@@ -1,6 +1,6 @@
-import type Monaco from "monaco-editor";
-import { v4 } from "uuid";
-import type { PromptFile } from "../types";
+import type Monaco from 'monaco-editor';
+import { v4 } from 'uuid';
+import type { PromptFile } from '../types';
 
 export interface TextLimits {
   beforeCursor: number;
@@ -37,10 +37,10 @@ export function getPromptFileContent(
   const prevText = linesContent
     .slice(0, position.lineNumber - 1)
     .concat([prevTextInCurrentLine])
-    .join("\n");
+    .join('\n');
   const postText = [postTextInCurrentLine]
     .concat(linesContent.slice(position.lineNumber))
-    .join("\n");
+    .join('\n');
   const cursorPostion = { Ln: position.lineNumber, Col: position.column };
 
   const fragments = [];

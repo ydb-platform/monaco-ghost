@@ -1,5 +1,5 @@
-import type * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import type { EventEmitter } from "./events";
+import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import type { EventEmitter } from './events';
 
 type IdeInfo = {
   Ide: string;
@@ -39,7 +39,7 @@ export interface Suggestions {
   RequestId: string;
 }
 
-export type DiscardReason = "OnCancel";
+export type DiscardReason = 'OnCancel';
 
 export interface Suggestion {
   Text: string;
@@ -60,8 +60,7 @@ export interface InternalSuggestion {
   wasAccepted?: boolean;
 }
 
-export interface ICodeCompletionService
-  extends monaco.languages.InlineCompletionsProvider {
+export interface ICodeCompletionService extends monaco.languages.InlineCompletionsProvider {
   events: EventEmitter;
   handleItemDidShow(
     completions: monaco.languages.InlineCompletions<EnrichedCompletion>,
@@ -73,10 +72,7 @@ export interface ICodeCompletionService
     acceptedLetters: number
   ): void;
   handleAccept(params: { requestId: string; suggestionText: string }): void;
-  commandDiscard(
-    reason: DiscardReason,
-    editor: monaco.editor.IStandaloneCodeEditor
-  ): void;
+  commandDiscard(reason: DiscardReason, editor: monaco.editor.IStandaloneCodeEditor): void;
   emptyCache(): void;
 }
 

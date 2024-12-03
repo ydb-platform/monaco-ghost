@@ -1,5 +1,5 @@
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { CacheManager, EnrichedCompletion, InternalSuggestion } from "./types";
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import { CacheManager, EnrichedCompletion, InternalSuggestion } from './types';
 
 export class SuggestionCacheManager implements CacheManager {
   private suggestions: InternalSuggestion[] = [];
@@ -47,16 +47,11 @@ export class SuggestionCacheManager implements CacheManager {
         );
         const currentReplaceText = model.getValueInRange(newRange);
 
-        if (
-          completionReplaceText.toLowerCase() ===
-          currentReplaceText.toLowerCase()
-        ) {
+        if (completionReplaceText.toLowerCase() === currentReplaceText.toLowerCase()) {
           completions.push({
             insertText:
               currentReplaceText +
-              completion.insertText
-                .toString()
-                .slice(positionOffset - startOffset),
+              completion.insertText.toString().slice(positionOffset - startOffset),
             range: newRange,
             command: completion.command,
             pristine: completion.pristine,
@@ -91,8 +86,8 @@ export class SuggestionCacheManager implements CacheManager {
   }
 
   markAsAccepted(pristineText: string): void {
-    const suggestion = this.suggestions.find((el) => {
-      return el.items.some((item) => item.pristine === pristineText);
+    const suggestion = this.suggestions.find(el => {
+      return el.items.some(item => item.pristine === pristineText);
     });
     if (suggestion) {
       suggestion.wasAccepted = true;

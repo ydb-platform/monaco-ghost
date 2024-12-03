@@ -1,6 +1,6 @@
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { EnrichedCompletion, ServiceConfig, SuggestionProvider } from "./types";
-import { getPromptFileContent } from "./prompt";
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import { EnrichedCompletion, ServiceConfig, SuggestionProvider } from './types';
+import { getPromptFileContent } from './prompt';
 
 export class CodeSuggestionProvider implements SuggestionProvider {
   private timer: number | null = null;
@@ -19,12 +19,12 @@ export class CodeSuggestionProvider implements SuggestionProvider {
     }
 
     // Debounce the suggestion request
-    await new Promise((resolve) => {
+    await new Promise(resolve => {
       this.timer = window.setTimeout(resolve, this.config.debounceTime);
     });
 
     let suggestions: EnrichedCompletion[] = [];
-    let requestId = "";
+    let requestId = '';
 
     try {
       const data = getPromptFileContent(model, position, {
@@ -33,23 +33,21 @@ export class CodeSuggestionProvider implements SuggestionProvider {
       });
 
       if (!data) {
-        return { suggestions: [], requestId: "" };
+        return { suggestions: [], requestId: '' };
       }
 
-      const codeAssistSuggestions =
-        await this.config.api.getCodeAssistSuggestions(data);
+      const codeAssistSuggestions = await this.config.api.getCodeAssistSuggestions(data);
       requestId = codeAssistSuggestions.RequestId;
 
-      const { word, startColumn: lastWordStartColumn } =
-        model.getWordUntilPosition(position);
+      const { word, startColumn: lastWordStartColumn } = model.getWordUntilPosition(position);
 
-      suggestions = codeAssistSuggestions.Suggests.map((el) => {
+      suggestions = codeAssistSuggestions.Suggests.map(el => {
         const suggestionText = el.Text;
         const label = word + suggestionText;
 
         return {
           label: label,
-          sortText: "a",
+          sortText: 'a',
           insertText: label,
           pristine: suggestionText,
           range: new monaco.Range(
@@ -59,8 +57,8 @@ export class CodeSuggestionProvider implements SuggestionProvider {
             position.column
           ),
           command: {
-            id: "acceptCodeAssistCompletion",
-            title: "",
+            id: 'acceptCodeAssistCompletion',
+            title: '',
             arguments: [
               {
                 requestId,
