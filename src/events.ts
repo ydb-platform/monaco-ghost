@@ -15,6 +15,7 @@ export interface CompletionEvents {
     requestId: string;
     suggestionText: string;
   };
+  'completion:error': Error;
 }
 
 export class EventEmitter {

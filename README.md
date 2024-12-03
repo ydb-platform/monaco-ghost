@@ -1,5 +1,8 @@
 # monaco-ghost
 
+[![CI](https://github.com/astandrik/monaco-ghost/actions/workflows/ci.yml/badge.svg)](https://github.com/astandrik/monaco-ghost/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/astandrik/monaco-ghost/branch/main/graph/badge.svg)](https://codecov.io/gh/astandrik/monaco-ghost)
+
 A lightweight adapter for integrating completion services with Monaco Editor's inline completion system. Provides ghost text suggestions with event system and caching.
 
 ## Installation
@@ -11,20 +14,17 @@ npm install monaco-ghost monaco-editor
 ## Quick Start
 
 ```typescript
-import * as monaco from "monaco-editor";
-import {
-  createCodeCompletionService,
-  registerCompletionCommands,
-} from "monaco-ghost";
+import * as monaco from 'monaco-editor';
+import { createCodeCompletionService, registerCompletionCommands } from 'monaco-ghost';
 
 // Create API implementation for your completion service
 const api = {
-  getCodeAssistSuggestions: async (data) => {
+  getCodeAssistSuggestions: async data => {
     // Call your completion service
     // Return suggestions in the expected format
     return {
-      Suggests: [{ Text: "suggestion" }],
-      RequestId: "request-id",
+      Suggests: [{ Text: 'suggestion' }],
+      RequestId: 'request-id',
     };
   },
 };
@@ -45,25 +45,20 @@ const config = {
 const completionProvider = createCodeCompletionService(api, config);
 
 // Subscribe to completion events
-completionProvider.events.on("completion:accept", (data) => {
-  console.log("Completion accepted:", data.acceptedText);
+completionProvider.events.on('completion:accept', data => {
+  console.log('Completion accepted:', data.acceptedText);
 });
 
-completionProvider.events.on("completion:decline", (data) => {
-  console.log(
-    "Completion declined:",
-    data.suggestionText,
-    "reason:",
-    data.reason
-  );
+completionProvider.events.on('completion:decline', data => {
+  console.log('Completion declined:', data.suggestionText, 'reason:', data.reason);
 });
 
-completionProvider.events.on("completion:ignore", (data) => {
-  console.log("Completion ignored:", data.suggestionText);
+completionProvider.events.on('completion:ignore', data => {
+  console.log('Completion ignored:', data.suggestionText);
 });
 
 // Register with Monaco
-monaco.languages.registerInlineCompletionsProvider(["yql"], completionProvider);
+monaco.languages.registerInlineCompletionsProvider(['yql'], completionProvider);
 
 // Register commands (assuming you have an editor instance)
 registerCompletionCommands(monaco, completionProvider, editor);
@@ -180,7 +175,7 @@ The completion service emits three types of events:
 1. **Acceptance Events**
 
    ```typescript
-   completionProvider.events.on("completion:accept", (data) => {
+   completionProvider.events.on('completion:accept', data => {
      // data: {
      //   requestId: string;
      //   acceptedText: string;
@@ -191,7 +186,7 @@ The completion service emits three types of events:
 2. **Decline Events**
 
    ```typescript
-   completionProvider.events.on("completion:decline", (data) => {
+   completionProvider.events.on('completion:decline', data => {
      // data: {
      //   requestId: string;
      //   suggestionText: string;
@@ -203,7 +198,7 @@ The completion service emits three types of events:
 
 3. **Ignore Events**
    ```typescript
-   completionProvider.events.on("completion:ignore", (data) => {
+   completionProvider.events.on('completion:ignore', data => {
      // data: {
      //   requestId: string;
      //   suggestionText: string;
