@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import * as monaco from 'monaco-editor';
-import { createCodeCompletionService, registerCompletionCommands } from '../index';
+import { useMonacoGhost } from '../hooks/useMonacoGhost';
 import 'monaco-editor/min/vs/editor/editor.main.css';
 
 export interface MonacoEditorProps {
@@ -22,8 +22,8 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
 }) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const editor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
-  const disposables = useRef<monaco.IDisposable[]>([]);
 
+  // Demo API and config - in real usage these would be passed as props
   const api = {
     getCodeAssistSuggestions: async () => ({
       Suggests: [
@@ -46,50 +46,13 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
     },
   };
 
-  const completionProvider = useMemo(() => createCodeCompletionService(api, config), []);
-
-  // Create completion service once
-  useEffect(() => {
-    // Register with Monaco
-    const disposable = monaco.languages.registerInlineCompletionsProvider(
-      ['typescript', 'javascript'],
-      completionProvider
-    );
-    disposables.current.push(disposable);
-
-    return () => {
-      disposables.current.forEach(d => d.dispose());
-      disposables.current = [];
-    };
-  }, []); // Empty dependency array as this should only run once
-
-  // Handle completion events
-  useEffect(() => {
-    if (!completionProvider) return;
-
-    const acceptHandler = (data: any) => {
-      console.log('Accept:', data.acceptedText);
-      onCompletionAccept?.(data.acceptedText);
-    };
-
-    const declineHandler = (data: any) => {
-      onCompletionDecline?.(data.suggestionText, data.reason);
-    };
-
-    const ignoreHandler = (data: any) => {
-      onCompletionIgnore?.(data.suggestionText);
-    };
-
-    completionProvider.events.on('completion:accept', acceptHandler);
-    completionProvider.events.on('completion:decline', declineHandler);
-    completionProvider.events.on('completion:ignore', ignoreHandler);
-
-    return () => {
-      completionProvider.events.off('completion:accept', acceptHandler);
-      completionProvider.events.off('completion:decline', declineHandler);
-      completionProvider.events.off('completion:ignore', ignoreHandler);
-    };
-  }, [onCompletionAccept, onCompletionDecline, onCompletionIgnore]);
+  const { registerEditor, dispose } = useMonacoGhost({
+    api,
+    config,
+    onCompletionAccept,
+    onCompletionDecline,
+    onCompletionIgnore,
+  });
 
   // Initialize editor
   useEffect(() => {
@@ -108,12 +71,10 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
       padding: { top: 10 },
     });
 
-    if (completionProvider) {
-      registerCompletionCommands(monaco, completionProvider, editor.current);
-    }
+    registerEditor(editor.current);
 
     return () => {
-      editor.current?.dispose();
+      dispose();
       editor.current = null;
     };
   }, []); // Empty dependency array as we only want to create the editor once

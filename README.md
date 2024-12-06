@@ -12,6 +12,72 @@ npm install monaco-ghost monaco-editor
 
 ## Quick Start
 
+### React Integration
+
+The package provides a React hook and a ready-to-use editor component for easy integration:
+
+```typescript
+// Using the hook directly
+import { useMonacoGhost } from 'monaco-ghost/hooks';
+
+function MyEditor() {
+  const api = {
+    getCodeAssistSuggestions: async () => ({
+      Suggests: [{ Text: 'suggestion' }],
+      RequestId: 'demo-request',
+    }),
+    // Here can be a request to your marvelous LLM.
+  };
+
+  const config = {
+    debounceTime: 200,
+    textLimits: {
+      beforeCursor: 8000,
+      afterCursor: 1000,
+    },
+    suggestionCache: {
+      enabled: true,
+    },
+  };
+
+  const { registerEditor, dispose } = useMonacoGhost({
+    api,
+    config,
+    onCompletionAccept: (text) => console.log('Accepted:', text),
+    onCompletionDecline: (text, reason) => console.log('Declined:', text, reason),
+    onCompletionIgnore: (text) => console.log('Ignored:', text),
+  });
+
+  // Use with your Monaco editor instance
+  useEffect(() => {
+    const editor = monaco.editor.create(editorElement, {
+      // editor options...
+    });
+
+    registerEditor(editor);
+    return () => dispose();
+  }, []);
+}
+
+// Using the pre-built editor component
+import { MonacoEditor } from 'monaco-ghost/components';
+
+function MyApp() {
+  return (
+    <MonacoEditor
+      initialValue="// Your code here"
+      language="typescript"
+      theme="vs-dark"
+      onCompletionAccept={(text) => console.log('Accepted:', text)}
+      onCompletionDecline={(text, reason) => console.log('Declined:', text, reason)}
+      onCompletionIgnore={(text) => console.log('Ignored:', text)}
+    />
+  );
+}
+```
+
+### Vanilla JavaScript
+
 ```typescript
 import * as monaco from 'monaco-editor';
 import { createCodeCompletionService, registerCompletionCommands } from 'monaco-ghost';
