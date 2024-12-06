@@ -1,32 +1,50 @@
 import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { ReactMonacoEditor, EditorProps } from './ReactMonacoEditor';
+import { MonacoEditor } from '../components/MonacoEditor';
 
 const meta = {
-  title: 'React Monaco Editor',
-  component: ReactMonacoEditor,
+  title: 'Pre-built Monaco Editor',
+  component: MonacoEditor,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
         component: `
-A Monaco Editor component using react-monaco-editor library with ghost text completion.
+A pre-built Monaco Editor component with integrated ghost text completion.
 
 ## Features
-- Inline code completion suggestions
+- Inline code completion suggestions powered by AI
 - TypeScript/JavaScript support
 - Dark and light themes
+- Customizable editor options
 - Event handling for completion actions
+- Responsive layout
+- Automatic cleanup
 
 ## Usage
-Type 'con' to see completion suggestions for console methods.
+\`\`\`tsx
+import { MonacoEditor } from 'monaco-ghost';
+
+function MyApp() {
+  return (
+    <MonacoEditor
+      initialValue="// Your code here"
+      language="typescript"
+      theme="vs-dark"
+      api={completionApi}
+      config={completionConfig}
+      onCompletionAccept={(text) => console.log('Accepted:', text)}
+    />
+  );
+}
+\`\`\`
         `,
       },
     },
   },
   tags: ['autodocs'],
   argTypes: {
-    code: {
+    initialValue: {
       description: 'Initial code content',
       control: 'text',
     },
@@ -41,21 +59,51 @@ Type 'con' to see completion suggestions for console methods.
       options: ['vs-dark', 'vs-light'],
     },
   },
-} satisfies Meta<EditorProps>;
+} satisfies Meta<typeof MonacoEditor>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const TypeScript: Story = {
+// Demo API implementation
+const demoApi = {
+  getCodeAssistSuggestions: async () => ({
+    Suggests: [
+      { Text: 'console.log("Hello, world!");' },
+      { Text: 'const message = "Hello!";' },
+      { Text: 'function greet() { return "Hello!"; }' },
+    ],
+    RequestId: 'demo-request',
+  }),
+};
+
+// Demo configuration
+const demoConfig = {
+  debounceTime: 200,
+  textLimits: {
+    beforeCursor: 8000,
+    afterCursor: 1000,
+  },
+  suggestionCache: {
+    enabled: true,
+  },
+};
+
+export const Default: Story = {
   args: {
-    code: `// Type 'con' to see completion suggestions
-// for console.log, console.error, etc.
+    initialValue: `// Type to see ghost text suggestions
+// Try typing 'con' for console suggestions
 
 function example() {
   con
 }`,
     language: 'typescript',
     theme: 'vs-dark',
+    api: demoApi,
+    config: demoConfig,
+    style: {
+      width: '800px',
+      height: '400px',
+    },
   },
 };
 
@@ -110,7 +158,7 @@ const EventLog = ({
 );
 
 // Event handling demonstration story
-const EventHandlingStory = () => {
+const EventHandlingDemo = () => {
   const [events, setEvents] = useState<Array<{ type: string; data: any; timestamp: number }>>([]);
 
   const addEvent = (type: string, data: any) => {
@@ -127,8 +175,8 @@ const EventHandlingStory = () => {
       }}
     >
       <div style={{ flex: '0 0 auto' }}>
-        <ReactMonacoEditor
-          code={`// Try these actions to see completion events:
+        <MonacoEditor
+          initialValue={`// Try these actions to see completion events:
 // 1. Type 'con' and wait for suggestions
 // 2. Press Tab/Enter to accept a suggestion
 // 3. Press Escape to decline a suggestion
@@ -139,11 +187,18 @@ function demonstrateEvents() {
 }`}
           language="typescript"
           theme="vs-dark"
-          onCompletionAccept={text => addEvent('completion:accept', { acceptedText: text })}
-          onCompletionDecline={(text, reason) =>
+          api={demoApi}
+          config={demoConfig}
+          onCompletionAccept={(text: string) =>
+            addEvent('completion:accept', { acceptedText: text })
+          }
+          onCompletionDecline={(text: string, reason: string) =>
             addEvent('completion:decline', { suggestionText: text, reason })
           }
-          onCompletionIgnore={text => addEvent('completion:ignore', { suggestionText: text })}
+          onCompletionIgnore={(text: string) =>
+            addEvent('completion:ignore', { suggestionText: text })
+          }
+          style={{ width: '800px', height: '400px' }}
         />
       </div>
       <EventLog events={events} />
@@ -152,5 +207,42 @@ function demonstrateEvents() {
 };
 
 export const EventHandling: Story = {
-  render: () => <EventHandlingStory />,
+  args: {
+    api: demoApi,
+    config: demoConfig,
+  },
+  render: () => <EventHandlingDemo />,
+};
+
+export const LightTheme: Story = {
+  args: {
+    ...Default.args,
+    theme: 'vs-light',
+    initialValue: `// Light theme example
+// Type to see ghost text suggestions
+
+function example() {
+  con
+}`,
+  },
+};
+
+export const CustomOptions: Story = {
+  args: {
+    ...Default.args,
+    editorOptions: {
+      fontSize: 16,
+      lineHeight: 24,
+      padding: { top: 16, bottom: 16 },
+      minimap: { enabled: true },
+      wordWrap: 'on',
+      lineNumbers: 'off',
+    },
+    style: {
+      width: '900px',
+      height: '500px',
+      border: '2px solid #007acc',
+      borderRadius: '4px',
+    },
+  },
 };

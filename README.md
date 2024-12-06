@@ -14,13 +14,54 @@ npm install monaco-ghost monaco-editor
 
 ### React Integration
 
-The package provides a React hook and a ready-to-use editor component for easy integration:
+The package provides a React hook and a pre-built editor component for easy integration:
 
 ```typescript
-// Using the hook directly
-import { useMonacoGhost } from 'monaco-ghost/hooks';
+// Using the pre-built editor component
+import { MonacoEditor } from 'monaco-ghost';
 
-function MyEditor() {
+function MyApp() {
+  const api = {
+    getCodeAssistSuggestions: async () => ({
+      Suggests: [{ Text: 'suggestion' }],
+      RequestId: 'demo-request',
+    }),
+  };
+
+  const config = {
+    debounceTime: 200,
+    textLimits: {
+      beforeCursor: 8000,
+      afterCursor: 1000,
+    },
+    suggestionCache: {
+      enabled: true,
+    },
+  };
+
+  return (
+    <MonacoEditor
+      initialValue="// Your code here"
+      language="typescript"
+      theme="vs-dark"
+      api={api}
+      config={config}
+      onCompletionAccept={(text) => console.log('Accepted:', text)}
+      onCompletionDecline={(text, reason) => console.log('Declined:', text, reason)}
+      onCompletionIgnore={(text) => console.log('Ignored:', text)}
+      editorOptions={{
+        minimap: { enabled: false },
+        fontSize: 14,
+      }}
+    />
+  );
+}
+
+
+// Using the hook directly with your own Monaco instance
+import { useMonacoGhost } from 'monaco-ghost';
+
+function MyCustomEditor() {
   const api = {
     getCodeAssistSuggestions: async () => ({
       Suggests: [{ Text: 'suggestion' }],
@@ -57,22 +98,6 @@ function MyEditor() {
     registerEditor(editor);
     return () => dispose();
   }, []);
-}
-
-// Using the pre-built editor component
-import { MonacoEditor } from 'monaco-ghost/components';
-
-function MyApp() {
-  return (
-    <MonacoEditor
-      initialValue="// Your code here"
-      language="typescript"
-      theme="vs-dark"
-      onCompletionAccept={(text) => console.log('Accepted:', text)}
-      onCompletionDecline={(text, reason) => console.log('Declined:', text, reason)}
-      onCompletionIgnore={(text) => console.log('Ignored:', text)}
-    />
-  );
 }
 ```
 

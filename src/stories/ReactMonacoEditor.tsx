@@ -3,7 +3,7 @@ import MonacoEditor from 'react-monaco-editor';
 import * as monaco from 'monaco-editor';
 import { useMonacoGhost } from '../hooks/useMonacoGhost';
 
-interface EditorProps {
+export interface EditorProps {
   code?: string;
   language?: string;
   theme?: string;
