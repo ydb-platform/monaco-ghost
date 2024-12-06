@@ -7,7 +7,7 @@ A lightweight adapter for integrating completion services with Monaco Editor's i
 ## Installation
 
 ```bash
-npm install monaco-ghost monaco-editor
+npm install monaco-ghost monaco-editor react-monaco-editor(optionally)
 ```
 
 ## Quick Start
