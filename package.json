@@ -2,20 +2,41 @@
   "name": "monaco-ghost",
   "version": "0.1.0",
   "description": "Inline completion adapter for Monaco Editor",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/types/index.d.ts",
+  "type": "module",
   "files": [
     "dist",
     "README.md",
     "LICENSE"
   ],
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "default": "./dist/esm/index.js"
+    },
+    "./components": {
+      "types": "./dist/types/components/index.d.ts",
+      "import": "./dist/esm/components/index.js",
+      "require": "./dist/cjs/components/index.js"
+    },
+    "./hooks": {
+      "types": "./dist/types/hooks/index.d.ts",
+      "import": "./dist/esm/hooks/index.js",
+      "require": "./dist/cjs/hooks/index.js"
+    },
+    "./codeCompletion": {
+      "types": "./dist/types/codeCompletion/index.d.ts",
+      "import": "./dist/esm/codeCompletion/index.js",
+      "require": "./dist/cjs/codeCompletion/index.js"
+    }
+  },
   "scripts": {
     "clean": "rm -rf dist",
     "type-check": "tsc --project tsconfig.check.json",
     "build:types": "tsc --project tsconfig.json",
-    "build:cjs": "esbuild \"src/**/*.ts\" \"src/**/*.tsx\" --outdir=dist/cjs --format=cjs --platform=neutral --target=es2019",
-    "build:esm": "esbuild \"src/**/*.ts\" \"src/**/*.tsx\" --outdir=dist/esm --format=esm --platform=neutral --target=es2019",
+    "build:cjs": "esbuild src/index.ts src/components/index.ts src/hooks/index.ts src/codeCompletion/index.ts --bundle --outdir=dist/cjs --format=cjs --platform=neutral --target=es2019 --external:monaco-editor --external:react --external:react-dom --external:react-monaco-editor",
+    "build:esm": "esbuild src/index.ts src/components/index.ts src/hooks/index.ts src/codeCompletion/index.ts --bundle --outdir=dist/esm --format=esm --platform=neutral --target=es2019 --external:monaco-editor --external:react --external:react-dom --external:react-monaco-editor",
     "build": "npm run clean && npm run type-check && npm run build:types && npm run build:cjs && npm run build:esm",
     "prepare": "husky install && npm run build",
     "lint": "eslint . --ext .ts,.tsx",
@@ -94,12 +115,5 @@
     "url": "https://github.com/ydb-platform/monaco-ghost/issues"
   },
   "homepage": "https://github.com/ydb-platform/monaco-ghost#readme",
-  "exports": {
-    ".": {
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
-    }
-  },
   "sideEffects": false
 }
