@@ -46,7 +46,7 @@ export const ReactMonacoEditor: React.FC<EditorProps> = ({
     },
   };
 
-  const { registerEditor } = useMonacoGhost({
+  const { registerMonacoGhost } = useMonacoGhost({
     api,
     config,
     onCompletionAccept,
@@ -58,9 +58,9 @@ export const ReactMonacoEditor: React.FC<EditorProps> = ({
     (editor: any) => {
       console.log('editorDidMount', editor);
       editor.focus();
-      registerEditor(editor);
+      registerMonacoGhost(editor);
     },
-    [registerEditor]
+    [registerMonacoGhost]
   );
 
   const onChange = useCallback((newValue: string, e: any) => {

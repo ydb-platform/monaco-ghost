@@ -46,7 +46,7 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
     },
   };
 
-  const { registerEditor, dispose } = useMonacoGhost({
+  const { registerMonacoGhost, dispose } = useMonacoGhost({
     api,
     config,
     onCompletionAccept,
@@ -71,7 +71,7 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
       padding: { top: 10 },
     });
 
-    registerEditor(editor.current);
+    registerMonacoGhost(editor.current);
 
     return () => {
       dispose();

@@ -81,7 +81,7 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
   const editorRef = useRef<HTMLDivElement>(null);
   const editor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
 
-  const { registerEditor, dispose } = useMonacoGhost({
+  const { registerMonacoGhost, dispose } = useMonacoGhost({
     api,
     config,
     onCompletionAccept,
@@ -123,7 +123,7 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
       ...editorOptions,
     });
 
-    registerEditor(editor.current);
+    registerMonacoGhost(editor.current);
 
     return () => {
       dispose();

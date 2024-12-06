@@ -12,7 +12,7 @@ interface UseMonacoGhostProps {
 }
 
 interface UseMonacoGhostResult {
-  registerEditor: (editor: monaco.editor.IStandaloneCodeEditor) => void;
+  registerMonacoGhost: (editor: monaco.editor.IStandaloneCodeEditor) => void;
   dispose: () => void;
 }
 
@@ -34,7 +34,7 @@ export function useMonacoGhost({
     disposables.current = [];
   }, []);
 
-  const registerEditor = useCallback(
+  const registerMonacoGhost = useCallback(
     (editor: monaco.editor.IStandaloneCodeEditor) => {
       editorRef.current = editor;
 
@@ -79,7 +79,7 @@ export function useMonacoGhost({
   }, [dispose]);
 
   return {
-    registerEditor,
+    registerMonacoGhost,
     dispose,
   };
 }

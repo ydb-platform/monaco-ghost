@@ -83,7 +83,7 @@ function MyCustomEditor() {
     },
   };
 
-  const { registerEditor } = useMonacoGhost({
+  const { registerMonacoGhost } = useMonacoGhost({
     api,
     config,
     onCompletionAccept: (text) => console.log('Accepted:', text),
@@ -93,8 +93,8 @@ function MyCustomEditor() {
 
   const editorDidMount = useCallback((editor: monaco.editor.IStandaloneCodeEditor) => {
     editor.focus();
-    registerEditor(editor);
-  }, [registerEditor]);
+    registerMonacoGhost(editor);
+  }, [registerMonacoGhost]);
 
   const options = {
     selectOnLineNumbers: true,
