@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { MonacoEditor } from './MonacoEditor';
+import { ReactMonacoEditor } from './ReactMonacoEditor';
 
 const meta = {
-  title: 'Native Monaco',
-  component: MonacoEditor,
+  title: 'React Monaco Editor',
+  component: ReactMonacoEditor,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
         component: `
-A Monaco Editor component with ghost text completion capabilities.
+A Monaco Editor component using react-monaco-editor library with ghost text completion.
 
 ## Features
 - Inline code completion suggestions
@@ -26,7 +26,7 @@ Type 'con' to see completion suggestions for console methods.
   },
   tags: ['autodocs'],
   argTypes: {
-    initialValue: {
+    code: {
       description: 'Initial code content',
       control: 'text',
     },
@@ -41,14 +41,14 @@ Type 'con' to see completion suggestions for console methods.
       options: ['vs-dark', 'vs-light'],
     },
   },
-} satisfies Meta<typeof MonacoEditor>;
+} satisfies Meta<typeof ReactMonacoEditor>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const TypeScript: Story = {
   args: {
-    initialValue: `// Type 'con' to see completion suggestions
+    code: `// Type 'con' to see completion suggestions
 // for console.log, console.error, etc.
 
 function example() {
@@ -127,8 +127,8 @@ const EventHandlingStory = () => {
       }}
     >
       <div style={{ flex: '0 0 auto' }}>
-        <MonacoEditor
-          initialValue={`// Try these actions to see completion events:
+        <ReactMonacoEditor
+          code={`// Try these actions to see completion events:
 // 1. Type 'con' and wait for suggestions
 // 2. Press Tab/Enter to accept a suggestion
 // 3. Press Escape to decline a suggestion
