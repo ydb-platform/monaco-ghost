@@ -59,6 +59,9 @@ function MyApp() {
 
 
 // Using the hook directly with your own Monaco instance
+import React, { useCallback } from 'react';
+import MonacoEditor from 'react-monaco-editor';
+import * as monaco from 'monaco-editor';
 import { useMonacoGhost } from 'monaco-ghost';
 
 function MyCustomEditor() {
@@ -67,7 +70,6 @@ function MyCustomEditor() {
       Suggests: [{ Text: 'suggestion' }],
       RequestId: 'demo-request',
     }),
-    // Here can be a request to your marvelous LLM.
   };
 
   const config = {
@@ -81,7 +83,7 @@ function MyCustomEditor() {
     },
   };
 
-  const { registerEditor, dispose } = useMonacoGhost({
+  const { registerEditor } = useMonacoGhost({
     api,
     config,
     onCompletionAccept: (text) => console.log('Accepted:', text),
@@ -89,15 +91,33 @@ function MyCustomEditor() {
     onCompletionIgnore: (text) => console.log('Ignored:', text),
   });
 
-  // Use with your Monaco editor instance
-  useEffect(() => {
-    const editor = monaco.editor.create(editorElement, {
-      // editor options...
-    });
-
+  const editorDidMount = useCallback((editor: monaco.editor.IStandaloneCodeEditor) => {
+    editor.focus();
     registerEditor(editor);
-    return () => dispose();
-  }, []);
+  }, [registerEditor]);
+
+  const options = {
+    selectOnLineNumbers: true,
+    minimap: { enabled: false },
+    automaticLayout: true,
+    fontSize: 14,
+    lineNumbers: 'on',
+    scrollBeyondLastLine: false,
+    roundedSelection: false,
+    padding: { top: 10 },
+  };
+
+  return (
+    <MonacoEditor
+      width="800"
+      height="600"
+      language="typescript"
+      theme="vs-dark"
+      value="// Your code here"
+      options={options}
+      editorDidMount={editorDidMount}
+    />
+  );
 }
 ```
 
