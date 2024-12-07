@@ -1,4 +1,3 @@
-import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { MonacoEditor } from '../../components/MonacoEditor';
 import { demoLanguages } from '../utils/demoData';
