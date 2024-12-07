@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { MonacoEditor } from '../../components/MonacoEditor';
 import { EventLog, Event } from '../components/EventLog';
+import { Disclaimer } from '../components/Disclaimer';
 import { demoLanguages } from '../utils/demoData';
 
 const meta = {
@@ -71,6 +72,7 @@ const EventHandlingDemo = () => {
       </div>
       <div style={{ display: 'flex', gap: '20px' }}>
         <div style={{ flex: '0 0 auto' }}>
+          <Disclaimer />
           <MonacoEditor
             key={language} // Force re-mount when language changes
             initialValue={code}

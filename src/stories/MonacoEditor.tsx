@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import * as monaco from 'monaco-editor';
 import { useMonacoGhost } from '../hooks/useMonacoGhost';
 import { demoLanguages } from './utils/demoData';
+import { Disclaimer } from './components/Disclaimer';
 import 'monaco-editor/min/vs/editor/editor.main.css';
 
 export interface MonacoEditorProps {
@@ -85,14 +86,17 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
   }, [theme]);
 
   return (
-    <div
-      ref={editorRef}
-      style={{
-        width: '800px',
-        height: '400px',
-        border: '1px solid #ccc',
-        overflow: 'hidden',
-      }}
-    />
+    <div>
+      <Disclaimer />
+      <div
+        ref={editorRef}
+        style={{
+          width: '800px',
+          height: '400px',
+          border: '1px solid #ccc',
+          overflow: 'hidden',
+        }}
+      />
+    </div>
   );
 };

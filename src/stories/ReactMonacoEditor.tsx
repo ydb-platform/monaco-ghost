@@ -4,6 +4,7 @@ import * as monaco from 'monaco-editor';
 import { useMonacoGhost } from '../hooks/useMonacoGhost';
 import { demoLanguages } from './utils/demoData';
 import type { ICodeCompletionAPI, CodeCompletionConfig } from '../types';
+import { Disclaimer } from './components/Disclaimer';
 
 export interface EditorProps {
   code?: string;
@@ -31,10 +32,9 @@ export const ReactMonacoEditor: React.FC<EditorProps> = ({
 
   // Use provided api/config or fall back to demo values
   const demoLang = language in demoLanguages ? language : 'sql';
-  const { api: demoApi, config: demoConfig } =
-    demoLanguages[demoLang as keyof typeof demoLanguages];
+  const { api: sqlApi, config: demoConfig } = demoLanguages[demoLang as keyof typeof demoLanguages];
 
-  const api = providedApi || demoApi;
+  const api = providedApi || sqlApi;
   const baseConfig = providedConfig || demoConfig;
 
   const { registerMonacoGhost, dispose } = useMonacoGhost({
@@ -81,15 +81,18 @@ export const ReactMonacoEditor: React.FC<EditorProps> = ({
   }, [dispose]);
 
   return (
-    <MonacoEditor
-      width="800"
-      height="600"
-      language={language}
-      theme={theme}
-      value={code}
-      options={options}
-      onChange={onChange}
-      editorDidMount={editorDidMount}
-    />
+    <div>
+      <Disclaimer />
+      <MonacoEditor
+        width="800"
+        height="600"
+        language={language}
+        theme={theme}
+        value={code}
+        options={options}
+        onChange={onChange}
+        editorDidMount={editorDidMount}
+      />
+    </div>
   );
 };

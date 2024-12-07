@@ -1,10 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 import { MonacoEditor } from '../../components/MonacoEditor';
 import { demoLanguages } from '../utils/demoData';
+import { Disclaimer } from '../components/Disclaimer';
+
+// Wrapper component to add disclaimer
+const EditorWithDisclaimer = (props: React.ComponentProps<typeof MonacoEditor>) => (
+  <div>
+    <Disclaimer />
+    <MonacoEditor {...props} />
+  </div>
+);
 
 const meta = {
   title: 'Pre-built Monaco/Customization',
-  component: MonacoEditor,
+  component: EditorWithDisclaimer,
   parameters: {
     layout: 'centered',
     docs: {
@@ -20,7 +30,7 @@ Demonstrates customization options for the pre-built Monaco Editor.
       },
     },
   },
-} satisfies Meta<typeof MonacoEditor>;
+} satisfies Meta<typeof EditorWithDisclaimer>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
