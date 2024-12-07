@@ -1,71 +1,64 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import * as monaco from 'monaco-editor';
 import { useMonacoGhost } from '../hooks/useMonacoGhost';
+import { demoLanguages } from './utils/demoData';
+import type { ICodeCompletionAPI, CodeCompletionConfig } from '../types';
 
 export interface EditorProps {
   code?: string;
   language?: string;
   theme?: string;
+  api?: ICodeCompletionAPI;
+  config?: CodeCompletionConfig;
   onCompletionAccept?: (text: string) => void;
   onCompletionDecline?: (text: string, reason: string) => void;
   onCompletionIgnore?: (text: string) => void;
 }
 
 export const ReactMonacoEditor: React.FC<EditorProps> = ({
-  code: initialCode = '// Type "con" to see completion suggestions\n// for console.log, console.error, etc.\n\nfunction example() {\n  con\n}',
-  language = 'typescript',
+  code: initialCode = '// Type your code here\n',
+  language = 'sql',
   theme = 'vs-dark',
+  api: providedApi,
+  config: providedConfig,
   onCompletionAccept,
   onCompletionDecline,
   onCompletionIgnore,
 }) => {
   const [code, setCode] = useState(initialCode);
+  const editorInstance = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
 
-  // Initialize completion provider
-  const api = {
-    getCodeAssistSuggestions: async () => ({
-      Suggests: [
-        { Text: 'console.log()' },
-        { Text: 'console.error()' },
-        { Text: 'console.info()' },
-      ],
-      RequestId: 'demo-request',
-    }),
-    // Here can be a request to your marvelous LLM.
-  };
+  // Use provided api/config or fall back to demo values
+  const demoLang = language in demoLanguages ? language : 'sql';
+  const { api: demoApi, config: demoConfig } =
+    demoLanguages[demoLang as keyof typeof demoLanguages];
 
-  const config = {
-    debounceTime: 200,
-    textLimits: {
-      beforeCursor: 8000,
-      afterCursor: 1000,
-    },
-    suggestionCache: {
-      enabled: true,
-    },
-  };
+  const api = providedApi || demoApi;
+  const baseConfig = providedConfig || demoConfig;
 
-  const { registerMonacoGhost } = useMonacoGhost({
+  const { registerMonacoGhost, dispose } = useMonacoGhost({
     api,
-    config,
+    config: {
+      ...baseConfig,
+      language, // Ensure the current language is used in the config
+    },
     onCompletionAccept,
     onCompletionDecline,
     onCompletionIgnore,
   });
 
   const editorDidMount = useCallback(
-    (editor: any) => {
-      console.log('editorDidMount', editor);
+    (editor: monaco.editor.IStandaloneCodeEditor) => {
+      editorInstance.current = editor;
       editor.focus();
       registerMonacoGhost(editor);
     },
     [registerMonacoGhost]
   );
 
-  const onChange = useCallback((newValue: string, e: any) => {
+  const onChange = useCallback((newValue: string) => {
     setCode(newValue);
-    console.log('onChange', newValue, e);
   }, []);
 
   const options: monaco.editor.IStandaloneEditorConstructionOptions = {
@@ -78,6 +71,14 @@ export const ReactMonacoEditor: React.FC<EditorProps> = ({
     roundedSelection: false,
     padding: { top: 10 },
   };
+
+  // Cleanup on unmount only
+  useEffect(() => {
+    return () => {
+      dispose();
+      editorInstance.current = null;
+    };
+  }, [dispose]);
 
   return (
     <MonacoEditor

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as monaco from 'monaco-editor';
 import { useMonacoGhost } from '../hooks/useMonacoGhost';
+import { demoLanguages } from './utils/demoData';
 import 'monaco-editor/min/vs/editor/editor.main.css';
 
 export interface MonacoEditorProps {
@@ -14,7 +15,7 @@ export interface MonacoEditorProps {
 
 export const MonacoEditor: React.FC<MonacoEditorProps> = ({
   initialValue = '// Type your code here\n',
-  language = 'typescript',
+  language = 'sql',
   theme = 'vs-dark',
   onCompletionAccept,
   onCompletionDecline,
@@ -23,32 +24,16 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
   const editorRef = useRef<HTMLDivElement>(null);
   const editor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
 
-  // Demo API and config - in real usage these would be passed as props
-  const api = {
-    getCodeAssistSuggestions: async () => ({
-      Suggests: [
-        { Text: 'console.log()' },
-        { Text: 'console.error()' },
-        { Text: 'console.info()' },
-      ],
-      RequestId: 'demo-request',
-    }),
-  };
-
-  const config = {
-    debounceTime: 200,
-    textLimits: {
-      beforeCursor: 8000,
-      afterCursor: 1000,
-    },
-    suggestionCache: {
-      enabled: true,
-    },
-  };
+  // Use SQL as default demo language if the current language isn't supported
+  const demoLang = language in demoLanguages ? language : 'sql';
+  const { api, config } = demoLanguages[demoLang as keyof typeof demoLanguages];
 
   const { registerMonacoGhost, dispose } = useMonacoGhost({
     api,
-    config,
+    config: {
+      ...config,
+      language,
+    },
     onCompletionAccept,
     onCompletionDecline,
     onCompletionIgnore,
@@ -56,9 +41,16 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
 
   // Initialize editor
   useEffect(() => {
-    if (!editorRef.current || editor.current) return;
+    if (!editorRef.current) return;
 
-    editor.current = monaco.editor.create(editorRef.current, {
+    // Dispose of existing editor if it exists
+    if (editor.current) {
+      dispose();
+      editor.current.dispose();
+      editor.current = null;
+    }
+
+    const editorInstance = monaco.editor.create(editorRef.current, {
       value: initialValue,
       language,
       theme,
@@ -71,36 +63,26 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
       padding: { top: 10 },
     });
 
-    registerMonacoGhost(editor.current);
+    editor.current = editorInstance;
+    registerMonacoGhost(editorInstance);
 
     return () => {
       dispose();
-      editor.current = null;
+      if (editor.current) {
+        editor.current.dispose();
+        editor.current = null;
+      }
     };
-  }, []); // Empty dependency array as we only want to create the editor once
+  }, [language, initialValue]); // Re-initialize when language or initialValue changes
 
-  // Update editor value when initialValue prop changes
+  // Update theme when it changes
   useEffect(() => {
     if (editor.current) {
-      const currentValue = editor.current.getValue();
-      if (currentValue !== initialValue) {
-        editor.current.setValue(initialValue);
-      }
-    }
-  }, [initialValue]);
-
-  // Update editor options when language or theme changes
-  useEffect(() => {
-    if (editor.current) {
-      const model = editor.current.getModel();
-      if (model) {
-        monaco.editor.setModelLanguage(model, language);
-      }
       editor.current.updateOptions({
         theme,
       });
     }
-  }, [language, theme]);
+  }, [theme]);
 
   return (
     <div

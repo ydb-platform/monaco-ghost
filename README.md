@@ -21,14 +21,17 @@ The package provides a React hook and a pre-built editor component for easy inte
 import { MonacoEditor } from 'monaco-ghost';
 
 function MyApp() {
-  const api = {
+  // SQL-specific API implementation
+  const sqlApi = {
     getCodeAssistSuggestions: async () => ({
-      Suggests: [{ Text: 'suggestion' }],
+      Suggests: [{ Text: 'SELECT * FROM users;' }],
       RequestId: 'demo-request',
     }),
   };
 
-  const config = {
+  // SQL-specific configuration
+  const sqlConfig = {
+    language: 'sql', // Specify the language
     debounceTime: 200,
     textLimits: {
       beforeCursor: 8000,
@@ -41,11 +44,11 @@ function MyApp() {
 
   return (
     <MonacoEditor
-      initialValue="// Your code here"
-      language="typescript"
+      initialValue="-- Your SQL code here"
+      language="sql"
       theme="vs-dark"
-      api={api}
-      config={config}
+      api={sqlApi}
+      config={sqlConfig}
       onCompletionAccept={(text) => console.log('Accepted:', text)}
       onCompletionDecline={(text, reason) => console.log('Declined:', text, reason)}
       onCompletionIgnore={(text) => console.log('Ignored:', text)}
@@ -65,14 +68,17 @@ import * as monaco from 'monaco-editor';
 import { useMonacoGhost } from 'monaco-ghost';
 
 function MyCustomEditor() {
-  const api = {
+  // Java-specific API implementation
+  const javaApi = {
     getCodeAssistSuggestions: async () => ({
-      Suggests: [{ Text: 'suggestion' }],
+      Suggests: [{ Text: 'System.out.println("Hello, World!");' }],
       RequestId: 'demo-request',
     }),
   };
 
-  const config = {
+  // Java-specific configuration
+  const javaConfig = {
+    language: 'java', // Specify the language
     debounceTime: 200,
     textLimits: {
       beforeCursor: 8000,
@@ -84,8 +90,8 @@ function MyCustomEditor() {
   };
 
   const { registerMonacoGhost } = useMonacoGhost({
-    api,
-    config,
+    api: javaApi,
+    config: javaConfig,
     onCompletionAccept: (text) => console.log('Accepted:', text),
     onCompletionDecline: (text, reason) => console.log('Declined:', text, reason),
     onCompletionIgnore: (text) => console.log('Ignored:', text),
@@ -111,9 +117,9 @@ function MyCustomEditor() {
     <MonacoEditor
       width="800"
       height="600"
-      language="typescript"
+      language="java"
       theme="vs-dark"
-      value="// Your code here"
+      value="// Your Java code here"
       options={options}
       editorDidMount={editorDidMount}
     />
@@ -127,20 +133,21 @@ function MyCustomEditor() {
 import * as monaco from 'monaco-editor';
 import { createCodeCompletionService, registerCompletionCommands } from 'monaco-ghost';
 
-// Create API implementation for your completion service
-const api = {
+// Create language-specific API implementation
+const sqlApi = {
   getCodeAssistSuggestions: async data => {
     // Call your completion service
     // Return suggestions in the expected format
     return {
-      Suggests: [{ Text: 'suggestion' }],
+      Suggests: [{ Text: 'SELECT * FROM users;' }],
       RequestId: 'request-id',
     };
   },
 };
 
-// Configure the adapter
-const config = {
+// Configure the adapter with language-specific settings
+const sqlConfig = {
+  language: 'sql', // Specify the language
   debounceTime: 200,
   textLimits: {
     beforeCursor: 8000,
@@ -151,27 +158,50 @@ const config = {
   },
 };
 
-// Create provider
-const completionProvider = createCodeCompletionService(api, config);
+// Create provider for SQL
+const sqlCompletionProvider = createCodeCompletionService(sqlApi, sqlConfig);
 
 // Subscribe to completion events
-completionProvider.events.on('completion:accept', data => {
+sqlCompletionProvider.events.on('completion:accept', data => {
   console.log('Completion accepted:', data.acceptedText);
 });
 
-completionProvider.events.on('completion:decline', data => {
+sqlCompletionProvider.events.on('completion:decline', data => {
   console.log('Completion declined:', data.suggestionText, 'reason:', data.reason);
 });
 
-completionProvider.events.on('completion:ignore', data => {
+sqlCompletionProvider.events.on('completion:ignore', data => {
   console.log('Completion ignored:', data.suggestionText);
 });
 
-// Register with Monaco
-monaco.languages.registerInlineCompletionsProvider(['yql'], completionProvider);
+// Register with Monaco for SQL
+monaco.languages.registerInlineCompletionsProvider(['sql'], sqlCompletionProvider);
 
 // Register commands (assuming you have an editor instance)
-registerCompletionCommands(monaco, completionProvider, editor);
+registerCompletionCommands(monaco, sqlCompletionProvider, editor);
+
+// For additional languages, create separate providers with language-specific configs
+const javaApi = {
+  getCodeAssistSuggestions: async data => ({
+    Suggests: [{ Text: 'System.out.println("Hello, World!");' }],
+    RequestId: 'request-id',
+  }),
+};
+
+const javaConfig = {
+  language: 'java',
+  debounceTime: 200,
+  textLimits: {
+    beforeCursor: 8000,
+    afterCursor: 1000,
+  },
+  suggestionCache: {
+    enabled: true,
+  },
+};
+
+const javaCompletionProvider = createCodeCompletionService(javaApi, javaConfig);
+monaco.languages.registerInlineCompletionsProvider(['java'], javaCompletionProvider);
 ```
 
 ## Build System
@@ -211,28 +241,35 @@ npm run build
 
 ## Features
 
-### 1. Completion Service Integration
+### 1. Multi-Language Support
+
+- Language-specific configurations and APIs
+- Each language can have its own completion service
+- Built-in support for SQL and Java with separate configurations
+- Customizable per-language settings for optimal suggestions
+
+### 2. Completion Service Integration
 
 - Extracts code context around cursor
 - Formats requests for completion services
 - Handles response transformation
 - Supports any completion service that implements the API interface
 
-### 2. Ghost Text Display
+### 3. Ghost Text Display
 
 - Shows suggestions inline as ghost text
 - Handles partial and full acceptance
 - Supports keyboard navigation
 - Manages suggestion lifecycle
 
-### 3. Performance Features
+### 4. Performance Features
 
 - Request debouncing
 - Suggestion caching
 - Configurable text limits
 - Optimized for large files
 
-### 4. Event System
+### 5. Event System
 
 - Tracks completion acceptance
 - Monitors completion declines
@@ -243,6 +280,9 @@ npm run build
 
 ```typescript
 interface CodeCompletionConfig {
+  // Language setting (required)
+  language: string; // The language this configuration applies to
+
   // Performance settings
   debounceTime?: number; // Time in ms to debounce API calls (default: 200)
 

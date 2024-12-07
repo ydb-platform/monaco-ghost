@@ -11,7 +11,7 @@ export interface MonacoEditorProps {
   initialValue?: string;
 
   /**
-   * The language to use in the editor (e.g., 'typescript', 'javascript')
+   * The language to use in the editor (e.g., 'sql', 'java')
    */
   language?: string;
 
@@ -67,7 +67,7 @@ export interface MonacoEditorProps {
  */
 export const MonacoEditor: React.FC<MonacoEditorProps> = ({
   initialValue = '',
-  language = 'typescript',
+  language = 'sql',
   theme = 'vs-dark',
   api,
   config,
@@ -83,7 +83,10 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
 
   const { registerMonacoGhost, dispose } = useMonacoGhost({
     api,
-    config,
+    config: {
+      ...config,
+      language,
+    },
     onCompletionAccept,
     onCompletionDecline,
     onCompletionIgnore,
@@ -91,7 +94,14 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
 
   // Initialize editor
   useEffect(() => {
-    if (!editorRef.current || editor.current) return;
+    if (!editorRef.current) return;
+
+    // Dispose of existing editor if it exists
+    if (editor.current) {
+      dispose();
+      editor.current.dispose();
+      editor.current = null;
+    }
 
     const defaultOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
       value: initialValue,
@@ -127,34 +137,22 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
 
     return () => {
       dispose();
-      editor.current?.dispose();
-      editor.current = null;
+      if (editor.current) {
+        editor.current.dispose();
+        editor.current = null;
+      }
     };
-  }, []); // Empty dependency array as we only want to create the editor once
+  }, [language, initialValue]); // Re-initialize when language or initialValue changes
 
-  // Update editor value when initialValue prop changes
+  // Update theme and editor options
   useEffect(() => {
     if (editor.current) {
-      const currentValue = editor.current.getValue();
-      if (currentValue !== initialValue) {
-        editor.current.setValue(initialValue);
-      }
-    }
-  }, [initialValue]);
-
-  // Update editor options when language or theme changes
-  useEffect(() => {
-    if (editor.current) {
-      const model = editor.current.getModel();
-      if (model) {
-        monaco.editor.setModelLanguage(model, language);
-      }
       editor.current.updateOptions({
         theme,
         ...editorOptions,
       });
     }
-  }, [language, theme, editorOptions]);
+  }, [theme, editorOptions]);
 
   const defaultStyle: React.CSSProperties = {
     width: '100%',

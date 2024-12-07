@@ -5,7 +5,9 @@ import type { ICodeCompletionAPI, CodeCompletionConfig, ICodeCompletionService }
 
 interface UseMonacoGhostProps {
   api: ICodeCompletionAPI;
-  config: CodeCompletionConfig;
+  config: CodeCompletionConfig & {
+    language: string; // Single language identifier (e.g., 'typescript')
+  };
   onCompletionAccept?: (text: string) => void;
   onCompletionDecline?: (text: string, reason: string) => void;
   onCompletionIgnore?: (text: string) => void;
@@ -41,9 +43,9 @@ export function useMonacoGhost({
       // Create completion provider when editor is available
       completionProviderRef.current = createCodeCompletionService(api, config);
 
-      // Register provider with Monaco
+      // Register provider with Monaco for the specified language
       const disposable = monaco.languages.registerInlineCompletionsProvider(
-        ['typescript', 'javascript'],
+        [config.language],
         completionProviderRef.current
       );
       disposables.current.push(disposable);
@@ -54,17 +56,14 @@ export function useMonacoGhost({
       // Set up event handlers
       const provider = completionProviderRef.current;
       provider.events.on('completion:accept', data => {
-        console.log('Accept:', data.acceptedText);
         onCompletionAccept?.(data.acceptedText);
       });
 
       provider.events.on('completion:decline', data => {
-        console.log('Decline:', data.suggestionText, data.reason);
         onCompletionDecline?.(data.suggestionText, data.reason);
       });
 
       provider.events.on('completion:ignore', data => {
-        console.log('Ignore:', data.suggestionText);
         onCompletionIgnore?.(data.suggestionText);
       });
     },
