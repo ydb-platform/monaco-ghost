@@ -30,9 +30,9 @@
 
 ## 📦 Installation
 
-\`\`\`bash
+```bash
 npm install monaco-ghost monaco-editor
-\`\`\`
+```
 
 ## 🚀 Quick Start
 
@@ -40,7 +40,7 @@ npm install monaco-ghost monaco-editor
 
 The package provides a React hook and pre-built editor components for easy integration:
 
-\`\`\`typescript
+```typescript
 // Using the pre-built editor component
 import { MonacoEditor } from 'monaco-ghost';
 
@@ -85,12 +85,12 @@ editorOptions={{
 />
 );
 }
-\`\`\`
+```
 
 <details>
 <summary>Using the hook directly with your own Monaco instance</summary>
 
-\`\`\`typescript
+```typescript
 import React, { useCallback } from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import \* as monaco from 'monaco-editor';
@@ -159,7 +159,7 @@ editorDidMount={editorDidMount}
 />
 );
 }
-\`\`\`
+```
 
 </details>
 
@@ -168,7 +168,7 @@ editorDidMount={editorDidMount}
 <details>
 <summary>View Vanilla JavaScript implementation</summary>
 
-\`\`\`typescript
+```typescript
 import \* as monaco from 'monaco-editor';
 import { createCodeCompletionService, registerCompletionCommands } from 'monaco-ghost';
 
@@ -233,7 +233,7 @@ monaco.languages.registerInlineCompletionsProvider(['sql'], sqlCompletionProvide
 
 // Register commands (assuming you have an editor instance)
 registerCompletionCommands(monaco, sqlCompletionProvider, editor);
-\`\`\`
+```
 
 </details>
 
@@ -250,63 +250,63 @@ registerCompletionCommands(monaco, sqlCompletionProvider, editor);
 
 ### ⚙️ Configuration
 
-\`\`\`typescript
+```typescript
 interface CodeCompletionConfig {
-// Required when using hooks
-language?: string; // The language this configuration applies to (e.g., 'sql', 'java')
+  // Required when using hooks
+  language?: string; // The language this configuration applies to (e.g., 'sql', 'java')
 
-// Performance settings
-debounceTime?: number; // Time in ms to debounce API calls (default: 200)
+  // Performance settings
+  debounceTime?: number; // Time in ms to debounce API calls (default: 200)
 
-// Text limits
-textLimits?: {
-beforeCursor?: number; // Characters to include before cursor (default: 8000)
-afterCursor?: number; // Characters to include after cursor (default: 1000)
-};
+  // Text limits
+  textLimits?: {
+    beforeCursor?: number; // Characters to include before cursor (default: 8000)
+    afterCursor?: number; // Characters to include after cursor (default: 1000)
+  };
 
-// Cache settings
-suggestionCache?: {
-enabled?: boolean; // Whether to enable suggestion caching (default: true)
-};
+  // Cache settings
+  suggestionCache?: {
+    enabled?: boolean; // Whether to enable suggestion caching (default: true)
+  };
 }
-\`\`\`
+```
 
 ### 🔌 API Interface
 
 <details>
 <summary>View API Interface details</summary>
 
-\`\`\`typescript
+```typescript
 interface ICodeCompletionAPI {
-getCodeAssistSuggestions(data: PromptFile[]): Promise<Suggestions>;
+  getCodeAssistSuggestions(data: PromptFile[]): Promise<Suggestions>;
 }
 
 interface Suggestions {
-Suggests: Suggestion[];
-RequestId: string;
+  Suggests: Suggestion[];
+  RequestId: string;
 }
 
 interface Suggestion {
-Text: string;
+  Text: string;
 }
 
 interface PromptFile {
-Path: string;
-Fragments: PromptFragment[];
-Cursor: PromptPosition;
+  Path: string;
+  Fragments: PromptFragment[];
+  Cursor: PromptPosition;
 }
 
 interface PromptFragment {
-Text: string;
-Start: PromptPosition;
-End: PromptPosition;
+  Text: string;
+  Start: PromptPosition;
+  End: PromptPosition;
 }
 
 interface PromptPosition {
-Ln: number;
-Col: number;
+  Ln: number;
+  Col: number;
 }
-\`\`\`
+```
 
 </details>
 
@@ -319,57 +319,57 @@ The completion service emits four types of events with rich data:
 
 #### 1. Acceptance Events
 
-\`\`\`typescript
+```typescript
 interface CompletionAcceptEvent {
-requestId: string;
-acceptedText: string;
+  requestId: string;
+  acceptedText: string;
 }
 
 completionProvider.events.on('completion:accept', (data: CompletionAcceptEvent) => {
-console.log('Accepted:', data.acceptedText);
+  console.log('Accepted:', data.acceptedText);
 });
-\`\`\`
+```
 
 #### 2. Decline Events
 
-\`\`\`typescript
+```typescript
 interface CompletionDeclineEvent {
-requestId: string;
-suggestionText: string;
-reason: string;
-hitCount: number;
-otherSuggestions: string[];
+  requestId: string;
+  suggestionText: string;
+  reason: string;
+  hitCount: number;
+  otherSuggestions: string[];
 }
 
 completionProvider.events.on('completion:decline', (data: CompletionDeclineEvent) => {
-console.log('Declined:', data.suggestionText, 'reason:', data.reason);
-console.log('Other suggestions:', data.otherSuggestions);
-console.log('Times shown:', data.hitCount);
+  console.log('Declined:', data.suggestionText, 'reason:', data.reason);
+  console.log('Other suggestions:', data.otherSuggestions);
+  console.log('Times shown:', data.hitCount);
 });
-\`\`\`
+```
 
 #### 3. Ignore Events
 
-\`\`\`typescript
+```typescript
 interface CompletionIgnoreEvent {
-requestId: string;
-suggestionText: string;
-otherSuggestions: string[];
+  requestId: string;
+  suggestionText: string;
+  otherSuggestions: string[];
 }
 
 completionProvider.events.on('completion:ignore', (data: CompletionIgnoreEvent) => {
-console.log('Ignored:', data.suggestionText);
-console.log('Other suggestions:', data.otherSuggestions);
+  console.log('Ignored:', data.suggestionText);
+  console.log('Other suggestions:', data.otherSuggestions);
 });
-\`\`\`
+```
 
 #### 4. Error Events
 
-\`\`\`typescript
+```typescript
 completionProvider.events.on('completion:error', (error: Error) => {
-console.error('Completion error:', error);
+  console.error('Completion error:', error);
 });
-\`\`\`
+```
 
 </details>
 
@@ -377,7 +377,7 @@ console.error('Completion error:', error);
 
 ### Setup
 
-\`\`\`bash
+```bash
 
 # Install dependencies
 
@@ -394,7 +394,7 @@ npm run test
 # Run tests with coverage
 
 npm run test:coverage
-\`\`\`
+```
 
 ### Build System
 
@@ -412,7 +412,7 @@ Output Formats:
 <details>
 <summary>View Build Commands</summary>
 
-\`\`\`bash
+```bash
 
 # Type checking only
 
@@ -433,7 +433,7 @@ npm run build:esm
 # Full build (all formats)
 
 npm run build
-\`\`\`
+```
 
 </details>
 
