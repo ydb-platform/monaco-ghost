@@ -21,4 +21,12 @@ export function registerCompletionCommands(
   monacoInstance.editor.registerCommand('declineCodeAssistCompletion', () => {
     completionService.commandDiscard('OnCancel', editor);
   });
+
+  // Add keybinding for Escape key to decline suggestions
+  editor.addCommand(monacoInstance.KeyCode.Escape, () => {
+    const hasInlineSuggestion = completionService.hasActiveSuggestions();
+    if (hasInlineSuggestion) {
+      editor.trigger('keyboard', 'declineCodeAssistCompletion', null);
+    }
+  });
 }

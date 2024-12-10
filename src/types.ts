@@ -74,6 +74,7 @@ export interface ICodeCompletionService extends monaco.languages.InlineCompletio
   handleAccept(params: { requestId: string; suggestionText: string }): void;
   commandDiscard(reason: DiscardReason, editor: monaco.editor.IStandaloneCodeEditor): void;
   emptyCache(): void;
+  hasActiveSuggestions(): boolean;
 }
 
 export interface CodeCompletionConfig {

@@ -109,6 +109,10 @@ export class CodeCompletionService implements ICodeCompletionService {
     this.cacheManager.emptyCache();
   }
 
+  hasActiveSuggestions(): boolean {
+    return this.cacheManager.getSuggestions().length > 0;
+  }
+
   freeInlineCompletions(): void {
     // This method is required by Monaco's InlineCompletionsProvider interface
     // but we don't need to do anything here since we handle cleanup in other methods
