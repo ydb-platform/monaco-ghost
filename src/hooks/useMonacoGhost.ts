@@ -11,6 +11,7 @@ interface UseMonacoGhostProps {
   onCompletionAccept?: (text: string) => void;
   onCompletionDecline?: (text: string, reason: string, otherSuggestions: string[]) => void;
   onCompletionIgnore?: (text: string, otherSuggestions: string[]) => void;
+  onCompletionError?: (error: Error) => void;
 }
 
 interface UseMonacoGhostResult {
@@ -24,6 +25,7 @@ export function useMonacoGhost({
   onCompletionAccept,
   onCompletionDecline,
   onCompletionIgnore,
+  onCompletionError,
 }: UseMonacoGhostProps): UseMonacoGhostResult {
   const disposables = useRef<monaco.IDisposable[]>([]);
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
@@ -66,8 +68,12 @@ export function useMonacoGhost({
       provider.events.on('completion:ignore', data => {
         onCompletionIgnore?.(data.suggestionText, data.otherSuggestions);
       });
+
+      provider.events.on('completion:error', error => {
+        onCompletionError?.(error);
+      });
     },
-    [api, config, onCompletionAccept, onCompletionDecline, onCompletionIgnore]
+    [api, config, onCompletionAccept, onCompletionDecline, onCompletionIgnore, onCompletionError]
   );
 
   // Cleanup on unmount

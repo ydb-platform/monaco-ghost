@@ -51,6 +51,11 @@ export interface MonacoEditorProps {
   onCompletionIgnore?: (text: string, otherSuggestions: string[]) => void;
 
   /**
+   * Callback fired when a completion error occurs
+   */
+  onCompletionError?: (error: Error) => void;
+
+  /**
    * Additional Monaco editor options
    */
   editorOptions?: monaco.editor.IStandaloneEditorConstructionOptions;
@@ -79,6 +84,7 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
   onCompletionAccept,
   onCompletionDecline,
   onCompletionIgnore,
+  onCompletionError,
   editorOptions = {},
   className,
   style,
@@ -95,6 +101,7 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
     onCompletionAccept,
     onCompletionDecline,
     onCompletionIgnore,
+    onCompletionError,
   });
 
   // Initialize editor
