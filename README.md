@@ -11,7 +11,6 @@
 
 [Installation](#-installation) •
 [Quick Start](#-quick-start) •
-[Features](#-features) •
 [Documentation](#-documentation) •
 [Contributing](#-contributing)
 
