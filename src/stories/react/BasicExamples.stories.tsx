@@ -6,7 +6,7 @@ const meta = {
   title: 'React Monaco/Basic Examples',
   component: ReactMonacoEditor,
   parameters: {
-    layout: 'centered',
+    layout: 'padded',
     docs: {
       description: {
         component: `

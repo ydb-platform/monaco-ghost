@@ -91,7 +91,6 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
       <div
         ref={editorRef}
         style={{
-          width: '800px',
           height: '400px',
           border: '1px solid #ccc',
           overflow: 'hidden',

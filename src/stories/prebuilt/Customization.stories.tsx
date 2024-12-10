@@ -16,7 +16,7 @@ const meta = {
   title: 'Pre-built Monaco/Customization',
   component: EditorWithDisclaimer,
   parameters: {
-    layout: 'centered',
+    layout: 'padded',
     docs: {
       description: {
         component: `
@@ -46,7 +46,7 @@ SELECT`,
     api: demoLanguages.sql.api,
     config: demoLanguages.sql.config,
     style: {
-      width: '800px',
+      width: '100%',
       height: '400px',
     },
   },
@@ -75,7 +75,7 @@ LIMIT 10;`,
       lineNumbers: 'off',
     },
     style: {
-      width: '900px',
+      width: '100%',
       height: '500px',
       border: '2px solid #007acc',
       borderRadius: '4px',

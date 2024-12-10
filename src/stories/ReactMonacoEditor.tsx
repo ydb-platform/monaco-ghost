@@ -84,7 +84,7 @@ export const ReactMonacoEditor: React.FC<EditorProps> = ({
     <div>
       <Disclaimer />
       <MonacoEditor
-        width="800"
+        width="100%"
         height="600"
         language={language}
         theme={theme}

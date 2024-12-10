@@ -5,7 +5,7 @@ const meta = {
   title: 'Native Monaco/Basic Examples',
   component: MonacoEditor,
   parameters: {
-    layout: 'centered',
+    layout: 'padded',
     docs: {
       description: {
         component: `

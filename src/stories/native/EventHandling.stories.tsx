@@ -8,7 +8,7 @@ const meta = {
   title: 'Native Monaco/Event Handling',
   component: MonacoEditor,
   parameters: {
-    layout: 'centered',
+    layout: 'padded',
     docs: {
       description: {
         component: `
@@ -50,7 +50,7 @@ const EventHandlingDemo = () => {
         flexDirection: 'column',
         gap: '20px',
         alignItems: 'flex-start',
-        maxWidth: '1220px',
+        width: '100%',
       }}
     >
       <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
@@ -69,7 +69,7 @@ const EventHandlingDemo = () => {
         </select>
       </div>
       <div style={{ display: 'flex', gap: '20px' }}>
-        <div style={{ flex: '0 0 auto' }}>
+        <div style={{ flex: '1 1 auto', maxWidth: '800px' }}>
           <MonacoEditor
             key={language} // Force re-mount when language changes
             initialValue={demoLanguages[currentLanguage].code}
@@ -91,7 +91,9 @@ const EventHandlingDemo = () => {
             }
           />
         </div>
-        <EventLog events={events} />
+        <div style={{ flex: '0 0 400px' }}>
+          <EventLog events={events} />
+        </div>
       </div>
     </div>
   );
