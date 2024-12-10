@@ -45,45 +45,47 @@ The package provides a React hook and pre-built editor components for easy integ
 import { MonacoEditor } from 'monaco-ghost';
 
 function MyApp() {
-// SQL-specific API implementation
-const sqlApi = {
-getCodeAssistSuggestions: async () => ({
-Suggests: [{ Text: 'SELECT * FROM users;' }],
-RequestId: 'demo-request',
-}),
-};
+  // SQL-specific API implementation
+  const sqlApi = {
+    getCodeAssistSuggestions: async () => ({
+      Suggests: [{ Text: 'SELECT * FROM users;' }],
+      RequestId: 'demo-request',
+    }),
+  };
 
-// SQL-specific configuration
-const sqlConfig = {
-debounceTime: 200,
-textLimits: {
-beforeCursor: 8000,
-afterCursor: 1000,
-},
-suggestionCache: {
-enabled: true,
-},
-};
+  // SQL-specific configuration
+  const sqlConfig = {
+    debounceTime: 200,
+    textLimits: {
+      beforeCursor: 8000,
+      afterCursor: 1000,
+    },
+    suggestionCache: {
+      enabled: true,
+    },
+  };
 
-return (
-<MonacoEditor
-initialValue="-- Your SQL code here"
-language="sql"
-theme="vs-dark" // or "vs-light"
-api={sqlApi}
-config={sqlConfig}
-onCompletionAccept={(text) => console.log('Accepted:', text)}
-onCompletionDecline={(text, reason, otherSuggestions) =>
-console.log('Declined:', text, reason, otherSuggestions)}
-onCompletionIgnore={(text, otherSuggestions) =>
-console.log('Ignored:', text, otherSuggestions)}
-onCompletionError={(error) => console.error('Error:', error)}
-editorOptions={{
+  return (
+    <MonacoEditor
+      initialValue="-- Your SQL code here"
+      language="sql"
+      theme="vs-dark" // or "vs-light"
+      api={sqlApi}
+      config={sqlConfig}
+      onCompletionAccept={text => console.log('Accepted:', text)}
+      onCompletionDecline={(text, reason, otherSuggestions) =>
+        console.log('Declined:', text, reason, otherSuggestions)
+      }
+      onCompletionIgnore={(text, otherSuggestions) =>
+        console.log('Ignored:', text, otherSuggestions)
+      }
+      onCompletionError={error => console.error('Error:', error)}
+      editorOptions={{
         minimap: { enabled: false },
         fontSize: 14,
       }}
-/>
-);
+    />
+  );
 }
 ```
 
@@ -91,73 +93,76 @@ editorOptions={{
 <summary>Using the hook directly with your own Monaco instance</summary>
 
 ```typescript
+
 import React, { useCallback } from 'react';
 import MonacoEditor from 'react-monaco-editor';
-import \* as monaco from 'monaco-editor';
+import * as monaco from 'monaco-editor';
 import { useMonacoGhost } from 'monaco-ghost';
 
 function MyCustomEditor() {
-// Java-specific API implementation
-const javaApi = {
-getCodeAssistSuggestions: async () => ({
-Suggests: [{ Text: 'System.out.println("Hello, World!");' }],
-RequestId: 'demo-request',
-}),
-};
+  // Java-specific API implementation
+  const javaApi = {
+    getCodeAssistSuggestions: async () => ({
+      Suggests: [{ Text: 'System.out.println("Hello, World!");' }],
+      RequestId: 'demo-request',
+    }),
+  };
 
-// Java-specific configuration
-const javaConfig = {
-debounceTime: 200,
-textLimits: {
-beforeCursor: 8000,
-afterCursor: 1000,
-},
-suggestionCache: {
-enabled: true,
-},
-};
+  // Java-specific configuration
+  const javaConfig = {
+    debounceTime: 200,
+    textLimits: {
+      beforeCursor: 8000,
+      afterCursor: 1000,
+    },
+    suggestionCache: {
+      enabled: true,
+    },
+  };
 
-const { registerMonacoGhost, dispose } = useMonacoGhost({
-api: javaApi,
-config: javaConfig,
-onCompletionAccept: (text) => console.log('Accepted:', text),
-onCompletionDecline: (text, reason, otherSuggestions) =>
-console.log('Declined:', text, reason, otherSuggestions),
-onCompletionIgnore: (text, otherSuggestions) =>
-console.log('Ignored:', text, otherSuggestions),
-onCompletionError: (error) => console.error('Error:', error),
-});
+  const { registerMonacoGhost, dispose } = useMonacoGhost({
+    api: javaApi,
+    config: javaConfig,
+    onCompletionAccept: text => console.log('Accepted:', text),
+    onCompletionDecline: (text, reason, otherSuggestions) =>
+      console.log('Declined:', text, reason, otherSuggestions),
+    onCompletionIgnore: (text, otherSuggestions) => console.log('Ignored:', text, otherSuggestions),
+    onCompletionError: error => console.error('Error:', error),
+  });
 
-const editorDidMount = useCallback((editor: monaco.editor.IStandaloneCodeEditor) => {
-editor.focus();
-registerMonacoGhost(editor);
-}, [registerMonacoGhost]);
+  const editorDidMount = useCallback(
+    (editor: monaco.editor.IStandaloneCodeEditor) => {
+      editor.focus();
+      registerMonacoGhost(editor);
+    },
+    [registerMonacoGhost]
+  );
 
-// Optional: Manual cleanup if needed
-// useEffect(() => () => dispose(), [dispose]);
+  // Optional: Manual cleanup if needed
+  // useEffect(() => () => dispose(), [dispose]);
 
-const options = {
-selectOnLineNumbers: true,
-minimap: { enabled: false },
-automaticLayout: true,
-fontSize: 14,
-lineNumbers: 'on',
-scrollBeyondLastLine: false,
-roundedSelection: false,
-padding: { top: 10 },
-};
+  const options = {
+    selectOnLineNumbers: true,
+    minimap: { enabled: false },
+    automaticLayout: true,
+    fontSize: 14,
+    lineNumbers: 'on',
+    scrollBeyondLastLine: false,
+    roundedSelection: false,
+    padding: { top: 10 },
+  };
 
-return (
-<MonacoEditor
-width="800"
-height="600"
-language="java"
-theme="vs-dark" // or "vs-light"
-value="// Your Java code here"
-options={options}
-editorDidMount={editorDidMount}
-/>
-);
+  return (
+    <MonacoEditor
+      width="800"
+      height="600"
+      language="java"
+      theme="vs-dark" // or "vs-light"
+      value="// Your Java code here"
+      options={options}
+      editorDidMount={editorDidMount}
+    />
+  );
 }
 ```
 
@@ -169,31 +174,31 @@ editorDidMount={editorDidMount}
 <summary>View Vanilla JavaScript implementation</summary>
 
 ```typescript
-import \* as monaco from 'monaco-editor';
+import * as monaco from 'monaco-editor';
 import { createCodeCompletionService, registerCompletionCommands } from 'monaco-ghost';
 
 // Create language-specific API implementation
 const sqlApi = {
-getCodeAssistSuggestions: async data => {
-// Call your completion service
-// Return suggestions in the expected format
-return {
-Suggests: [{ Text: 'SELECT * FROM users;' }],
-RequestId: 'request-id',
-};
-},
+  getCodeAssistSuggestions: async data => {
+    // Call your completion service
+    // Return suggestions in the expected format
+    return {
+      Suggests: [{ Text: 'SELECT * FROM users;' }],
+      RequestId: 'request-id',
+    };
+  },
 };
 
 // Configure the adapter with language-specific settings
 const sqlConfig = {
-debounceTime: 200,
-textLimits: {
-beforeCursor: 8000,
-afterCursor: 1000,
-},
-suggestionCache: {
-enabled: true,
-},
+  debounceTime: 200,
+  textLimits: {
+    beforeCursor: 8000,
+    afterCursor: 1000,
+  },
+  suggestionCache: {
+    enabled: true,
+  },
 };
 
 // Create provider for SQL
@@ -201,31 +206,31 @@ const sqlCompletionProvider = createCodeCompletionService(sqlApi, sqlConfig);
 
 // Subscribe to completion events with type safety
 sqlCompletionProvider.events.on('completion:accept', data => {
-console.log('Completion accepted:', data.acceptedText);
+  console.log('Completion accepted:', data.acceptedText);
 });
 
 sqlCompletionProvider.events.on('completion:decline', data => {
-console.log(
-'Completion declined:',
-data.suggestionText,
-'reason:',
-data.reason,
-'other suggestions:',
-data.otherSuggestions
-);
+  console.log(
+    'Completion declined:',
+    data.suggestionText,
+    'reason:',
+    data.reason,
+    'other suggestions:',
+    data.otherSuggestions
+  );
 });
 
 sqlCompletionProvider.events.on('completion:ignore', data => {
-console.log(
-'Completion ignored:',
-data.suggestionText,
-'other suggestions:',
-data.otherSuggestions
-);
+  console.log(
+    'Completion ignored:',
+    data.suggestionText,
+    'other suggestions:',
+    data.otherSuggestions
+  );
 });
 
 sqlCompletionProvider.events.on('completion:error', error => {
-console.error('Completion error:', error);
+  console.error('Completion error:', error);
 });
 
 // Register with Monaco for SQL
