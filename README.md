@@ -36,64 +36,9 @@ npm install monaco-ghost monaco-editor
 
 ## 🚀 Quick Start
 
-### React Integration
-
-The package provides a React hook and pre-built editor components for easy integration:
+### React Integration with Hook
 
 ```typescript
-// Using the pre-built editor component
-import { MonacoEditor } from 'monaco-ghost';
-
-function MyApp() {
-  // SQL-specific API implementation
-  const sqlApi = {
-    getCodeAssistSuggestions: async () => ({
-      Suggests: [{ Text: 'SELECT * FROM users;' }],
-      RequestId: 'demo-request',
-    }),
-  };
-
-  // SQL-specific configuration
-  const sqlConfig = {
-    debounceTime: 200,
-    textLimits: {
-      beforeCursor: 8000,
-      afterCursor: 1000,
-    },
-    suggestionCache: {
-      enabled: true,
-    },
-  };
-
-  return (
-    <MonacoEditor
-      initialValue="-- Your SQL code here"
-      language="sql"
-      theme="vs-dark" // or "vs-light"
-      api={sqlApi}
-      config={sqlConfig}
-      onCompletionAccept={text => console.log('Accepted:', text)}
-      onCompletionDecline={(text, reason, otherSuggestions) =>
-        console.log('Declined:', text, reason, otherSuggestions)
-      }
-      onCompletionIgnore={(text, otherSuggestions) =>
-        console.log('Ignored:', text, otherSuggestions)
-      }
-      onCompletionError={error => console.error('Error:', error)}
-      editorOptions={{
-        minimap: { enabled: false },
-        fontSize: 14,
-      }}
-    />
-  );
-}
-```
-
-<details>
-<summary>Using the hook directly with your own Monaco instance</summary>
-
-```typescript
-
 import React, { useCallback } from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import * as monaco from 'monaco-editor';
@@ -161,6 +106,58 @@ function MyCustomEditor() {
       value="// Your Java code here"
       options={options}
       editorDidMount={editorDidMount}
+    />
+  );
+}
+```
+
+<details>
+<summary>Using the pre-built editor component</summary>
+
+```typescript
+// Using the pre-built editor component
+import { MonacoEditor } from 'monaco-ghost';
+
+function MyApp() {
+  // SQL-specific API implementation
+  const sqlApi = {
+    getCodeAssistSuggestions: async () => ({
+      Suggests: [{ Text: 'SELECT * FROM users;' }],
+      RequestId: 'demo-request',
+    }),
+  };
+
+  // SQL-specific configuration
+  const sqlConfig = {
+    debounceTime: 200,
+    textLimits: {
+      beforeCursor: 8000,
+      afterCursor: 1000,
+    },
+    suggestionCache: {
+      enabled: true,
+    },
+  };
+
+  return (
+    <MonacoEditor
+      initialValue="-- Your SQL code here"
+      language="sql"
+      theme="vs-dark" // or "vs-light"
+      api={sqlApi}
+      config={sqlConfig}
+      onCompletionAccept={text => console.log('Accepted:', text)}
+      onCompletionDecline={(text, reason, otherSuggestions) =>
+        console.log('Declined:', text, reason, otherSuggestions)
+      }
+      onCompletionIgnore={(text, otherSuggestions) =>
+        console.log('Ignored:', text, otherSuggestions)
+      }
+      onCompletionError={error => console.error('Error:', error)}
+      editorOptions={{
+        minimap: { enabled: false },
+        fontSize: 14,
+      }}
     />
   );
 }
@@ -383,21 +380,16 @@ completionProvider.events.on('completion:error', (error: Error) => {
 ### Setup
 
 ```bash
-
 # Install dependencies
-
 npm install
 
 # Start Storybook for development
-
 npm run storybook
 
 # Run tests
-
 npm run test
 
 # Run tests with coverage
-
 npm run test:coverage
 ```
 
@@ -418,25 +410,19 @@ Output Formats:
 <summary>View Build Commands</summary>
 
 ```bash
-
 # Type checking only
-
 npm run type-check
 
 # Build type declarations
-
 npm run build:types
 
 # Build CommonJS version
-
 npm run build:cjs
 
 # Build ES Modules version
-
 npm run build:esm
 
 # Full build (all formats)
-
 npm run build
 ```
 
