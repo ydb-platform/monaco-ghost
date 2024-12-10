@@ -126,21 +126,23 @@ export class CodeCompletionService implements ICodeCompletionService {
       shownCount: number;
     }
   ): void {
-    if (completion === undefined) {
+    if (!completion?.requestId || !completion.items?.length) {
       return;
     }
-    const { requestId, items, shownCount } = completion;
-    if (!requestId || !items.length) {
+
+    const [firstItem, ...otherItems] = completion.items;
+    if (!firstItem) {
       return;
     }
-    for (const item of items) {
-      this.events.emit('completion:decline', {
-        requestId,
-        suggestionText: item.pristine,
-        reason,
-        hitCount: shownCount,
-      });
-    }
+
+    // Emit single decline event with first suggestion as active and rest as others
+    this.events.emit('completion:decline', {
+      requestId: completion.requestId,
+      suggestionText: firstItem.pristine,
+      reason,
+      hitCount: completion.shownCount,
+      otherSuggestions: otherItems.map(item => item.pristine),
+    });
   }
 
   private dismissCompletion(completion?: {
@@ -149,19 +151,25 @@ export class CodeCompletionService implements ICodeCompletionService {
     shownCount: number;
     wasAccepted?: boolean;
   }): void {
-    if (completion === undefined) {
+    if (
+      !completion?.requestId ||
+      !completion.items?.length ||
+      !completion.shownCount ||
+      completion.wasAccepted
+    ) {
       return;
     }
-    const { requestId, items, shownCount, wasAccepted } = completion;
 
-    if (!requestId || !items.length || !shownCount || wasAccepted) {
+    const [firstItem, ...otherItems] = completion.items;
+    if (!firstItem) {
       return;
     }
-    for (const item of items) {
-      this.events.emit('completion:ignore', {
-        requestId,
-        suggestionText: item.pristine,
-      });
-    }
+
+    // Emit single ignore event with first suggestion as active and rest as others
+    this.events.emit('completion:ignore', {
+      requestId: completion.requestId,
+      suggestionText: firstItem.pristine,
+      otherSuggestions: otherItems.map(item => item.pristine),
+    });
   }
 }

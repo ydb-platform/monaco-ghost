@@ -37,13 +37,18 @@ export interface MonacoEditorProps {
 
   /**
    * Callback fired when a completion suggestion is declined
+   * @param text The declined suggestion text
+   * @param reason The reason for declining
+   * @param otherSuggestions Array of other available suggestions
    */
-  onCompletionDecline?: (text: string, reason: string) => void;
+  onCompletionDecline?: (text: string, reason: string, otherSuggestions: string[]) => void;
 
   /**
    * Callback fired when a completion suggestion is ignored
+   * @param text The ignored suggestion text
+   * @param otherSuggestions Array of other available suggestions
    */
-  onCompletionIgnore?: (text: string) => void;
+  onCompletionIgnore?: (text: string, otherSuggestions: string[]) => void;
 
   /**
    * Additional Monaco editor options

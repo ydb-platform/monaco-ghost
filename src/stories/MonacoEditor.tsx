@@ -10,8 +10,8 @@ export interface MonacoEditorProps {
   language?: string;
   theme?: string;
   onCompletionAccept?: (text: string) => void;
-  onCompletionDecline?: (text: string, reason: string) => void;
-  onCompletionIgnore?: (text: string) => void;
+  onCompletionDecline?: (text: string, reason: string, otherSuggestions: string[]) => void;
+  onCompletionIgnore?: (text: string, otherSuggestions: string[]) => void;
 }
 
 export const MonacoEditor: React.FC<MonacoEditorProps> = ({

@@ -18,7 +18,7 @@ Demonstrates event handling capabilities of the pre-built Monaco Editor with gho
 ## Events
 - completion:accept - When a suggestion is accepted
 - completion:decline - When a suggestion is declined
-- completion:ignore - When a suggestion is ignored
+- completion:ignore - When a suggestion is ignored (includes active suggestion and other suggestions)
         `,
       },
     },
@@ -83,11 +83,18 @@ const EventHandlingDemo = () => {
             onCompletionAccept={(text: string) =>
               addEvent('completion:accept', { acceptedText: text })
             }
-            onCompletionDecline={(text: string, reason: string) =>
-              addEvent('completion:decline', { suggestionText: text, reason })
+            onCompletionDecline={(text: string, reason: string, otherSuggestions: string[]) =>
+              addEvent('completion:decline', {
+                suggestionText: text,
+                reason,
+                otherSuggestions,
+              })
             }
-            onCompletionIgnore={(text: string) =>
-              addEvent('completion:ignore', { suggestionText: text })
+            onCompletionIgnore={(text: string, otherSuggestions: string[]) =>
+              addEvent('completion:ignore', {
+                suggestionText: text,
+                otherSuggestions,
+              })
             }
             style={{ width: '800px', height: '400px' }}
           />

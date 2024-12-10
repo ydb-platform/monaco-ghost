@@ -13,8 +13,8 @@ export interface EditorProps {
   api?: ICodeCompletionAPI;
   config?: CodeCompletionConfig;
   onCompletionAccept?: (text: string) => void;
-  onCompletionDecline?: (text: string, reason: string) => void;
-  onCompletionIgnore?: (text: string) => void;
+  onCompletionDecline?: (text: string, reason: string, otherSuggestions: string[]) => void;
+  onCompletionIgnore?: (text: string, otherSuggestions: string[]) => void;
 }
 
 export const ReactMonacoEditor: React.FC<EditorProps> = ({
