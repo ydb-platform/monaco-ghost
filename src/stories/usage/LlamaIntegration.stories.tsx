@@ -171,7 +171,7 @@ const LlamaEditorWithConfig = ({
 };
 
 const meta = {
-  title: 'Integrations/Llama',
+  title: 'Usage/Llama',
   component: LlamaEditorWithConfig,
   parameters: {
     layout: 'centered',
