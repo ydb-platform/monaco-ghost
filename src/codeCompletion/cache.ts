@@ -1,9 +1,21 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import { CacheManager, EnrichedCompletion, InternalSuggestion } from './types';
+import { CacheManager, EnrichedCompletion, CompletionGroup } from './types';
 
 export class SuggestionCacheManager implements CacheManager {
-  private suggestions: InternalSuggestion[] = [];
-  private activeSuggestion: string | null = null;
+  private currentGroup: CompletionGroup | null = null;
+  private activeCompletion: string | null = null;
+
+  setCompletionGroup(group: CompletionGroup): void {
+    this.currentGroup = group;
+  }
+
+  getCompletionGroup(): CompletionGroup | null {
+    return this.currentGroup;
+  }
+
+  getActiveCompletion(): string | null {
+    return this.activeCompletion;
+  }
 
   getCachedCompletion(
     model: monaco.editor.ITextModel,
@@ -11,8 +23,8 @@ export class SuggestionCacheManager implements CacheManager {
   ): EnrichedCompletion[] {
     const completions: EnrichedCompletion[] = [];
 
-    for (const suggests of this.suggestions) {
-      for (const completion of suggests.items) {
+    if (this.currentGroup) {
+      for (const completion of this.currentGroup.items) {
         if (!completion.range) {
           continue;
         }
@@ -63,40 +75,28 @@ export class SuggestionCacheManager implements CacheManager {
     return completions;
   }
 
-  addToCache(suggestions: InternalSuggestion[]): void {
-    this.suggestions = suggestions;
-  }
-
   emptyCache(): void {
-    this.suggestions = [];
-  }
-
-  getSuggestions(): InternalSuggestion[] {
-    return this.suggestions;
+    this.currentGroup = null;
+    this.activeCompletion = null;
   }
 
   incrementShownCount(pristineText: string): void {
-    for (const suggests of this.suggestions) {
-      for (const completion of suggests.items) {
+    if (this.currentGroup) {
+      for (const completion of this.currentGroup.items) {
         if (completion.pristine === pristineText) {
-          suggests.shownCount++;
-          this.activeSuggestion = pristineText;
+          this.currentGroup.shownCount++;
+          this.activeCompletion = pristineText;
           break;
         }
       }
     }
   }
 
-  getActiveSuggestion(): string | null {
-    return this.activeSuggestion;
-  }
-
   markAsAccepted(pristineText: string): void {
-    const suggestion = this.suggestions.find(el => {
-      return el.items.some(item => item.pristine === pristineText);
-    });
-    if (suggestion) {
-      suggestion.wasAccepted = true;
+    if (
+      this.currentGroup?.items.some((item: EnrichedCompletion) => item.pristine === pristineText)
+    ) {
+      this.currentGroup.wasAccepted = true;
     }
   }
 }

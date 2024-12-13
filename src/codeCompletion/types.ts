@@ -11,7 +11,7 @@ export interface TextLimits {
   afterCursor: number;
 }
 
-export interface InternalSuggestion {
+export interface CompletionGroup {
   items: EnrichedCompletion[];
   shownCount: number;
   requestId: string;
@@ -23,12 +23,12 @@ export interface CacheManager {
     model: monaco.editor.ITextModel,
     position: monaco.Position
   ): EnrichedCompletion[];
-  addToCache(suggestions: InternalSuggestion[]): void;
+  setCompletionGroup(group: CompletionGroup): void;
   emptyCache(): void;
-  getSuggestions(): InternalSuggestion[];
+  getCompletionGroup(): CompletionGroup | null;
   incrementShownCount(pristineText: string): void;
   markAsAccepted(pristineText: string): void;
-  getActiveSuggestion(): string | null;
+  getActiveCompletion(): string | null;
 }
 
 export interface SuggestionProvider {

@@ -1,6 +1,6 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { SuggestionCacheManager } from '../../cache';
-import { EnrichedCompletion, InternalSuggestion } from '../../types';
+import { EnrichedCompletion, CompletionGroup } from '../../types';
 
 describe('SuggestionCacheManager: Completion', () => {
   let cacheManager: SuggestionCacheManager;
@@ -31,22 +31,20 @@ describe('SuggestionCacheManager: Completion', () => {
     it('should return matching completions for position', () => {
       const mockModel = createMockModel('test');
       const position = new monaco.Position(1, 3);
-      const suggestions: InternalSuggestion[] = [
-        {
-          items: [
-            {
-              insertText: 'testing',
-              range: new monaco.Range(1, 1, 1, 5),
-              pristine: 'testing',
-              command: { id: 'test', title: 'test' },
-            },
-          ],
-          shownCount: 0,
-          requestId: '123',
-        },
-      ];
+      const group: CompletionGroup = {
+        items: [
+          {
+            insertText: 'testing',
+            range: new monaco.Range(1, 1, 1, 5),
+            pristine: 'testing',
+            command: { id: 'test', title: 'test' },
+          },
+        ],
+        shownCount: 0,
+        requestId: '123',
+      };
 
-      cacheManager.addToCache(suggestions);
+      cacheManager.setCompletionGroup(group);
       const completions = cacheManager.getCachedCompletion(mockModel, position);
 
       expect(completions).toBeDefined();
@@ -57,21 +55,19 @@ describe('SuggestionCacheManager: Completion', () => {
     it('should filter out completions before cursor position', () => {
       const mockModel = createMockModel('test');
       const position = new monaco.Position(2, 1); // Next line
-      const suggestions: InternalSuggestion[] = [
-        {
-          items: [
-            {
-              insertText: 'testing',
-              range: new monaco.Range(1, 1, 1, 5), // Previous line
-              pristine: 'testing',
-            },
-          ],
-          shownCount: 0,
-          requestId: '123',
-        },
-      ];
+      const group: CompletionGroup = {
+        items: [
+          {
+            insertText: 'testing',
+            range: new monaco.Range(1, 1, 1, 5), // Previous line
+            pristine: 'testing',
+          },
+        ],
+        shownCount: 0,
+        requestId: '123',
+      };
 
-      cacheManager.addToCache(suggestions);
+      cacheManager.setCompletionGroup(group);
       const completions = cacheManager.getCachedCompletion(mockModel, position);
 
       expect(completions).toHaveLength(0);
@@ -80,20 +76,18 @@ describe('SuggestionCacheManager: Completion', () => {
     it('should handle completions without range', () => {
       const mockModel = createMockModel('test');
       const position = new monaco.Position(1, 3);
-      const suggestions: InternalSuggestion[] = [
-        {
-          items: [
-            {
-              insertText: 'testing',
-              pristine: 'testing',
-            } as EnrichedCompletion,
-          ],
-          shownCount: 0,
-          requestId: '123',
-        },
-      ];
+      const group: CompletionGroup = {
+        items: [
+          {
+            insertText: 'testing',
+            pristine: 'testing',
+          } as EnrichedCompletion,
+        ],
+        shownCount: 0,
+        requestId: '123',
+      };
 
-      cacheManager.addToCache(suggestions);
+      cacheManager.setCompletionGroup(group);
       const completions = cacheManager.getCachedCompletion(mockModel, position);
 
       expect(completions).toHaveLength(0);
@@ -102,21 +96,19 @@ describe('SuggestionCacheManager: Completion', () => {
     it('should match text case-insensitively', () => {
       const mockModel = createMockModel('TEST');
       const position = new monaco.Position(1, 5);
-      const suggestions: InternalSuggestion[] = [
-        {
-          items: [
-            {
-              insertText: 'testing',
-              range: new monaco.Range(1, 1, 1, 5),
-              pristine: 'testing',
-            },
-          ],
-          shownCount: 0,
-          requestId: '123',
-        },
-      ];
+      const group: CompletionGroup = {
+        items: [
+          {
+            insertText: 'testing',
+            range: new monaco.Range(1, 1, 1, 5),
+            pristine: 'testing',
+          },
+        ],
+        shownCount: 0,
+        requestId: '123',
+      };
 
-      cacheManager.addToCache(suggestions);
+      cacheManager.setCompletionGroup(group);
       const completions = cacheManager.getCachedCompletion(mockModel, position);
 
       expect(completions).toHaveLength(1);

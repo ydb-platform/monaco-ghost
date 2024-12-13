@@ -1,6 +1,6 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { SuggestionCacheManager } from '../../cache';
-import { InternalSuggestion } from '../../types';
+import { CompletionGroup } from '../../types';
 
 describe('SuggestionCacheManager: Tracking', () => {
   let cacheManager: SuggestionCacheManager;
@@ -11,69 +11,63 @@ describe('SuggestionCacheManager: Tracking', () => {
 
   describe('suggestion tracking', () => {
     it('should increment shown count', () => {
-      const suggestions: InternalSuggestion[] = [
-        {
-          items: [
-            {
-              insertText: 'testCompletion',
-              range: new monaco.Range(1, 1, 1, 5),
-              pristine: 'testCompletion',
-            },
-          ],
-          shownCount: 0,
-          requestId: '123',
-        },
-      ];
+      const group: CompletionGroup = {
+        items: [
+          {
+            insertText: 'testCompletion',
+            range: new monaco.Range(1, 1, 1, 5),
+            pristine: 'testCompletion',
+          },
+        ],
+        shownCount: 0,
+        requestId: '123',
+      };
 
-      cacheManager.addToCache(suggestions);
+      cacheManager.setCompletionGroup(group);
       cacheManager.incrementShownCount('testCompletion');
 
-      const result = cacheManager.getSuggestions();
-      expect(result[0]?.shownCount).toBe(1);
+      const result = cacheManager.getCompletionGroup();
+      expect(result?.shownCount).toBe(1);
     });
 
     it('should mark suggestion as accepted', () => {
-      const suggestions: InternalSuggestion[] = [
-        {
-          items: [
-            {
-              insertText: 'testCompletion',
-              range: new monaco.Range(1, 1, 1, 5),
-              pristine: 'testCompletion',
-            },
-          ],
-          shownCount: 0,
-          requestId: '123',
-        },
-      ];
+      const group: CompletionGroup = {
+        items: [
+          {
+            insertText: 'testCompletion',
+            range: new monaco.Range(1, 1, 1, 5),
+            pristine: 'testCompletion',
+          },
+        ],
+        shownCount: 0,
+        requestId: '123',
+      };
 
-      cacheManager.addToCache(suggestions);
+      cacheManager.setCompletionGroup(group);
       cacheManager.markAsAccepted('testCompletion');
 
-      const result = cacheManager.getSuggestions();
-      expect(result[0]?.wasAccepted).toBe(true);
+      const result = cacheManager.getCompletionGroup();
+      expect(result?.wasAccepted).toBe(true);
     });
 
     it('should handle marking non-existent suggestion as accepted', () => {
-      const suggestions: InternalSuggestion[] = [
-        {
-          items: [
-            {
-              insertText: 'testCompletion',
-              range: new monaco.Range(1, 1, 1, 5),
-              pristine: 'testCompletion',
-            },
-          ],
-          shownCount: 0,
-          requestId: '123',
-        },
-      ];
+      const group: CompletionGroup = {
+        items: [
+          {
+            insertText: 'testCompletion',
+            range: new monaco.Range(1, 1, 1, 5),
+            pristine: 'testCompletion',
+          },
+        ],
+        shownCount: 0,
+        requestId: '123',
+      };
 
-      cacheManager.addToCache(suggestions);
+      cacheManager.setCompletionGroup(group);
       cacheManager.markAsAccepted('nonExistentCompletion');
 
-      const result = cacheManager.getSuggestions();
-      expect(result[0]?.wasAccepted).toBeUndefined();
+      const result = cacheManager.getCompletionGroup();
+      expect(result?.wasAccepted).toBeUndefined();
     });
   });
 });
