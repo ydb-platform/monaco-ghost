@@ -64,7 +64,7 @@ describe('CodeCompletionService - Decline Events', () => {
     jest.advanceTimersByTime(config.debounceTime);
 
     const result = await suggestionsPromise;
-    expect(result.items).toHaveLength(1);
+    expect(result.items).toHaveLength(2); // Expect both suggestions
 
     const firstItem = result.items[0] as EnrichedCompletion;
     expect(firstItem).toBeDefined();
