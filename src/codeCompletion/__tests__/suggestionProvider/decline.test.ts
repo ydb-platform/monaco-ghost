@@ -43,11 +43,12 @@ describe('CodeCompletionService - Decline Events', () => {
       trigger: jest.fn(),
     } as any;
 
-    // Mock API response with the suggestion text
+    // Mock API response with multiple suggestions
     const suggestionText = 'testFunction';
+    const otherSuggestion = 'testFunction2';
     const requestId = '123';
     mockApi.getCodeAssistSuggestions.mockResolvedValue({
-      Suggests: [{ Text: suggestionText }],
+      Suggests: [{ Text: suggestionText }, { Text: otherSuggestion }],
       RequestId: requestId,
     });
 
@@ -88,6 +89,7 @@ describe('CodeCompletionService - Decline Events', () => {
         suggestionText,
         reason: 'OnCancel',
         hitCount: 1,
+        allSuggestions: [suggestionText, otherSuggestion],
       })
     );
   });

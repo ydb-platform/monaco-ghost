@@ -9,8 +9,8 @@ interface UseMonacoGhostProps {
     language: string; // Single language identifier (e.g., 'typescript')
   };
   onCompletionAccept?: (text: string) => void;
-  onCompletionDecline?: (text: string, reason: string, otherSuggestions: string[]) => void;
-  onCompletionIgnore?: (text: string, otherSuggestions: string[]) => void;
+  onCompletionDecline?: (text: string, reason: string, allSuggestions: string[]) => void;
+  onCompletionIgnore?: (text: string, allSuggestions: string[]) => void;
   onCompletionError?: (error: Error) => void;
 }
 
@@ -62,11 +62,11 @@ export function useMonacoGhost({
       });
 
       provider.events.on('completion:decline', data => {
-        onCompletionDecline?.(data.suggestionText, data.reason, data.otherSuggestions);
+        onCompletionDecline?.(data.suggestionText, data.reason, data.allSuggestions);
       });
 
       provider.events.on('completion:ignore', data => {
-        onCompletionIgnore?.(data.suggestionText, data.otherSuggestions);
+        onCompletionIgnore?.(data.suggestionText, data.allSuggestions);
       });
 
       provider.events.on('completion:error', error => {

@@ -10,12 +10,12 @@ export interface CompletionEvents {
     suggestionText: string;
     reason: string;
     hitCount: number;
-    otherSuggestions: string[];
+    allSuggestions: string[];
   };
   'completion:ignore': {
     requestId: string;
     suggestionText: string;
-    otherSuggestions: string[];
+    allSuggestions: string[];
   };
   'completion:error': Error;
 }

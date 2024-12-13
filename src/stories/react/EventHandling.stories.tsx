@@ -16,8 +16,8 @@ Demonstrates event handling capabilities of the React Monaco Editor with ghost t
 
 ## Events
 - completion:accept - When a suggestion is accepted
-- completion:decline - When a suggestion is declined (includes active suggestion and other suggestions)
-- completion:ignore - When a suggestion is ignored (includes active suggestion and other suggestions)
+- completion:decline - When a suggestion is declined (includes active suggestion and all suggestions)
+- completion:ignore - When a suggestion is ignored (includes active suggestion and all suggestions)
         `,
       },
     },
@@ -76,17 +76,17 @@ const EventHandlingDemo = () => {
             language={language}
             theme="vs-dark"
             onCompletionAccept={text => addEvent('completion:accept', { acceptedText: text })}
-            onCompletionDecline={(text, reason, otherSuggestions) =>
+            onCompletionDecline={(text, reason, allSuggestions) =>
               addEvent('completion:decline', {
                 suggestionText: text,
                 reason,
-                otherSuggestions,
+                allSuggestions,
               })
             }
-            onCompletionIgnore={(text, otherSuggestions) =>
+            onCompletionIgnore={(text, allSuggestions) =>
               addEvent('completion:ignore', {
                 suggestionText: text,
-                otherSuggestions,
+                allSuggestions,
               })
             }
           />

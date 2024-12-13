@@ -37,20 +37,31 @@ export class CodeCompletionService implements ICodeCompletionService {
       }
     }
 
-    // Clear previous suggestions and dismiss them
+    // Get previous suggestions and clear them first
     const prevSuggestions = this.cacheManager.getSuggestions();
+    this.cacheManager.emptyCache();
+
+    // Dismiss previous suggestions with only their own items
     while (prevSuggestions.length > 0) {
-      this.dismissCompletion(prevSuggestions.pop());
+      const suggestion = prevSuggestions.pop();
+      if (suggestion) {
+        this.dismissCompletion(suggestion);
+      }
     }
 
+    // Now get new suggestions
     const { suggestions, requestId } = await this.suggestionProvider.getSuggestions(
       model,
       position
     );
 
-    if (suggestions.length) {
-      this.cacheManager.addToCache([{ items: suggestions, shownCount: 0, requestId }]);
-    }
+    // Create a single internal suggestion containing all items
+    const internalSuggestion = {
+      items: suggestions,
+      shownCount: 0,
+      requestId,
+    };
+    this.cacheManager.addToCache([internalSuggestion]);
 
     return { items: suggestions };
   }
@@ -99,8 +110,23 @@ export class CodeCompletionService implements ICodeCompletionService {
     editor: monaco.editor.IStandaloneCodeEditor
   ): void {
     const suggestions = this.cacheManager.getSuggestions();
-    while (suggestions.length > 0) {
-      this.discardCompletion(reason, suggestions.pop());
+    if (suggestions.length > 0) {
+      const firstSuggestion = suggestions[0];
+      if (firstSuggestion?.requestId && firstSuggestion.items?.length) {
+        const allSuggestions = suggestions.flatMap(s => s.items).map(item => item.pristine);
+
+        const activeSuggestion =
+          this.cacheManager.getActiveSuggestion() || firstSuggestion.items[0]?.pristine || '';
+
+        this.events.emit('completion:decline', {
+          requestId: firstSuggestion.requestId,
+          suggestionText: activeSuggestion,
+          reason,
+          hitCount: firstSuggestion.shownCount,
+          allSuggestions,
+        });
+      }
+      this.cacheManager.emptyCache();
     }
     editor.trigger(undefined, 'editor.action.inlineSuggest.hide', undefined);
   }
@@ -118,33 +144,6 @@ export class CodeCompletionService implements ICodeCompletionService {
     // but we don't need to do anything here since we handle cleanup in other methods
   }
 
-  private discardCompletion(
-    reason: DiscardReason,
-    completion?: {
-      items: EnrichedCompletion[];
-      requestId: string;
-      shownCount: number;
-    }
-  ): void {
-    if (!completion?.requestId || !completion.items?.length) {
-      return;
-    }
-
-    const [firstItem, ...otherItems] = completion.items;
-    if (!firstItem) {
-      return;
-    }
-
-    // Emit single decline event with first suggestion as active and rest as others
-    this.events.emit('completion:decline', {
-      requestId: completion.requestId,
-      suggestionText: firstItem.pristine,
-      reason,
-      hitCount: completion.shownCount,
-      otherSuggestions: otherItems.map(item => item.pristine),
-    });
-  }
-
   private dismissCompletion(completion?: {
     items: EnrichedCompletion[];
     requestId: string;
@@ -160,16 +159,22 @@ export class CodeCompletionService implements ICodeCompletionService {
       return;
     }
 
-    const [firstItem, ...otherItems] = completion.items;
+    const [firstItem] = completion.items;
     if (!firstItem) {
       return;
     }
 
-    // Emit single ignore event with first suggestion as active and rest as others
+    // Get all unique suggestions from the completion items
+    const allSuggestions = Array.from(new Set(completion.items.map(item => item.pristine)));
+
+    // Get the active suggestion or fallback to first item
+    const activeSuggestion = this.cacheManager.getActiveSuggestion() || firstItem.pristine || '';
+
+    // Emit single ignore event with current suggestion as active and all suggestions
     this.events.emit('completion:ignore', {
       requestId: completion.requestId,
-      suggestionText: firstItem.pristine,
-      otherSuggestions: otherItems.map(item => item.pristine),
+      suggestionText: activeSuggestion,
+      allSuggestions,
     });
   }
 }

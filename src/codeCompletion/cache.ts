@@ -3,6 +3,7 @@ import { CacheManager, EnrichedCompletion, InternalSuggestion } from './types';
 
 export class SuggestionCacheManager implements CacheManager {
   private suggestions: InternalSuggestion[] = [];
+  private activeSuggestion: string | null = null;
 
   getCachedCompletion(
     model: monaco.editor.ITextModel,
@@ -79,10 +80,15 @@ export class SuggestionCacheManager implements CacheManager {
       for (const completion of suggests.items) {
         if (completion.pristine === pristineText) {
           suggests.shownCount++;
+          this.activeSuggestion = pristineText;
           break;
         }
       }
     }
+  }
+
+  getActiveSuggestion(): string | null {
+    return this.activeSuggestion;
   }
 
   markAsAccepted(pristineText: string): void {

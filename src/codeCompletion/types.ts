@@ -25,6 +25,10 @@ export interface CacheManager {
   ): EnrichedCompletion[];
   addToCache(suggestions: InternalSuggestion[]): void;
   emptyCache(): void;
+  getSuggestions(): InternalSuggestion[];
+  incrementShownCount(pristineText: string): void;
+  markAsAccepted(pristineText: string): void;
+  getActiveSuggestion(): string | null;
 }
 
 export interface SuggestionProvider {
