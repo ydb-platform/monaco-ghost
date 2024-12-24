@@ -65,8 +65,8 @@ export class CodeSuggestionProvider implements SuggestionProvider {
 
           return {
             label,
-            sortText: 'a',
             insertText: label,
+            sortText: 'a',
             pristine: suggestionText,
             range: new monaco.Range(
               position.lineNumber,

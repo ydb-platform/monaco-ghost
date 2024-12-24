@@ -53,7 +53,7 @@
       "eslint --fix",
       "prettier --write"
     ],
-    "**/*.{ts,tsx}": "jest --bail"
+    "*.{ts,tsx,js,jsx}": "jest --passWithNoTests"
   },
   "dependencies": {
     "uuid": "^9.0.0"
