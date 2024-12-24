@@ -51,9 +51,9 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint --fix",
-      "prettier --write",
-      "jest"
-    ]
+      "prettier --write"
+    ],
+    "**/*.{ts,tsx}": "jest --bail"
   },
   "dependencies": {
     "uuid": "^9.0.0"
