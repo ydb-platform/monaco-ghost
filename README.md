@@ -1,9 +1,9 @@
-# monaco-ghost
+# @ydb-platform/monaco-ghost
 
 <div align="center">
 
 [![CI](https://github.com/ydb-platform/monaco-ghost/actions/workflows/ci.yml/badge.svg)](https://github.com/ydb-platform/monaco-ghost/actions/workflows/ci.yml)
-[![npm version](https://badge.fury.io/js/monaco-ghost.svg)](https://www.npmjs.com/package/monaco-ghost)
+[![npm version](https://badge.fury.io/js/%40ydb-platform%2Fmonaco-ghost.svg)](https://www.npmjs.com/package/@ydb-platform/monaco-ghost)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
@@ -30,7 +30,7 @@
 ## 📦 Installation
 
 ```bash
-npm install monaco-ghost monaco-editor
+npm install @ydb-platform/monaco-ghost monaco-editor
 ```
 
 ## 🚀 Quick Start
@@ -41,7 +41,7 @@ npm install monaco-ghost monaco-editor
 import React, { useCallback } from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import * as monaco from 'monaco-editor';
-import { useMonacoGhost } from 'monaco-ghost';
+import { useMonacoGhost } from '@ydb-platform/monaco-ghost';
 
 function MyCustomEditor() {
   // Java-specific API implementation
@@ -115,7 +115,7 @@ function MyCustomEditor() {
 
 ```typescript
 // Using the pre-built editor component
-import { MonacoEditor } from 'monaco-ghost';
+import { MonacoEditor } from '@ydb-platform/monaco-ghost';
 
 function MyApp() {
   // SQL-specific API implementation
@@ -171,7 +171,10 @@ function MyApp() {
 
 ```typescript
 import * as monaco from 'monaco-editor';
-import { createCodeCompletionService, registerCompletionCommands } from 'monaco-ghost';
+import {
+  createCodeCompletionService,
+  registerCompletionCommands,
+} from '@ydb-platform/monaco-ghost';
 
 // Create language-specific API implementation
 const sqlApi = {
