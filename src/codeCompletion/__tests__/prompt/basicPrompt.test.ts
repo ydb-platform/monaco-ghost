@@ -19,20 +19,20 @@ describe('getPromptFileContent - Basic Functionality', () => {
     const result = getPromptFileContent(model, position);
 
     expect(result).toBeDefined();
-    if (!result?.[0]?.Fragments) {
+    if (!result?.[0]?.fragments) {
       return;
     }
 
-    expect(result[0].Fragments).toEqual([
+    expect(result[0].fragments).toEqual([
       {
-        Text: 'line 1\nli',
-        Start: { Ln: 1, Col: 1 },
-        End: { Ln: 2, Col: 3 },
+        text: 'line 1\nli',
+        start: { lineNumber: 1, column: 1 },
+        end: { lineNumber: 2, column: 3 },
       },
       {
-        Text: 'ne 2\nline 3',
-        Start: { Ln: 2, Col: 3 },
-        End: { Ln: 3, Col: 6 },
+        text: 'ne 2\nline 3',
+        start: { lineNumber: 2, column: 3 },
+        end: { lineNumber: 3, column: 6 },
       },
     ]);
   });
@@ -44,15 +44,15 @@ describe('getPromptFileContent - Basic Functionality', () => {
     const result = getPromptFileContent(model, position);
 
     expect(result).toBeDefined();
-    if (!result?.[0]?.Fragments) {
+    if (!result?.[0]?.fragments) {
       return;
     }
 
-    expect(result[0].Fragments).toEqual([
+    expect(result[0].fragments).toEqual([
       {
-        Text: 'line 1\nline 2',
-        Start: { Ln: 1, Col: 1 },
-        End: { Ln: 2, Col: 6 },
+        text: 'line 1\nline 2',
+        start: { lineNumber: 1, column: 1 },
+        end: { lineNumber: 2, column: 6 },
       },
     ]);
   });
@@ -64,15 +64,15 @@ describe('getPromptFileContent - Basic Functionality', () => {
     const result = getPromptFileContent(model, position);
 
     expect(result).toBeDefined();
-    if (!result?.[0]?.Fragments) {
+    if (!result?.[0]?.fragments) {
       return;
     }
 
-    expect(result[0].Fragments).toEqual([
+    expect(result[0].fragments).toEqual([
       {
-        Text: 'line 1\nline 2',
-        Start: { Ln: 1, Col: 1 },
-        End: { Ln: 2, Col: 7 },
+        text: 'line 1\nline 2',
+        start: { lineNumber: 1, column: 1 },
+        end: { lineNumber: 2, column: 7 },
       },
     ]);
   });

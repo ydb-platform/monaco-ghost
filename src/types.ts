@@ -1,49 +1,29 @@
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { GhostEventEmitter } from './events';
 
-type IdeInfo = {
-  Ide: string;
-  IdeVersion: string;
-  PluginFamily: string;
-  PluginVersion: string;
-};
-
-export interface Prompt {
-  Files: PromptFile[];
-  ContextCreateType: ContextCreateType;
-  ForceSuggest?: boolean;
-  IdeInfo: IdeInfo;
-}
-
 export interface PromptPosition {
-  Ln: number;
-  Col: number;
+  lineNumber: number;
+  column: number;
 }
 
 export interface PromptFragment {
-  Text: string;
-  Start: PromptPosition;
-  End: PromptPosition;
+  text: string;
+  start: PromptPosition;
+  end: PromptPosition;
 }
 
 export interface PromptFile {
-  Path: string;
-  Fragments: PromptFragment[];
-  Cursor: PromptPosition;
+  path: string;
+  fragments: PromptFragment[];
+  cursorPostion: PromptPosition;
 }
 
-export type ContextCreateType = 1;
-
 export interface Suggestions {
-  Suggests: Suggestion[];
-  RequestId: string;
+  suggestions: string[];
+  requestId?: string;
 }
 
 export type DiscardReason = 'OnCancel';
-
-export interface Suggestion {
-  Text: string;
-}
 
 export interface ICodeCompletionAPI {
   getCodeAssistSuggestions(data: PromptFile[]): Promise<Suggestions>;
@@ -91,4 +71,6 @@ export interface CodeCompletionConfig {
   suggestionCache?: {
     enabled?: boolean; // Whether to enable suggestion caching (default: true)
   };
+
+  sessionId?: string;
 }

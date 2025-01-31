@@ -20,13 +20,13 @@ describe('getPromptFileContent - Text Limits', () => {
     const result = getPromptFileContent(model, position, { beforeCursor: 100 });
 
     expect(result).toBeDefined();
-    if (!result?.[0]?.Fragments?.[0]) {
+    if (!result?.[0]?.fragments?.[0]) {
       return;
     }
 
-    const fragment = result[0].Fragments[0];
-    expect(fragment.Text.length).toBe(100);
-    expect(fragment.Text).toBe('a'.repeat(100));
+    const fragment = result[0].fragments[0];
+    expect(fragment.text.length).toBe(100);
+    expect(fragment.text).toBe('a'.repeat(100));
   });
 
   it('should respect afterCursor limit', () => {
@@ -37,13 +37,13 @@ describe('getPromptFileContent - Text Limits', () => {
     const result = getPromptFileContent(model, position, { afterCursor: 100 });
 
     expect(result).toBeDefined();
-    if (!result?.[0]?.Fragments?.[0]) {
+    if (!result?.[0]?.fragments?.[0]) {
       return;
     }
 
-    const fragment = result[0].Fragments[0];
-    expect(fragment.Text.length).toBe(100);
-    expect(fragment.Text).toBe('a'.repeat(100));
+    const fragment = result[0].fragments[0];
+    expect(fragment.text.length).toBe(100);
+    expect(fragment.text).toBe('a'.repeat(100));
   });
 
   it('should use default limits when not provided', () => {
@@ -54,11 +54,11 @@ describe('getPromptFileContent - Text Limits', () => {
     const result = getPromptFileContent(model, position);
 
     expect(result).toBeDefined();
-    if (!result?.[0]?.Fragments) {
+    if (!result?.[0]?.fragments) {
       fail('Expected fragments to be defined');
     }
 
-    const fragments = result[0].Fragments;
+    const fragments = result[0].fragments;
     if (fragments.length < 2) {
       fail('Expected at least 2 fragments');
     }
@@ -70,7 +70,7 @@ describe('getPromptFileContent - Text Limits', () => {
       fail('Expected both fragments to be defined');
     }
 
-    expect(fragment0.Text.length).toBe(8000); // Default beforeCursor
-    expect(fragment1.Text.length).toBe(1000); // Default afterCursor
+    expect(fragment0.text.length).toBe(8000); // Default beforeCursor
+    expect(fragment1.text.length).toBe(1000); // Default afterCursor
   });
 });

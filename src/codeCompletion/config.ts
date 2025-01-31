@@ -1,5 +1,6 @@
 import { CodeCompletionConfig, ServiceConfig } from './types';
 import { ICodeCompletionAPI } from '../types';
+import { v4 } from 'uuid';
 
 const DEFAULT_CONFIG: Required<CodeCompletionConfig> = {
   debounceTime: 200,
@@ -10,6 +11,7 @@ const DEFAULT_CONFIG: Required<CodeCompletionConfig> = {
   suggestionCache: {
     enabled: true,
   },
+  sessionId: v4(),
 };
 
 export function createServiceConfig(

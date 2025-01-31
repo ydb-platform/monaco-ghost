@@ -1,6 +1,6 @@
 import type Monaco from 'monaco-editor';
-import { v4 } from 'uuid';
 import type { PromptFile } from '../types';
+import { v4 } from 'uuid';
 
 export interface TextLimits {
   beforeCursor: number;
@@ -12,12 +12,11 @@ const DEFAULT_LIMITS: Required<TextLimits> = {
   afterCursor: 1_000,
 };
 
-const sessionId = v4();
-
 export function getPromptFileContent(
   model: Monaco.editor.ITextModel,
   position: Monaco.Position,
-  limits?: Partial<TextLimits>
+  limits?: Partial<TextLimits>,
+  sessionId: string = v4()
 ): PromptFile[] | undefined {
   // Merge with defaults to ensure we always have valid numbers
   const finalLimits: Required<TextLimits> = {
@@ -41,17 +40,17 @@ export function getPromptFileContent(
   const postText = [postTextInCurrentLine]
     .concat(linesContent.slice(position.lineNumber))
     .join('\n');
-  const cursorPostion = { Ln: position.lineNumber, Col: position.column };
+  const cursorPostion = { lineNumber: position.lineNumber, column: position.column };
 
   const fragments = [];
   if (prevText) {
     fragments.push({
-      Text:
+      text:
         prevText.length > finalLimits.beforeCursor
           ? prevText.slice(prevText.length - finalLimits.beforeCursor)
           : prevText,
-      Start: { Ln: 1, Col: 1 },
-      End: cursorPostion,
+      start: { lineNumber: 1, column: 1 },
+      end: cursorPostion,
     });
   }
   if (postText) {
@@ -61,11 +60,11 @@ export function getPromptFileContent(
     }
 
     fragments.push({
-      Text: postText.slice(0, finalLimits.afterCursor),
-      Start: cursorPostion,
-      End: {
-        Ln: linesContent.length,
-        Col: lastLine.length,
+      text: postText.slice(0, finalLimits.afterCursor),
+      start: cursorPostion,
+      end: {
+        lineNumber: linesContent.length,
+        column: lastLine.length,
       },
     });
   }
@@ -73,9 +72,9 @@ export function getPromptFileContent(
   return fragments.length
     ? [
         {
-          Fragments: fragments,
-          Cursor: cursorPostion,
-          Path: `${sessionId}/query.yql`,
+          fragments,
+          cursorPostion,
+          path: `${sessionId}`,
         },
       ]
     : undefined;

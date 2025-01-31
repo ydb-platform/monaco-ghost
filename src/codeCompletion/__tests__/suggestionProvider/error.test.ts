@@ -31,7 +31,9 @@ describe('CodeSuggestionProvider - Error Handling', () => {
     const mockPosition = createMockPosition();
     const mockModel = createMockModel();
 
-    const mockPromptData = [{ Path: 'test.ts', Fragments: [], Cursor: { Ln: 1, Col: 5 } }];
+    const mockPromptData = [
+      { Path: 'test.ts', Fragments: [], Cursor: { lineNumber: 1, column: 5 } },
+    ];
     const mockError = new Error('API Error');
 
     (getPromptFileContent as jest.Mock).mockReturnValue(mockPromptData);
@@ -59,7 +61,9 @@ describe('CodeSuggestionProvider - Error Handling', () => {
     const mockPosition = createMockPosition();
     const mockModel = createMockModel();
 
-    const mockPromptData = [{ Path: 'test.ts', Fragments: [], Cursor: { Ln: 1, Col: 5 } }];
+    const mockPromptData = [
+      { Path: 'test.ts', Fragments: [], Cursor: { lineNumber: 1, column: 5 } },
+    ];
 
     (getPromptFileContent as jest.Mock).mockReturnValue(mockPromptData);
     mockApi.getCodeAssistSuggestions.mockResolvedValue(null as any);
@@ -84,12 +88,14 @@ describe('CodeSuggestionProvider - Error Handling', () => {
     const mockPosition = createMockPosition();
     const mockModel = createMockModel();
 
-    const mockPromptData = [{ Path: 'test.ts', Fragments: [], Cursor: { Ln: 1, Col: 5 } }];
+    const mockPromptData = [
+      { Path: 'test.ts', Fragments: [], Cursor: { lineNumber: 1, column: 5 } },
+    ];
 
     (getPromptFileContent as jest.Mock).mockReturnValue(mockPromptData);
     mockApi.getCodeAssistSuggestions.mockResolvedValue({
-      Suggests: [],
-      RequestId: '123',
+      suggestions: [],
+      requestId: '123',
     });
 
     const promise = provider.getSuggestions(mockModel, mockPosition);

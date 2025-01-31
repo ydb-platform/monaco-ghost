@@ -19,7 +19,7 @@ describe('CodeCompletionService - Decline Events', () => {
   beforeEach(() => {
     jest.useFakeTimers();
     (getPromptFileContent as jest.Mock).mockReturnValue([
-      { Path: 'test.ts', Fragments: [], Cursor: { Ln: 1, Col: 1 } },
+      { Path: 'test.ts', Fragments: [], Cursor: { lineNumber: 1, column: 1 } },
     ]);
   });
 
@@ -48,8 +48,8 @@ describe('CodeCompletionService - Decline Events', () => {
     const otherSuggestion = 'testFunction2';
     const requestId = '123';
     mockApi.getCodeAssistSuggestions.mockResolvedValue({
-      Suggests: [{ Text: suggestionText }, { Text: otherSuggestion }],
-      RequestId: requestId,
+      suggestions: [suggestionText, otherSuggestion],
+      requestId: requestId,
     });
 
     // Get suggestions

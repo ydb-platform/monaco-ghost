@@ -37,18 +37,18 @@ describe('CodeSuggestionProvider - Core Functionality', () => {
         Fragments: [
           {
             Text: 'test',
-            Start: { Ln: 1, Col: 1 },
-            End: { Ln: 1, Col: 4 },
+            Start: { lineNumber: 1, column: 1 },
+            End: { lineNumber: 1, column: 4 },
           },
         ],
-        Cursor: { Ln: 1, Col: 5 },
+        Cursor: { lineNumber: 1, column: 5 },
       },
     ];
 
     (getPromptFileContent as jest.Mock).mockReturnValue(mockPromptData);
     mockApi.getCodeAssistSuggestions.mockResolvedValue({
-      Suggests: [{ Text: 'testFunction' }],
-      RequestId: '123',
+      suggestions: ['testFunction'],
+      requestId: '123',
     });
 
     const promise = provider.getSuggestions(mockModel, mockPosition);

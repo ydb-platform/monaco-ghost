@@ -285,33 +285,29 @@ interface ICodeCompletionAPI {
   getCodeAssistSuggestions(data: PromptFile[]): Promise<Suggestions>;
 }
 
-interface Suggestions {
-  Suggests: Suggestion[];
-  RequestId: string;
+export interface PromptPosition {
+  lineNumber: number;
+  column: number;
 }
 
-interface Suggestion {
-  Text: string;
+export interface PromptFragment {
+  text: string;
+  start: PromptPosition;
+  end: PromptPosition;
 }
 
-interface PromptFile {
-  Path: string;
-  Fragments: PromptFragment[];
-  Cursor: PromptPosition;
+export interface PromptFile {
+  path: string;
+  fragments: PromptFragment[];
+  cursorPostion: PromptPosition;
 }
 
-interface PromptFragment {
-  Text: string;
-  Start: PromptPosition;
-  End: PromptPosition;
+export interface Suggestions {
+  suggestions: string[];
+  requestId?: string;
 }
 
-interface PromptPosition {
-  Ln: number;
-  Col: number;
-}
 ```
-
 </details>
 
 ### 📊 Events

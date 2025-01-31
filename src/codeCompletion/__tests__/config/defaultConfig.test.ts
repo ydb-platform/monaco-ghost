@@ -18,6 +18,7 @@ describe('createServiceConfig - Default Configuration', () => {
       suggestionCache: {
         enabled: true,
       },
+      sessionId: config.sessionId,
       api: mockApi,
     });
   });

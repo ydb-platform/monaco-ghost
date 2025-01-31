@@ -26,6 +26,7 @@ export const createMockConfig = (api: ICodeCompletionAPI): ServiceConfig => ({
     enabled: true,
   },
   api,
+  sessionId: 'test',
 });
 
 export const createMockPosition = () =>

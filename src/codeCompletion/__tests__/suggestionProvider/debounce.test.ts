@@ -31,12 +31,14 @@ describe('CodeSuggestionProvider - Debouncing', () => {
     const mockPosition = createMockPosition();
     const mockModel = createMockModel();
 
-    const mockPromptData = [{ Path: 'test.ts', Fragments: [], Cursor: { Ln: 1, Col: 5 } }];
+    const mockPromptData = [
+      { Path: 'test.ts', Fragments: [], Cursor: { lineNumber: 1, column: 5 } },
+    ];
 
     (getPromptFileContent as jest.Mock).mockReturnValue(mockPromptData);
     mockApi.getCodeAssistSuggestions.mockResolvedValue({
-      Suggests: [{ Text: 'suggestion' }],
-      RequestId: '123',
+      suggestions: ['suggestion'],
+      requestId: '123',
     });
 
     const promise = provider.getSuggestions(mockModel, mockPosition);
@@ -60,12 +62,14 @@ describe('CodeSuggestionProvider - Debouncing', () => {
     const mockPosition = createMockPosition();
     const mockModel = createMockModel();
 
-    const mockPromptData = [{ Path: 'test.ts', Fragments: [], Cursor: { Ln: 1, Col: 5 } }];
+    const mockPromptData = [
+      { Path: 'test.ts', Fragments: [], Cursor: { lineNumber: 1, column: 5 } },
+    ];
 
     (getPromptFileContent as jest.Mock).mockReturnValue(mockPromptData);
     mockApi.getCodeAssistSuggestions.mockImplementation(async () => ({
-      Suggests: [{ Text: 'suggestion' }],
-      RequestId: '123',
+      suggestions: ['suggestion'],
+      requestId: '123',
     }));
 
     // Start first request

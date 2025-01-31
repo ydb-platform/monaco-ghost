@@ -19,20 +19,20 @@ describe('getPromptFileContent - Multiline Handling', () => {
     const result = getPromptFileContent(model, position);
 
     expect(result).toBeDefined();
-    if (!result?.[0]?.Fragments) {
+    if (!result?.[0]?.fragments) {
       fail('Expected fragments to be defined');
     }
 
-    expect(result[0].Fragments).toEqual([
+    expect(result[0].fragments).toEqual([
       {
-        Text: 'function example() {\n  const',
-        Start: { Ln: 1, Col: 1 },
-        End: { Ln: 2, Col: 8 },
+        text: 'function example() {\n  const',
+        start: { lineNumber: 1, column: 1 },
+        end: { lineNumber: 2, column: 8 },
       },
       {
-        Text: ' x = 1;\n  return x;\n}',
-        Start: { Ln: 2, Col: 8 },
-        End: { Ln: 4, Col: 1 },
+        text: ' x = 1;\n  return x;\n}',
+        start: { lineNumber: 2, column: 8 },
+        end: { lineNumber: 4, column: 1 },
       },
     ]);
   });
@@ -50,20 +50,20 @@ describe('getPromptFileContent - Multiline Handling', () => {
     const result = getPromptFileContent(model, position);
 
     expect(result).toBeDefined();
-    if (!result?.[0]?.Fragments) {
+    if (!result?.[0]?.fragments) {
       fail('Expected fragments to be defined');
     }
 
-    expect(result[0].Fragments).toEqual([
+    expect(result[0].fragments).toEqual([
       {
-        Text: 'class Example {\n    constructor() {\n      ',
-        Start: { Ln: 1, Col: 1 },
-        End: { Ln: 3, Col: 7 },
+        text: 'class Example {\n    constructor() {\n      ',
+        start: { lineNumber: 1, column: 1 },
+        end: { lineNumber: 3, column: 7 },
       },
       {
-        Text: 'this.value = 1;\n    }\n}',
-        Start: { Ln: 3, Col: 7 },
-        End: { Ln: 5, Col: 1 },
+        text: 'this.value = 1;\n    }\n}',
+        start: { lineNumber: 3, column: 7 },
+        end: { lineNumber: 5, column: 1 },
       },
     ]);
   });

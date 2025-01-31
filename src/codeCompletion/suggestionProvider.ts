@@ -44,10 +44,15 @@ export class CodeSuggestionProvider implements SuggestionProvider {
         let suggestions: EnrichedCompletion[] = [];
         let requestId = '';
 
-        const data = getPromptFileContent(model, position, {
-          beforeCursor: this.config.textLimits.beforeCursor,
-          afterCursor: this.config.textLimits.afterCursor,
-        });
+        const data = getPromptFileContent(
+          model,
+          position,
+          {
+            beforeCursor: this.config.textLimits.beforeCursor,
+            afterCursor: this.config.textLimits.afterCursor,
+          },
+          this.config.sessionId
+        );
 
         if (!data) {
           this.pendingResolve?.({ suggestions: [], requestId: '' });
@@ -55,12 +60,12 @@ export class CodeSuggestionProvider implements SuggestionProvider {
         }
 
         const codeAssistSuggestions = await this.config.api.getCodeAssistSuggestions(data);
-        requestId = codeAssistSuggestions?.RequestId || '';
+        requestId = codeAssistSuggestions?.requestId || '';
 
         const { word, startColumn: lastWordStartColumn } = model.getWordUntilPosition(position);
 
-        suggestions = (codeAssistSuggestions?.Suggests || []).map(el => {
-          const suggestionText = el.Text;
+        suggestions = (codeAssistSuggestions?.suggestions || []).map(text => {
+          const suggestionText = text;
           const label = word + suggestionText;
 
           return {

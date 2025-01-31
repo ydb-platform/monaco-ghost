@@ -8,7 +8,7 @@ const getRandomItems = (items: string[], count: number = 4) => {
 
 export const sqlApi = {
   getCodeAssistSuggestions: async (data: PromptFile[]): Promise<Suggestions> => {
-    const beforeCursor = data[0]?.Fragments?.[0]?.Text || '';
+    const beforeCursor = data[0]?.fragments?.[0]?.text || '';
     const lastWord = beforeCursor.split(/[\s.()[\]{}"'`]+/).pop() || '';
     const firstChar = lastWord[0];
     const restChars = lastWord.slice(1);
@@ -113,15 +113,15 @@ export const sqlApi = {
         : defaultSuggestions;
 
     return {
-      Suggests: getRandomItems([...suggestions], 6).map(text => ({ Text: getCase(text) })),
-      RequestId: 'demo-request',
+      suggestions: getRandomItems([...suggestions], 6).map(text => getCase(text)),
+      requestId: 'demo-request',
     };
   },
 };
 
 export const javaApi = {
   getCodeAssistSuggestions: async (data: PromptFile[]): Promise<Suggestions> => {
-    const beforeCursor = data[0]?.Fragments?.[0]?.Text || '';
+    const beforeCursor = data[0]?.fragments?.[0]?.text || '';
     const lastWord = beforeCursor.split(/[\s.()[\]{}"'`]+/).pop() || '';
     const firstChar = lastWord[0];
     const restChars = lastWord.slice(1);
@@ -213,8 +213,8 @@ export const javaApi = {
         : defaultSuggestions;
 
     return {
-      Suggests: getRandomItems([...suggestions], 6).map(text => ({ Text: getCase(text) })),
-      RequestId: 'demo-request',
+      suggestions: getRandomItems([...suggestions], 6).map(text => getCase(text)),
+      requestId: 'demo-request',
     };
   },
 };

@@ -62,6 +62,7 @@ describe('createServiceConfig - User Configuration', () => {
       suggestionCache: {
         enabled: false,
       },
+      sessionId: 'test',
     };
 
     const config = createServiceConfig(mockApi, userConfig);

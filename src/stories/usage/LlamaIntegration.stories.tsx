@@ -57,21 +57,18 @@ const createLlamaApi = (
   options = { maxTokens: 100, temperature: 0.7 }
 ) => {
   const fullUrl = `${baseUrl}${endpoint}`;
-  console.log('Creating new Llama API instance with URL:', fullUrl);
 
   return {
     getCodeAssistSuggestions: async (files: PromptFile[]): Promise<Suggestions> => {
       try {
-        if (!files.length || !files[0]?.Fragments) {
+        if (!files.length || !files[0]?.fragments) {
           return {
-            Suggests: [],
-            RequestId: 'llama-request-empty',
+            suggestions: [],
+            requestId: 'llama-request-empty',
           };
         }
 
-        const text = files[0].Fragments.map(f => f.Text).join('');
-
-        console.log('Sending request to Llama at:', fullUrl);
+        const text = files[0].fragments.map(f => f.text).join('');
 
         const response = await fetch(fullUrl, {
           method: 'POST',
@@ -89,16 +86,15 @@ const createLlamaApi = (
         }
 
         const data = await response.json();
-        console.log('Received response from Llama');
         return {
-          Suggests: [{ Text: data.completion }],
-          RequestId: 'llama-request',
+          suggestions: data.completion,
+          requestId: 'llama-request',
         };
       } catch (error) {
         console.error('Error fetching from Llama:', error);
         return {
-          Suggests: [],
-          RequestId: 'llama-request-error',
+          suggestions: [],
+          requestId: 'llama-request-error',
         };
       }
     },
