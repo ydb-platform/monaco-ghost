@@ -1,4 +1,4 @@
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
 import { EnrichedCompletion, ServiceConfig, SuggestionProvider } from './types';
 import { getPromptFileContent } from './prompt';
 import { GhostEventEmitter } from '../events';

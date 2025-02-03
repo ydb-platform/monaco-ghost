@@ -1,4 +1,4 @@
-import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
 import { GhostEventEmitter } from './events';
 
 export interface PromptPosition {

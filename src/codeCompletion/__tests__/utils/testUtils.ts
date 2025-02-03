@@ -1,5 +1,5 @@
 /// <reference types="jest" />
-import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
 import { GhostEventEmitter } from '../../../events';
 import { ICodeCompletionAPI, Suggestions } from '../../../types';
 import { ServiceConfig } from '../../types';
