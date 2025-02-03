@@ -76,8 +76,9 @@ function MyCustomEditor() {
 
   const editorDidMount = useCallback(
     (editor: monaco.editor.IStandaloneCodeEditor) => {
-      editor.focus();
       registerMonacoGhost(editor);
+
+      return () => dispose();
     },
     [registerMonacoGhost]
   );
