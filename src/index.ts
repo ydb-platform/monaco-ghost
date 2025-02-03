@@ -12,4 +12,7 @@ export type {
   PromptFragment,
   DiscardReason,
 } from './types';
+
+export type { AcceptEvent, DeclineEvent, IgnoreEvent } from './events';
+
 export { MonacoEditor } from './components/MonacoEditor';
