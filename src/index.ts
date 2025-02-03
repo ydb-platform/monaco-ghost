@@ -6,5 +6,10 @@ export type {
   ICodeCompletionService,
   ICodeCompletionAPI,
   EnrichedCompletion,
+  PromptFile,
+  Suggestions,
+  PromptPosition,
+  PromptFragment,
+  DiscardReason,
 } from './types';
 export { MonacoEditor } from './components/MonacoEditor';
