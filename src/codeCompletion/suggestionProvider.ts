@@ -64,7 +64,7 @@ export class CodeSuggestionProvider implements SuggestionProvider {
 
         const { word, startColumn: lastWordStartColumn } = model.getWordUntilPosition(position);
 
-        suggestions = (codeAssistSuggestions?.suggestions || []).map(text => {
+        suggestions = (codeAssistSuggestions?.items || []).map(text => {
           const suggestionText = text;
           const label = word + suggestionText;
 

@@ -63,7 +63,7 @@ const createLlamaApi = (
       try {
         if (!files.length || !files[0]?.fragments) {
           return {
-            suggestions: [],
+            items: [],
             requestId: 'llama-request-empty',
           };
         }
@@ -87,13 +87,13 @@ const createLlamaApi = (
 
         const data = await response.json();
         return {
-          suggestions: data.completion,
+          items: data.completion,
           requestId: 'llama-request',
         };
       } catch (error) {
         console.error('Error fetching from Llama:', error);
         return {
-          suggestions: [],
+          items: [],
           requestId: 'llama-request-error',
         };
       }

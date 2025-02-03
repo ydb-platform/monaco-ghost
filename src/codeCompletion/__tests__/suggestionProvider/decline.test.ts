@@ -48,7 +48,7 @@ describe('CodeCompletionService - Decline Events', () => {
     const otherSuggestion = 'testFunction2';
     const requestId = '123';
     mockApi.getCodeAssistSuggestions.mockResolvedValue({
-      suggestions: [suggestionText, otherSuggestion],
+      items: [suggestionText, otherSuggestion],
       requestId: requestId,
     });
 

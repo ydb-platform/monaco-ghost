@@ -47,7 +47,7 @@ describe('CodeSuggestionProvider - Core Functionality', () => {
 
     (getPromptFileContent as jest.Mock).mockReturnValue(mockPromptData);
     mockApi.getCodeAssistSuggestions.mockResolvedValue({
-      suggestions: ['testFunction'],
+      items: ['testFunction'],
       requestId: '123',
     });
 

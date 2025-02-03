@@ -19,7 +19,7 @@ export interface PromptFile {
 }
 
 export interface Suggestions {
-  suggestions: string[];
+  items: string[];
   requestId?: string;
 }
 
@@ -31,13 +31,6 @@ export interface ICodeCompletionAPI {
 
 export interface EnrichedCompletion extends monaco.languages.InlineCompletion {
   pristine: string;
-}
-
-export interface InternalSuggestion {
-  items: EnrichedCompletion[];
-  requestId?: string;
-  shownCount: number;
-  wasAccepted?: boolean;
 }
 
 export interface ICodeCompletionService extends monaco.languages.InlineCompletionsProvider {

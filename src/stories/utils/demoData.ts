@@ -113,7 +113,7 @@ export const sqlApi = {
         : defaultSuggestions;
 
     return {
-      suggestions: getRandomItems([...suggestions], 6).map(text => getCase(text)),
+      items: getRandomItems([...suggestions], 6).map(text => getCase(text)),
       requestId: 'demo-request',
     };
   },
@@ -213,7 +213,7 @@ export const javaApi = {
         : defaultSuggestions;
 
     return {
-      suggestions: getRandomItems([...suggestions], 6).map(text => getCase(text)),
+      items: getRandomItems([...suggestions], 6).map(text => getCase(text)),
       requestId: 'demo-request',
     };
   },

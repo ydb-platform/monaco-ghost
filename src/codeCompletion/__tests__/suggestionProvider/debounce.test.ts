@@ -37,7 +37,7 @@ describe('CodeSuggestionProvider - Debouncing', () => {
 
     (getPromptFileContent as jest.Mock).mockReturnValue(mockPromptData);
     mockApi.getCodeAssistSuggestions.mockResolvedValue({
-      suggestions: ['suggestion'],
+      items: ['suggestion'],
       requestId: '123',
     });
 
@@ -68,7 +68,7 @@ describe('CodeSuggestionProvider - Debouncing', () => {
 
     (getPromptFileContent as jest.Mock).mockReturnValue(mockPromptData);
     mockApi.getCodeAssistSuggestions.mockImplementation(async () => ({
-      suggestions: ['suggestion'],
+      items: ['suggestion'],
       requestId: '123',
     }));
 

@@ -94,7 +94,7 @@ describe('CodeSuggestionProvider - Error Handling', () => {
 
     (getPromptFileContent as jest.Mock).mockReturnValue(mockPromptData);
     mockApi.getCodeAssistSuggestions.mockResolvedValue({
-      suggestions: [],
+      items: [],
       requestId: '123',
     });
 
