@@ -303,7 +303,7 @@ export interface PromptFile {
 }
 
 export interface Suggestions {
-  suggestions: string[];
+  items: string[];
   requestId?: string;
 }
 
