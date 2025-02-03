@@ -50,7 +50,7 @@ function MyApp() {
           afterCursor: 1000,
         }
       }}
-      onCompletionAccept={(text) => console.log('Accepted:', text)}
+      onCompletionAccept={(event) => console.log('Accepted:', event.acceptedText)}
     />
   );
 }

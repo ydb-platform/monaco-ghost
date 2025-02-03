@@ -2,15 +2,16 @@ import { useEffect, useRef, useCallback } from 'react';
 import * as monaco from 'monaco-editor';
 import { createCodeCompletionService, registerCompletionCommands } from '../index';
 import type { ICodeCompletionAPI, CodeCompletionConfig, ICodeCompletionService } from '../types';
+import { AcceptEvent, DeclineEvent, IgnoreEvent } from '../events';
 
 interface UseMonacoGhostProps {
   api: ICodeCompletionAPI;
   config: CodeCompletionConfig & {
     language: string; // Single language identifier (e.g., 'typescript')
   };
-  onCompletionAccept?: (text: string) => void;
-  onCompletionDecline?: (text: string, reason: string, allSuggestions: string[]) => void;
-  onCompletionIgnore?: (text: string, allSuggestions: string[]) => void;
+  onCompletionAccept?: (event: AcceptEvent) => void;
+  onCompletionDecline?: (event: DeclineEvent) => void;
+  onCompletionIgnore?: (event: IgnoreEvent) => void;
   onCompletionError?: (error: Error) => void;
 }
 
@@ -57,16 +58,16 @@ export function useMonacoGhost({
 
       // Set up event handlers
       const provider = completionProviderRef.current;
-      provider.events.on('completion:accept', data => {
-        onCompletionAccept?.(data.acceptedText);
+      provider.events.on('completion:accept', event => {
+        onCompletionAccept?.(event);
       });
 
-      provider.events.on('completion:decline', data => {
-        onCompletionDecline?.(data.suggestionText, data.reason, data.allSuggestions);
+      provider.events.on('completion:decline', event => {
+        onCompletionDecline?.(event);
       });
 
-      provider.events.on('completion:ignore', data => {
-        onCompletionIgnore?.(data.suggestionText, data.allSuggestions);
+      provider.events.on('completion:ignore', event => {
+        onCompletionIgnore?.(event);
       });
 
       provider.events.on('completion:error', error => {

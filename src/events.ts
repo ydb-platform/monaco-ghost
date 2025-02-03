@@ -1,22 +1,28 @@
 type EventCallback<T = any> = (data: T) => void;
 
+export interface AcceptEvent {
+  requestId: string;
+  acceptedText: string;
+}
+
+export interface DeclineEvent {
+  requestId: string;
+  suggestionText: string;
+  reason: string;
+  hitCount: number;
+  allSuggestions: string[];
+}
+
+export interface IgnoreEvent {
+  requestId: string;
+  suggestionText: string;
+  allSuggestions: string[];
+}
+
 export interface CompletionEvents {
-  'completion:accept': {
-    requestId: string;
-    acceptedText: string;
-  };
-  'completion:decline': {
-    requestId: string;
-    suggestionText: string;
-    reason: string;
-    hitCount: number;
-    allSuggestions: string[];
-  };
-  'completion:ignore': {
-    requestId: string;
-    suggestionText: string;
-    allSuggestions: string[];
-  };
+  'completion:accept': AcceptEvent;
+  'completion:decline': DeclineEvent;
+  'completion:ignore': IgnoreEvent;
   'completion:error': Error;
 }
 

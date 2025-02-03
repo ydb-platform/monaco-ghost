@@ -5,6 +5,7 @@ import { useMonacoGhost } from '../hooks/useMonacoGhost';
 import { demoLanguages } from './utils/demoData';
 import type { ICodeCompletionAPI, CodeCompletionConfig } from '../types';
 import { Disclaimer } from './components/Disclaimer';
+import { AcceptEvent, DeclineEvent, IgnoreEvent } from '../events';
 
 export interface EditorProps {
   code?: string;
@@ -12,9 +13,9 @@ export interface EditorProps {
   theme?: string;
   api?: ICodeCompletionAPI;
   config?: CodeCompletionConfig;
-  onCompletionAccept?: (text: string) => void;
-  onCompletionDecline?: (text: string, reason: string, allSuggestions: string[]) => void;
-  onCompletionIgnore?: (text: string, allSuggestions: string[]) => void;
+  onCompletionAccept?: (event: AcceptEvent) => void;
+  onCompletionDecline?: (event: DeclineEvent) => void;
+  onCompletionIgnore?: (event: IgnoreEvent) => void;
 }
 
 export const ReactMonacoEditor: React.FC<EditorProps> = ({

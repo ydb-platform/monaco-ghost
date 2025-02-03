@@ -3,6 +3,7 @@ import * as monaco from 'monaco-editor';
 import { useMonacoGhost } from '../hooks/useMonacoGhost';
 import type { ICodeCompletionAPI, CodeCompletionConfig } from '../types';
 import 'monaco-editor/min/vs/editor/editor.main.css';
+import { AcceptEvent, DeclineEvent, IgnoreEvent } from '../events';
 
 export interface MonacoEditorProps {
   /**
@@ -33,7 +34,7 @@ export interface MonacoEditorProps {
   /**
    * Callback fired when a completion suggestion is accepted
    */
-  onCompletionAccept?: (text: string) => void;
+  onCompletionAccept?: (event: AcceptEvent) => void;
 
   /**
    * Callback fired when a completion suggestion is declined
@@ -41,14 +42,14 @@ export interface MonacoEditorProps {
    * @param reason The reason for declining
    * @param allSuggestions Array of all available suggestions
    */
-  onCompletionDecline?: (text: string, reason: string, allSuggestions: string[]) => void;
+  onCompletionDecline?: (event: DeclineEvent) => void;
 
   /**
    * Callback fired when a completion suggestion is ignored
    * @param text The ignored suggestion text
    * @param allSuggestions Array of all available suggestions
    */
-  onCompletionIgnore?: (text: string, allSuggestions: string[]) => void;
+  onCompletionIgnore?: (event: IgnoreEvent) => void;
 
   /**
    * Callback fired when a completion error occurs
