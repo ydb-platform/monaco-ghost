@@ -1,6 +1,6 @@
 {
   "name": "@ydb-platform/monaco-ghost",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Inline completion adapter for Monaco Editor",
   "type": "module",
   "files": [
