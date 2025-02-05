@@ -300,7 +300,7 @@ export interface PromptFragment {
 export interface PromptFile {
   path: string;
   fragments: PromptFragment[];
-  cursorPostion: PromptPosition;
+  cursorPosition: PromptPosition;
 }
 
 export interface Suggestions {

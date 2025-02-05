@@ -40,7 +40,7 @@ export function getPromptFileContent(
   const postText = [postTextInCurrentLine]
     .concat(linesContent.slice(position.lineNumber))
     .join('\n');
-  const cursorPostion = { lineNumber: position.lineNumber, column: position.column };
+  const cursorPosition = { lineNumber: position.lineNumber, column: position.column };
 
   const fragments = [];
   if (prevText) {
@@ -50,7 +50,7 @@ export function getPromptFileContent(
           ? prevText.slice(prevText.length - finalLimits.beforeCursor)
           : prevText,
       start: { lineNumber: 1, column: 1 },
-      end: cursorPostion,
+      end: cursorPosition,
     });
   }
   if (postText) {
@@ -61,7 +61,7 @@ export function getPromptFileContent(
 
     fragments.push({
       text: postText.slice(0, finalLimits.afterCursor),
-      start: cursorPostion,
+      start: cursorPosition,
       end: {
         lineNumber: linesContent.length,
         column: lastLine.length,
@@ -73,7 +73,7 @@ export function getPromptFileContent(
     ? [
         {
           fragments,
-          cursorPostion,
+          cursorPosition,
           path: `${sessionId}`,
         },
       ]
