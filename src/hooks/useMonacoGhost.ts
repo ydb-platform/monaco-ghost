@@ -53,8 +53,13 @@ export function useMonacoGhost({
       );
       disposables.current.push(disposable);
 
-      // Register commands
-      registerCompletionCommands(monaco, completionProviderRef.current, editor);
+      // Register commands and collect disposables
+      const commandDisposables = registerCompletionCommands(
+        monaco,
+        completionProviderRef.current,
+        editor
+      );
+      disposables.current.push(...commandDisposables);
 
       // Set up event handlers
       const provider = completionProviderRef.current;
