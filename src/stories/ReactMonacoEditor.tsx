@@ -38,7 +38,7 @@ export const ReactMonacoEditor: React.FC<EditorProps> = ({
   const api = providedApi || sqlApi;
   const baseConfig = providedConfig || demoConfig;
 
-  const { registerMonacoGhost, dispose } = useMonacoGhost({
+  const { registerMonacoGhost } = useMonacoGhost({
     api,
     config: {
       ...baseConfig,
@@ -72,14 +72,6 @@ export const ReactMonacoEditor: React.FC<EditorProps> = ({
     roundedSelection: false,
     padding: { top: 10 },
   };
-
-  // Cleanup on unmount only
-  useEffect(() => {
-    return () => {
-      dispose();
-      editorInstance.current = null;
-    };
-  }, [dispose]);
 
   return (
     <div>

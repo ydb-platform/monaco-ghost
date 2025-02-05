@@ -93,7 +93,7 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
   const editorRef = useRef<HTMLDivElement>(null);
   const editor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
 
-  const { registerMonacoGhost, dispose } = useMonacoGhost({
+  const { registerMonacoGhost } = useMonacoGhost({
     api,
     config: {
       ...config,
@@ -108,13 +108,6 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
   // Initialize editor
   useEffect(() => {
     if (!editorRef.current) return;
-
-    // Dispose of existing editor if it exists
-    if (editor.current) {
-      dispose();
-      editor.current.dispose();
-      editor.current = null;
-    }
 
     const defaultOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
       value: initialValue,
@@ -147,14 +140,6 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
     });
 
     registerMonacoGhost(editor.current);
-
-    return () => {
-      dispose();
-      if (editor.current) {
-        editor.current.dispose();
-        editor.current = null;
-      }
-    };
   }, [language, initialValue]); // Re-initialize when language or initialValue changes
 
   // Update theme and editor options

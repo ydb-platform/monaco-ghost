@@ -77,14 +77,9 @@ function MyCustomEditor() {
   const editorDidMount = useCallback(
     (editor: monaco.editor.IStandaloneCodeEditor) => {
       registerMonacoGhost(editor);
-
-      return () => dispose();
     },
     [registerMonacoGhost]
   );
-
-  // Optional: Manual cleanup if needed
-  // useEffect(() => () => dispose(), [dispose]);
 
   const options = {
     selectOnLineNumbers: true,

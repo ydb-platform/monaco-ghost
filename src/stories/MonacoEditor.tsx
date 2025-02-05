@@ -30,7 +30,7 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
   const demoLang = language in demoLanguages ? language : 'sql';
   const { api, config } = demoLanguages[demoLang as keyof typeof demoLanguages];
 
-  const { registerMonacoGhost, dispose } = useMonacoGhost({
+  const { registerMonacoGhost } = useMonacoGhost({
     api,
     config: {
       ...config,
@@ -44,13 +44,6 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
   // Initialize editor
   useEffect(() => {
     if (!editorRef.current) return;
-
-    // Dispose of existing editor if it exists
-    if (editor.current) {
-      dispose();
-      editor.current.dispose();
-      editor.current = null;
-    }
 
     const editorInstance = monaco.editor.create(editorRef.current, {
       value: initialValue,
@@ -67,14 +60,6 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
 
     editor.current = editorInstance;
     registerMonacoGhost(editorInstance);
-
-    return () => {
-      dispose();
-      if (editor.current) {
-        editor.current.dispose();
-        editor.current = null;
-      }
-    };
   }, [language, initialValue]); // Re-initialize when language or initialValue changes
 
   // Update theme when it changes

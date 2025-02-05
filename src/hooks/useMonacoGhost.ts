@@ -17,7 +17,6 @@ interface UseMonacoGhostProps {
 
 interface UseMonacoGhostResult {
   registerMonacoGhost: (editor: monaco.editor.IStandaloneCodeEditor) => void;
-  dispose: () => void;
 }
 
 export function useMonacoGhost({
@@ -91,6 +90,5 @@ export function useMonacoGhost({
 
   return {
     registerMonacoGhost,
-    dispose,
   };
 }
