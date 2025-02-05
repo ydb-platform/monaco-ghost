@@ -30,6 +30,7 @@ export function registerCompletionCommands(
       completionService.commandDiscard('OnCancel', editor);
     }
   );
+
   disposables.push(declineCommand);
   const keyDownDisposable = editor.onKeyDown(e => {
     if (e.keyCode === monacoInstance.KeyCode.Escape) {
