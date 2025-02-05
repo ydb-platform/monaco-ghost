@@ -31,11 +31,17 @@ export function registerCompletionCommands(
     }
   );
   disposables.push(declineCommand);
-
   const keyDownDisposable = editor.onKeyDown(e => {
     if (e.keyCode === monacoInstance.KeyCode.Escape) {
+      const suggestController = editor.getContribution('editor.contrib.suggestController') as {
+        widget?: { value?: { selectFirst?: () => void } };
+      };
+      const hasRegularSuggestions = suggestController?.widget?.value?.selectFirst?.() ?? false;
+
       const hasInlineSuggestion = completionService.hasActiveSuggestions();
-      if (hasInlineSuggestion) {
+
+      // Only handle ESC for ghost suggestions if regular suggestions are not shown
+      if (hasInlineSuggestion && !hasRegularSuggestions) {
         e.preventDefault();
         editor.trigger('keyboard', 'declineCodeAssistCompletion', null);
       }
