@@ -4,24 +4,20 @@ import { useMonacoGhost } from '../hooks/useMonacoGhost';
 import { demoLanguages } from './utils/demoData';
 import { Disclaimer } from './components/Disclaimer';
 import 'monaco-editor/min/vs/editor/editor.main.css';
-import { AcceptEvent, DeclineEvent, IgnoreEvent } from '../events';
+import { ICodeCompletionEventHandlers } from '../types';
 
 export interface MonacoEditorProps {
   initialValue?: string;
   language?: string;
   theme?: string;
-  onCompletionAccept?: (event: AcceptEvent) => void;
-  onCompletionDecline?: (event: DeclineEvent) => void;
-  onCompletionIgnore?: (event: IgnoreEvent) => void;
+  eventHandlers?: ICodeCompletionEventHandlers;
 }
 
 export const MonacoEditor: React.FC<MonacoEditorProps> = ({
   initialValue = '// Type your code here\n',
   language = 'sql',
   theme = 'vs-dark',
-  onCompletionAccept,
-  onCompletionDecline,
-  onCompletionIgnore,
+  eventHandlers,
 }) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const editor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
@@ -32,13 +28,11 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
 
   const { registerMonacoGhost } = useMonacoGhost({
     api,
+    eventHandlers,
     config: {
       ...config,
       language,
     },
-    onCompletionAccept,
-    onCompletionDecline,
-    onCompletionIgnore,
   });
 
   // Initialize editor

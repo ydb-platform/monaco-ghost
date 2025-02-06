@@ -1,9 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import * as monaco from 'monaco-editor';
 import { useMonacoGhost } from '../hooks/useMonacoGhost';
-import type { ICodeCompletionAPI, CodeCompletionConfig } from '../types';
+import type {
+  ICodeCompletionAPI,
+  CodeCompletionConfig,
+  ICodeCompletionEventHandlers,
+} from '../types';
 import 'monaco-editor/min/vs/editor/editor.main.css';
-import { AcceptEvent, DeclineEvent, IgnoreEvent } from '../events';
 
 export interface MonacoEditorProps {
   /**
@@ -32,29 +35,9 @@ export interface MonacoEditorProps {
   config: CodeCompletionConfig;
 
   /**
-   * Callback fired when a completion suggestion is accepted
+   * Event handler for code completion
    */
-  onCompletionAccept?: (event: AcceptEvent) => void;
-
-  /**
-   * Callback fired when a completion suggestion is declined
-   * @param text The declined suggestion text
-   * @param reason The reason for declining
-   * @param allSuggestions Array of all available suggestions
-   */
-  onCompletionDecline?: (event: DeclineEvent) => void;
-
-  /**
-   * Callback fired when a completion suggestion is ignored
-   * @param text The ignored suggestion text
-   * @param allSuggestions Array of all available suggestions
-   */
-  onCompletionIgnore?: (event: IgnoreEvent) => void;
-
-  /**
-   * Callback fired when a completion error occurs
-   */
-  onCompletionError?: (error: Error) => void;
+  eventHandlers?: ICodeCompletionEventHandlers;
 
   /**
    * Additional Monaco editor options
@@ -82,10 +65,7 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
   theme = 'vs-dark',
   api,
   config,
-  onCompletionAccept,
-  onCompletionDecline,
-  onCompletionIgnore,
-  onCompletionError,
+  eventHandlers,
   editorOptions = {},
   className,
   style,
@@ -99,10 +79,7 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
       ...config,
       language,
     },
-    onCompletionAccept,
-    onCompletionDecline,
-    onCompletionIgnore,
-    onCompletionError,
+    eventHandlers,
   });
 
   // Initialize editor

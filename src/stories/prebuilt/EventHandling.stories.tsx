@@ -80,22 +80,23 @@ const EventHandlingDemo = () => {
             theme="vs-dark"
             api={api}
             config={config}
-            onCompletionAccept={event =>
-              addEvent('completion:accept', { acceptedText: event.acceptedText })
-            }
-            onCompletionDecline={event =>
-              addEvent('completion:decline', {
-                suggestionText: event.suggestionText,
-                reason: event.reason,
-                allSuggestions: event.allSuggestions,
-              })
-            }
-            onCompletionIgnore={event =>
-              addEvent('completion:ignore', {
-                suggestionText: event.suggestionText,
-                allSuggestions: event.allSuggestions,
-              })
-            }
+            eventHandlers={{
+              onCompletionAccept: event =>
+                addEvent('completion:accept', { acceptedText: event.acceptedText }),
+
+              onCompletionDecline: event =>
+                addEvent('completion:decline', {
+                  suggestionText: event.suggestionText,
+                  reason: event.reason,
+                  allSuggestions: event.allSuggestions,
+                }),
+
+              onCompletionIgnore: event =>
+                addEvent('completion:ignore', {
+                  suggestionText: event.suggestionText,
+                  allSuggestions: event.allSuggestions,
+                }),
+            }}
             style={{ width: '', height: '400px' }}
           />
         </div>

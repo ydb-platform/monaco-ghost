@@ -1,5 +1,5 @@
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
-import { GhostEventEmitter } from './events';
+import { AcceptEvent, DeclineEvent, GhostEventEmitter, IgnoreEvent } from './events';
 
 export interface PromptPosition {
   lineNumber: number;
@@ -27,6 +27,13 @@ export type DiscardReason = 'OnCancel';
 
 export interface ICodeCompletionAPI {
   getCodeAssistSuggestions(data: PromptFile[]): Promise<Suggestions>;
+}
+
+export interface ICodeCompletionEventHandlers {
+  onCompletionAccept?: (event: AcceptEvent) => void;
+  onCompletionDecline?: (event: DeclineEvent) => void;
+  onCompletionIgnore?: (event: IgnoreEvent) => void;
+  onCompletionError?: (error: Error) => void;
 }
 
 export interface EnrichedCompletion extends monaco.languages.InlineCompletion {

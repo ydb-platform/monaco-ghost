@@ -64,14 +64,18 @@ function MyCustomEditor() {
     },
   };
 
-  const { registerMonacoGhost, dispose } = useMonacoGhost({
-    api: javaApi,
-    config: javaConfig,
+  const eventHandlers = {
     onCompletionAccept: text => console.log('Accepted:', text),
     onCompletionDecline: (text, reason, otherSuggestions) =>
       console.log('Declined:', text, reason, otherSuggestions),
     onCompletionIgnore: (text, otherSuggestions) => console.log('Ignored:', text, otherSuggestions),
     onCompletionError: error => console.error('Error:', error),
+  };
+
+  const { registerMonacoGhost, dispose } = useMonacoGhost({
+    api: javaApi,
+    eventHandlers,
+    config: javaConfig,
   });
 
   const editorDidMount = useCallback(

@@ -1,18 +1,19 @@
 import { useEffect, useRef, useCallback } from 'react';
 import * as monaco from 'monaco-editor';
 import { createCodeCompletionService, registerCompletionCommands } from '../index';
-import type { ICodeCompletionAPI, CodeCompletionConfig, ICodeCompletionService } from '../types';
-import { AcceptEvent, DeclineEvent, IgnoreEvent } from '../events';
+import type {
+  ICodeCompletionAPI,
+  CodeCompletionConfig,
+  ICodeCompletionService,
+  ICodeCompletionEventHandlers,
+} from '../types';
 
 interface UseMonacoGhostProps {
   api: ICodeCompletionAPI;
+  eventHandlers?: ICodeCompletionEventHandlers;
   config: CodeCompletionConfig & {
     language: string; // Single language identifier (e.g., 'typescript')
   };
-  onCompletionAccept?: (event: AcceptEvent) => void;
-  onCompletionDecline?: (event: DeclineEvent) => void;
-  onCompletionIgnore?: (event: IgnoreEvent) => void;
-  onCompletionError?: (error: Error) => void;
 }
 
 interface UseMonacoGhostResult {
@@ -22,10 +23,7 @@ interface UseMonacoGhostResult {
 export function useMonacoGhost({
   api,
   config,
-  onCompletionAccept,
-  onCompletionDecline,
-  onCompletionIgnore,
-  onCompletionError,
+  eventHandlers,
 }: UseMonacoGhostProps): UseMonacoGhostResult {
   const disposables = useRef<monaco.IDisposable[]>([]);
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
@@ -37,6 +35,9 @@ export function useMonacoGhost({
     disposables.current.forEach(d => d.dispose());
     disposables.current = [];
   }, []);
+
+  const { onCompletionAccept, onCompletionDecline, onCompletionIgnore, onCompletionError } =
+    eventHandlers || {};
 
   const registerMonacoGhost = useCallback(
     (editor: monaco.editor.IStandaloneCodeEditor) => {

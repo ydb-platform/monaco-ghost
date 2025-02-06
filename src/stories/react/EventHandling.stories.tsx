@@ -75,22 +75,23 @@ const EventHandlingDemo = () => {
             code={demoLanguages[currentLanguage].code}
             language={language}
             theme="vs-dark"
-            onCompletionAccept={event =>
-              addEvent('completion:accept', { acceptedText: event.acceptedText })
-            }
-            onCompletionDecline={event =>
-              addEvent('completion:decline', {
-                suggestionText: event.suggestionText,
-                reason: event.reason,
-                allSuggestions: event.allSuggestions,
-              })
-            }
-            onCompletionIgnore={event =>
-              addEvent('completion:ignore', {
-                suggestionText: event.suggestionText,
-                allSuggestions: event.allSuggestions,
-              })
-            }
+            eventHandlers={{
+              onCompletionAccept: event =>
+                addEvent('completion:accept', { acceptedText: event.acceptedText }),
+
+              onCompletionDecline: event =>
+                addEvent('completion:decline', {
+                  suggestionText: event.suggestionText,
+                  reason: event.reason,
+                  allSuggestions: event.allSuggestions,
+                }),
+
+              onCompletionIgnore: event =>
+                addEvent('completion:ignore', {
+                  suggestionText: event.suggestionText,
+                  allSuggestions: event.allSuggestions,
+                }),
+            }}
           />
         </div>
         <div style={{ flex: '0 0 400px' }}>
