@@ -14,27 +14,8 @@ describe('createServiceConfig - User Configuration', () => {
     const config = createServiceConfig(mockApi, userConfig);
 
     expect(config.debounceTime).toBe(500);
-    expect(config.textLimits).toEqual({
-      beforeCursor: 8000,
-      afterCursor: 1000,
-    });
     expect(config.suggestionCache).toEqual({
       enabled: true,
-    });
-  });
-
-  it('should merge nested textLimits configuration', () => {
-    const userConfig = {
-      textLimits: {
-        beforeCursor: 5000,
-      },
-    };
-
-    const config = createServiceConfig(mockApi, userConfig);
-
-    expect(config.textLimits).toEqual({
-      beforeCursor: 5000,
-      afterCursor: 1000,
     });
   });
 
@@ -55,10 +36,6 @@ describe('createServiceConfig - User Configuration', () => {
   it('should handle complete user configuration override', () => {
     const userConfig = {
       debounceTime: 300,
-      textLimits: {
-        beforeCursor: 4000,
-        afterCursor: 500,
-      },
       suggestionCache: {
         enabled: false,
       },

@@ -6,11 +6,6 @@ import {
   ICodeCompletionService,
 } from '../types';
 
-export interface TextLimits {
-  beforeCursor: number;
-  afterCursor: number;
-}
-
 export interface CompletionGroup {
   items: EnrichedCompletion[];
   shownCount: number;

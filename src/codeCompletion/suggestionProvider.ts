@@ -44,15 +44,7 @@ export class CodeSuggestionProvider implements SuggestionProvider {
         let suggestions: EnrichedCompletion[] = [];
         let requestId = '';
 
-        const data = getPromptFileContent(
-          model,
-          position,
-          {
-            beforeCursor: this.config.textLimits.beforeCursor,
-            afterCursor: this.config.textLimits.afterCursor,
-          },
-          this.config.sessionId
-        );
+        const data = getPromptFileContent(model, position, this.config.sessionId);
 
         if (!data) {
           this.pendingResolve?.({ suggestions: [], requestId: '' });

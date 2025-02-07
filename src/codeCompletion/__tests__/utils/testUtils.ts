@@ -18,10 +18,6 @@ export const createMockEvents = () => {
 
 export const createMockConfig = (api: ICodeCompletionAPI): ServiceConfig => ({
   debounceTime: 200,
-  textLimits: {
-    beforeCursor: 8000,
-    afterCursor: 1000,
-  },
   suggestionCache: {
     enabled: true,
   },

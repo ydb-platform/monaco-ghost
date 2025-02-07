@@ -2,28 +2,11 @@ import type Monaco from 'monaco-editor';
 import type { PromptFile } from '../types';
 import { v4 } from 'uuid';
 
-export interface TextLimits {
-  beforeCursor: number;
-  afterCursor: number;
-}
-
-const DEFAULT_LIMITS: Required<TextLimits> = {
-  beforeCursor: 8_000,
-  afterCursor: 1_000,
-};
-
 export function getPromptFileContent(
   model: Monaco.editor.ITextModel,
   position: Monaco.Position,
-  limits?: Partial<TextLimits>,
   sessionId: string = v4()
 ): PromptFile[] | undefined {
-  // Merge with defaults to ensure we always have valid numbers
-  const finalLimits: Required<TextLimits> = {
-    ...DEFAULT_LIMITS,
-    ...limits,
-  };
-
   const linesContent = model.getLinesContent();
   const currentLine = linesContent[position.lineNumber - 1];
 
@@ -45,10 +28,7 @@ export function getPromptFileContent(
   const fragments = [];
   if (prevText) {
     fragments.push({
-      text:
-        prevText.length > finalLimits.beforeCursor
-          ? prevText.slice(prevText.length - finalLimits.beforeCursor)
-          : prevText,
+      text: prevText,
       start: { lineNumber: 1, column: 1 },
       end: cursorPosition,
     });
@@ -60,7 +40,7 @@ export function getPromptFileContent(
     }
 
     fragments.push({
-      text: postText.slice(0, finalLimits.afterCursor),
+      text: postText,
       start: cursorPosition,
       end: {
         lineNumber: linesContent.length,

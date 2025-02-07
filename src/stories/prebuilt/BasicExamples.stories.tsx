@@ -45,10 +45,6 @@ function MyApp() {
       config={{
         language: 'sql',
         debounceTime: 200,
-        textLimits: {
-          beforeCursor: 8000,
-          afterCursor: 1000,
-        }
       }}
       eventHandlers={{
         onCompletionAccept: (event) => console.log('Accepted:', event.acceptedText),

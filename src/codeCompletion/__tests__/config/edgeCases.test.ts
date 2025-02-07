@@ -9,16 +9,11 @@ describe('createServiceConfig - Edge Cases', () => {
   it('should handle undefined nested configurations', () => {
     const userConfig = {
       debounceTime: 300,
-      textLimits: undefined,
       suggestionCache: undefined,
     };
 
     const config = createServiceConfig(mockApi, userConfig);
 
-    expect(config.textLimits).toEqual({
-      beforeCursor: 8000,
-      afterCursor: 1000,
-    });
     expect(config.suggestionCache).toEqual({
       enabled: true,
     });
@@ -26,10 +21,6 @@ describe('createServiceConfig - Edge Cases', () => {
 
   it('should handle partial nested configurations', () => {
     const userConfig = {
-      textLimits: {
-        // Only override beforeCursor
-        beforeCursor: 3000,
-      },
       suggestionCache: {
         // Empty object should not override defaults
       },
@@ -37,10 +28,6 @@ describe('createServiceConfig - Edge Cases', () => {
 
     const config = createServiceConfig(mockApi, userConfig);
 
-    expect(config.textLimits).toEqual({
-      beforeCursor: 3000,
-      afterCursor: 1000,
-    });
     expect(config.suggestionCache).toEqual({
       enabled: true,
     });
@@ -53,9 +40,6 @@ describe('createServiceConfig - Edge Cases', () => {
 
     const userConfig = {
       debounceTime: 300,
-      textLimits: {
-        beforeCursor: 3000,
-      },
     };
 
     const config = createServiceConfig(customApi, userConfig);

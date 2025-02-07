@@ -55,10 +55,6 @@ function MyCustomEditor() {
   // Java-specific configuration
   const javaConfig = {
     debounceTime: 200,
-    textLimits: {
-      beforeCursor: 8000,
-      afterCursor: 1000,
-    },
     suggestionCache: {
       enabled: true,
     },
@@ -129,10 +125,6 @@ function MyApp() {
   // SQL-specific configuration
   const sqlConfig = {
     debounceTime: 200,
-    textLimits: {
-      beforeCursor: 8000,
-      afterCursor: 1000,
-    },
     suggestionCache: {
       enabled: true,
     },
@@ -191,10 +183,6 @@ const sqlApi = {
 // Configure the adapter with language-specific settings
 const sqlConfig = {
   debounceTime: 200,
-  textLimits: {
-    beforeCursor: 8000,
-    afterCursor: 1000,
-  },
   suggestionCache: {
     enabled: true,
   },
@@ -261,12 +249,6 @@ interface CodeCompletionConfig {
 
   // Performance settings
   debounceTime?: number; // Time in ms to debounce API calls (default: 200)
-
-  // Text limits
-  textLimits?: {
-    beforeCursor?: number; // Characters to include before cursor (default: 8000)
-    afterCursor?: number; // Characters to include after cursor (default: 1000)
-  };
 
   // Cache settings
   suggestionCache?: {

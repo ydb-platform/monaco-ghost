@@ -197,10 +197,6 @@ type Story = StoryObj<typeof meta>;
 
 const llamaConfig = {
   debounceTime: 300,
-  textLimits: {
-    beforeCursor: 12000,
-    afterCursor: 2000,
-  },
   suggestionCache: {
     enabled: true,
   },
@@ -232,10 +228,6 @@ class DataProcessor:
     config: {
       ...llamaConfig,
       debounceTime: 400,
-      textLimits: {
-        beforeCursor: 16000,
-        afterCursor: 3000,
-      },
     },
     options: {
       maxTokens: 150, // Increased token limit

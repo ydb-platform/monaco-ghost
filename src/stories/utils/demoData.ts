@@ -221,10 +221,6 @@ export const javaApi = {
 
 const baseConfig = {
   debounceTime: 200,
-  textLimits: {
-    beforeCursor: 8000,
-    afterCursor: 1000,
-  },
   suggestionCache: {
     enabled: true,
   },
