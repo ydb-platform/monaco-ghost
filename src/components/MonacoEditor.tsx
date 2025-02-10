@@ -73,7 +73,7 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
   const editorRef = useRef<HTMLDivElement>(null);
   const editor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
 
-  const { registerMonacoGhost } = useMonacoGhost({
+  const { register } = useMonacoGhost({
     api,
     config: {
       ...config,
@@ -116,7 +116,7 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
       ...editorOptions,
     });
 
-    registerMonacoGhost(editor.current);
+    register(editor.current);
   }, [language, initialValue]); // Re-initialize when language or initialValue changes
 
   // Update theme and editor options

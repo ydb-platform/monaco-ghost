@@ -37,7 +37,7 @@ export const ReactMonacoEditor: React.FC<EditorProps> = ({
   const api = providedApi || sqlApi;
   const baseConfig = providedConfig || demoConfig;
 
-  const { registerMonacoGhost } = useMonacoGhost({
+  const { register } = useMonacoGhost({
     api,
     eventHandlers,
     config: {
@@ -50,9 +50,9 @@ export const ReactMonacoEditor: React.FC<EditorProps> = ({
     (editor: monaco.editor.IStandaloneCodeEditor) => {
       editorInstance.current = editor;
       editor.focus();
-      registerMonacoGhost(editor);
+      register(editor);
     },
-    [registerMonacoGhost]
+    [register]
   );
 
   const onChange = useCallback((newValue: string) => {
