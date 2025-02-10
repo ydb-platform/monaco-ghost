@@ -106,6 +106,80 @@ function MyCustomEditor() {
 }
 ```
 
+### Alternative: Direct Instance Creation
+
+For more control over the ghost instance lifecycle, you can use `createMonacoGhostInstance` instead of the hook:
+
+```typescript
+import React from 'react';
+import MonacoEditor from 'react-monaco-editor';
+import * as monaco from 'monaco-editor';
+import { createMonacoGhostInstance } from '@ydb-platform/monaco-ghost';
+
+function MyCustomEditor() {
+  const [monacoGhostInstance, setMonacoGhostInstance] =
+    React.useState<ReturnType<typeof createMonacoGhostInstance>>();
+
+  // Configuration and helpers
+  const monacoGhostConfig = {
+    api: {
+      getCodeAssistSuggestions: async () => ({
+        Suggests: [{ Text: 'System.out.println("Hello, World!");' }],
+        RequestId: 'demo-request',
+      }),
+    },
+    eventHandlers: {
+      onCompletionAccept: text => console.log('Accepted:', text),
+      onCompletionDecline: (text, reason, otherSuggestions) =>
+        console.log('Declined:', text, reason, otherSuggestions),
+      onCompletionIgnore: (text, otherSuggestions) =>
+        console.log('Ignored:', text, otherSuggestions),
+      onCompletionError: error => console.error('Error:', error),
+    },
+    config: {
+      language: 'java',
+      debounceTime: 200,
+      suggestionCache: {
+        enabled: true,
+      },
+    },
+  };
+
+  // Initialize ghost instance when enabled
+  React.useEffect(() => {
+    if (monacoGhostInstance && isCodeAssistEnabled) {
+      monacoGhostInstance.register(monacoGhostConfig);
+    }
+
+    return () => {
+      monacoGhostInstance?.unregister();
+    };
+  }, [isCodeAssistEnabled, monacoGhostConfig, monacoGhostInstance]);
+
+  const editorDidMount = (editor: monaco.editor.IStandaloneCodeEditor) => {
+    setMonacoGhostInstance(createMonacoGhostInstance(editor));
+  };
+
+  return (
+    <MonacoEditor
+      width="800"
+      height="600"
+      language="java"
+      theme="vs-dark"
+      value="// Your Java code here"
+      options={{
+        selectOnLineNumbers: true,
+        minimap: { enabled: false },
+        automaticLayout: true,
+      }}
+      editorDidMount={editorDidMount}
+    />
+  );
+}
+```
+
+This approach gives you more control over when the ghost instance is created and destroyed, and allows for more complex initialization logic if needed.
+
 <details>
 <summary>Using the pre-built editor component</summary>
 
