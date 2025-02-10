@@ -31,15 +31,8 @@ export function useMonacoGhost({
   const completionProviderRef = useRef<ICodeCompletionService | null>(null);
 
   const dispose = useCallback(() => {
-    if (editorRef.current) {
-      editorRef.current?.dispose();
-      editorRef.current = null;
-    }
-
-    if (disposables.current.length > 0) {
-      disposables.current.forEach(d => d.dispose());
-      disposables.current = [];
-    }
+    disposables.current.forEach(d => d.dispose());
+    disposables.current = [];
   }, []);
 
   const { onCompletionAccept, onCompletionDecline, onCompletionIgnore, onCompletionError } =
