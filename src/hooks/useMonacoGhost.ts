@@ -18,6 +18,7 @@ interface UseMonacoGhostProps {
 
 interface UseMonacoGhostResult {
   registerMonacoGhost: (editor: monaco.editor.IStandaloneCodeEditor) => void;
+  unregisterMonacoGhost: () => void;
 }
 
 export function useMonacoGhost({
@@ -30,10 +31,15 @@ export function useMonacoGhost({
   const completionProviderRef = useRef<ICodeCompletionService | null>(null);
 
   const dispose = useCallback(() => {
-    editorRef.current?.dispose();
-    editorRef.current = null;
-    disposables.current.forEach(d => d.dispose());
-    disposables.current = [];
+    if (editorRef.current) {
+      editorRef.current?.dispose();
+      editorRef.current = null;
+    }
+
+    if (disposables.current.length > 0) {
+      disposables.current.forEach(d => d.dispose());
+      disposables.current = [];
+    }
   }, []);
 
   const { onCompletionAccept, onCompletionDecline, onCompletionIgnore, onCompletionError } =
@@ -91,5 +97,6 @@ export function useMonacoGhost({
 
   return {
     registerMonacoGhost,
+    unregisterMonacoGhost: dispose,
   };
 }

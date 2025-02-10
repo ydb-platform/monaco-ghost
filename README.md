@@ -68,7 +68,7 @@ function MyCustomEditor() {
     onCompletionError: error => console.error('Error:', error),
   };
 
-  const { registerMonacoGhost, dispose } = useMonacoGhost({
+  const { registerMonacoGhost } = useMonacoGhost({
     api: javaApi,
     eventHandlers,
     config: javaConfig,
