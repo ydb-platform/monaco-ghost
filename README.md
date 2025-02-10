@@ -68,7 +68,7 @@ function MyCustomEditor() {
     onCompletionError: error => console.error('Error:', error),
   };
 
-  const { registerMonacoGhost } = useMonacoGhost({
+  const { register } = useMonacoGhost({
     api: javaApi,
     eventHandlers,
     config: javaConfig,
@@ -76,9 +76,9 @@ function MyCustomEditor() {
 
   const editorDidMount = useCallback(
     (editor: monaco.editor.IStandaloneCodeEditor) => {
-      registerMonacoGhost(editor);
+      register(editor);
     },
-    [registerMonacoGhost]
+    [register]
   );
 
   const options = {

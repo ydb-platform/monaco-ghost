@@ -17,8 +17,8 @@ interface UseMonacoGhostProps {
 }
 
 interface UseMonacoGhostResult {
-  registerMonacoGhost: (editor: monaco.editor.IStandaloneCodeEditor) => void;
-  unregisterMonacoGhost: () => void;
+  register: (editor: monaco.editor.IStandaloneCodeEditor) => void;
+  unregister: () => void;
 }
 
 export function useMonacoGhost({
@@ -38,7 +38,7 @@ export function useMonacoGhost({
   const { onCompletionAccept, onCompletionDecline, onCompletionIgnore, onCompletionError } =
     eventHandlers || {};
 
-  const registerMonacoGhost = useCallback(
+  const register = useCallback(
     (editor: monaco.editor.IStandaloneCodeEditor) => {
       editorRef.current = editor;
 
@@ -89,7 +89,7 @@ export function useMonacoGhost({
   }, [dispose]);
 
   return {
-    registerMonacoGhost,
-    unregisterMonacoGhost: dispose,
+    register,
+    unregister: dispose,
   };
 }

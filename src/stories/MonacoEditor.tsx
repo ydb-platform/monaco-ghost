@@ -26,7 +26,7 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
   const demoLang = language in demoLanguages ? language : 'sql';
   const { api, config } = demoLanguages[demoLang as keyof typeof demoLanguages];
 
-  const { registerMonacoGhost } = useMonacoGhost({
+  const { register } = useMonacoGhost({
     api,
     eventHandlers,
     config: {
@@ -53,7 +53,7 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
     });
 
     editor.current = editorInstance;
-    registerMonacoGhost(editorInstance);
+    register(editorInstance);
   }, [language, initialValue]); // Re-initialize when language or initialValue changes
 
   // Update theme when it changes
