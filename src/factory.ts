@@ -23,7 +23,7 @@ interface RegisterGhostProps {
   };
 }
 
-class MonacoGhostInstance {
+export class MonacoGhostInstance {
   private disposables: monaco.IDisposable[] = [];
   private completionProvider: ICodeCompletionService | null = null;
 

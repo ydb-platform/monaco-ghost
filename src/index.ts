@@ -1,7 +1,7 @@
 export { createCodeCompletionService } from './factory';
 export { registerCompletionCommands } from './registerCommands';
 export { useMonacoGhost } from './hooks/useMonacoGhost';
-export { createMonacoGhostInstance } from './factory';
+export { createMonacoGhostInstance, MonacoGhostInstance } from './factory';
 export type {
   CodeCompletionConfig,
   ICodeCompletionService,
