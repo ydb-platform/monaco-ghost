@@ -35,7 +35,10 @@ npm install @ydb-platform/monaco-ghost monaco-editor
 
 ## 🚀 Quick Start
 
-### React Integration with Hook
+The library provides multiple ways to integrate with React applications. Here are the main approaches:
+
+<details>
+<summary>React Integration with Hook - Recommended for most use cases</summary>
 
 ```typescript
 import React, { useCallback } from 'react';
@@ -106,7 +109,10 @@ function MyCustomEditor() {
 }
 ```
 
-### Alternative: Direct Instance Creation
+</details>
+
+<details>
+<summary>Alternative: Direct Instance Creation - For advanced use cases requiring fine-grained control</summary>
 
 For more control over the ghost instance lifecycle, you can use `createMonacoGhostInstance` instead of the hook:
 
@@ -180,8 +186,10 @@ function MyCustomEditor() {
 
 This approach gives you more control over when the ghost instance is created and destroyed, and allows for more complex initialization logic if needed.
 
+</details>
+
 <details>
-<summary>Using the pre-built editor component</summary>
+<summary>Using the pre-built editor component - Simplest way to get started</summary>
 
 ```typescript
 // Using the pre-built editor component
