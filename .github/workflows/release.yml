@@ -1,58 +1,16 @@
-name: Release NPM Package
+name: Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version to publish (e.g., patch, minor, major, or specific version)'
-        required: true
-        default: 'patch'
-        type: choice
-        options:
-          - patch
-          - minor
-          - major
+  push:
+    branches: [main]
 
 jobs:
   release:
+    if: github.repository == 'ydb-platform/monaco-ghost'
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      packages: write
-
     steps:
-      - uses: actions/checkout@v4
+      - uses: gravity-ui/release-action@v1
         with:
-          fetch-depth: 0
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18.x'
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'npm'
-
-      - name: Git config
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run tests
-        run: npm test
-
-      - name: Build
-        run: npm run build
-
-      - name: Version bump
-        run: |
-          npm version ${{ github.event.inputs.version }} -m "Release %s"
-          git push
-          git push --tags
-
-      - name: Publish to NPM
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
-        run: npm publish --access public
+          github-token: ${{ secrets.YDB_PLATFORM_BOT_TOKEN_REPO }}
+          npm-token: ${{ secrets.NODE_AUTH_TOKEN }}
+          node-version: 18
