@@ -99,8 +99,8 @@ function MyCustomEditor() {
 
   return (
     <MonacoEditor
-      width="800"
       height="600"
+      width="800"
       language="java"
       theme="vs-dark" // or "vs-light"
       value="// Your Java code here"
