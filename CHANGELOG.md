@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.1.1](https://github.com/ydb-platform/monaco-ghost/compare/v1.1.0...v1.1.1) (2026-01-27)
+
+
+### Bug Fixes
+
+* release workflow ([573b075](https://github.com/ydb-platform/monaco-ghost/commit/573b075109aee3e010c475f472c06cb2e6fa4199))
+* release workflow ([ed047c2](https://github.com/ydb-platform/monaco-ghost/commit/ed047c25cc917ff73bb820c5b420c127255d47f3))
+* release workflow ([49d5e25](https://github.com/ydb-platform/monaco-ghost/commit/49d5e2577a07ff1b94b2af8d9a7b593307b0451b))
+* release workflow ([3fd0ba8](https://github.com/ydb-platform/monaco-ghost/commit/3fd0ba8052f3d09930cbe4578794f80269483741))
+
 ## [1.1.0](https://github.com/ydb-platform/monaco-ghost/compare/v1.0.0...v1.1.0) (2025-04-01)
 
 
