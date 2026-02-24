@@ -23,6 +23,8 @@ interface RegisterGhostProps {
   };
 }
 
+alert('qdsfedfdewfd');
+
 export class MonacoGhostInstance {
   private disposables: monaco.IDisposable[] = [];
   private completionProvider: ICodeCompletionService | null = null;
