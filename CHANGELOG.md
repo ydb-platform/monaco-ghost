@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/ydb-platform/monaco-ghost/compare/v1.1.1...v1.2.0) (2026-02-24)
+
+
+### Features
+
+* codeowners ([1dbe54d](https://github.com/ydb-platform/monaco-ghost/commit/1dbe54d8fbb8fe77859535730b2ae8d749b9f258))
+
+
+### Bug Fixes
+
+* . ([d11551f](https://github.com/ydb-platform/monaco-ghost/commit/d11551fa5ef3c06ad9bf113bcddb6f178163ef77))
+
 ## [1.1.1](https://github.com/ydb-platform/monaco-ghost/compare/v1.1.0...v1.1.1) (2026-01-27)
 
 
